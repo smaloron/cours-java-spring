@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="s"
+                 name="Spring"
+                 start-page="001-Intro.md">
+
+    <toc-element topic="001-Intro.md"/>
+    <toc-element topic="001-00-Les-controleurs.md"/>
+    <toc-element topic="002-00-ThymeLeaf.md">
+        <toc-element topic="002-002-Exercices-thymeleaf.md"/>
+    </toc-element>
+    <toc-element topic="003-00-DI-IoC.md">
+        <toc-element topic="003-01-CommandLine-Runner.md"/>
+    </toc-element>
+    <toc-element topic="004-00-La-configuration.md">
+        <toc-element topic="005-01-Les-fichier-env.md"/>
+    </toc-element>
+    <toc-element topic="005-00-Les-sessions.md"/>
+    <toc-element topic="005-00-Les-messages-flash.md"/>
+    <toc-element topic="010-00-Spring-Data-JPA.md"/>
+    <toc-element topic="020-00-La-gestion-des-formulaires.md"/>
+    <toc-element topic="030-00-La-gestion-evenementielle.md">
+        <toc-element topic="030-01-ControllerAdvice.md"/>
+    </toc-element>
+    <toc-element topic="040-00-La-gestion-des-exceptions.md"/>
+    <toc-element topic="0100-00-Un-projet-complet.md"/>
+
+</instance-profile>
