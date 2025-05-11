@@ -1,0 +1,502 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-05-11T08:51:19.812252"><title>Les sessions | Spring</title><script type="application/json" id="virtual-toc-data">[{"id":"concepts-fondamentaux-de-la-session-http","level":0,"title":"Concepts Fondamentaux de la Session HTTP","anchor":"#concepts-fondamentaux-de-la-session-http"},{"id":"utilisation-basique-des-sessions-dans-un-contr-leur-spring-boot","level":0,"title":"Utilisation Basique des Sessions dans un Contrôleur Spring Boot","anchor":"#utilisation-basique-des-sessions-dans-un-contr-leur-spring-boot"},{"id":"beans-de-port-e-session-sessionscope","level":0,"title":"Beans de Portée Session (@SessionScope)","anchor":"#beans-de-port-e-session-sessionscope"},{"id":"cas-d-utilisation-courants","level":0,"title":"Cas d\u0027Utilisation Courants","anchor":"#cas-d-utilisation-courants"},{"id":"s-curit-des-sessions-points-cruciaux","level":0,"title":"Sécurité des Sessions : Points Cruciaux","anchor":"#s-curit-des-sessions-points-cruciaux"},{"id":"configuration-avanc-e-via-application-properties","level":0,"title":"Configuration Avancée (via application.properties)","anchor":"#configuration-avanc-e-via-application-properties"},{"id":"bonnes-pratiques-et-conseils","level":0,"title":"Bonnes Pratiques et Conseils","anchor":"#bonnes-pratiques-et-conseils"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Les sessions | Spring"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/005-00-les-sessions.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Les sessions | Spring"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/005-00-les-sessions.html#webpage",
+    "url": "writerside-documentation/005-00-les-sessions.html",
+    "name": "Les sessions | Spring",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring Help"
+}</script><!-- End Schema.org --></head><body data-id="005-00-Les-sessions" data-main-title="Les sessions" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="005-00-Les-sessions" id="005-00-Les-sessions.md">Les sessions</h1><p id="-fffc0r_3">Dans le d&eacute;veloppement d'applications web, la gestion de l'&eacute;tat entre plusieurs requ&ecirc;tes d'un m&ecirc;me utilisateur est une n&eacute;cessit&eacute; courante. Le protocole HTTP &eacute;tant intrins&egrave;quement sans &eacute;tat (stateless), chaque requ&ecirc;te est ind&eacute;pendante des pr&eacute;c&eacute;dentes. Les sessions offrent un m&eacute;canisme pour pallier cette limitation en permettant de stocker des informations sp&eacute;cifiques &agrave; un utilisateur sur le serveur pendant la dur&eacute;e de sa visite.</p><p id="-fffc0r_4">Spring Boot, en s'appuyant sur l'API Servlet standard, simplifie grandement la gestion des sessions HTTP. Ce support de cours explore comment utiliser efficacement et s&eacute;curitairement les sessions dans une application web Spring Boot (par exemple, avec Thymeleaf ou JSP), en excluant le contexte des API REST qui utilisent g&eacute;n&eacute;ralement d'autres m&eacute;canismes d' &eacute;tat (comme les tokens JWT).</p><section class="chapter"><h2 id="concepts-fondamentaux-de-la-session-http" data-toc="concepts-fondamentaux-de-la-session-http">Concepts Fondamentaux de la Session HTTP</h2><section class="chapter"><h3 id="qu-est-ce-qu-une-session" data-toc="qu-est-ce-qu-une-session">Qu'est-ce qu'une Session ?</h3><p id="-fffc0r_16">Une session repr&eacute;sente une conversation entre un client (navigateur) et le serveur. Elle commence lorsqu'un utilisateur acc&egrave;de &agrave; l'application pour la premi&egrave;re fois et se termine apr&egrave;s une p&eacute;riode d'inactivit&eacute; ou lorsque l'utilisateur se d&eacute;connecte explicitement.</p></section><section class="chapter"><h3 id="fonctionnement-technique-simplifi" data-toc="fonctionnement-technique-simplifi">Fonctionnement Technique (Simplifi&eacute;)</h3><ol class="list _decimal" id="-fffc0r_17" type="1"><li class="list__item" id="-fffc0r_18"><p id="-fffc0r_24"><span class="control" id="-fffc0r_25">Premi&egrave;re Requ&ecirc;te :</span> L'utilisateur acc&egrave;de &agrave; l'application. Le serveur ne trouve pas d'identifiant de session existant.</p></li><li class="list__item" id="-fffc0r_19"><p id="-fffc0r_26"><span class="control" id="-fffc0r_27">Cr&eacute;ation de Session :</span> Le serveur cr&eacute;e un nouvel objet <code class="code" id="-fffc0r_28">HttpSession</code> en m&eacute;moire.</p></li><li class="list__item" id="-fffc0r_20"><p id="-fffc0r_29"><span class="control" id="-fffc0r_30">G&eacute;n&eacute;ration de l'ID de Session :</span> Un identifiant unique (Session ID) est g&eacute;n&eacute;r&eacute; pour cette session.</p></li><li class="list__item" id="-fffc0r_21"><p id="-fffc0r_31"><span class="control" id="-fffc0r_32">Envoi du Cookie :</span> Le serveur envoie cet ID de session au client via un cookie (g&eacute;n&eacute;ralement nomm&eacute; <code class="code" id="-fffc0r_33">JSESSIONID</code> par d&eacute;faut dans les serveurs d'applications Java).</p></li><li class="list__item" id="-fffc0r_22"><p id="-fffc0r_34"><span class="control" id="-fffc0r_35">Requ&ecirc;tes Suivantes :</span> Le navigateur du client inclut automatiquement ce cookie <code class="code" id="-fffc0r_36">JSESSIONID</code> dans chaque requ&ecirc;te ult&eacute;rieure vers le m&ecirc;me domaine.</p></li><li class="list__item" id="-fffc0r_23"><p id="-fffc0r_37"><span class="control" id="-fffc0r_38">R&eacute;cup&eacute;ration de la Session :</span> Le serveur utilise l'ID re&ccedil;u via le cookie pour retrouver l'objet <code class="code" id="-fffc0r_39">HttpSession</code> correspondant en m&eacute;moire et ainsi acc&eacute;der aux donn&eacute;es stock&eacute;es pour cet utilisateur.</p></li></ol></section><section class="chapter"><h3 id="l-objet-httpsession" data-toc="l-objet-httpsession">L'objet <code class="code" id="-fffc0r_44">HttpSession</code></h3><p id="-fffc0r_41">L'interface <code class="code" id="-fffc0r_45">jakarta.servlet.http.HttpSession</code> (ou <code class="code" id="-fffc0r_46">javax.servlet.http.HttpSession</code> pour les anciennes versions de Servlet API) est au c&oelig;ur de la gestion de session en Java EE / Jakarta EE. Elle permet principalement de :</p><ul class="list _bullet" id="-fffc0r_42"><li class="list__item" id="-fffc0r_47"><p id="-fffc0r_53">Stocker des donn&eacute;es sous forme de paires cl&eacute;/valeur (<code class="code" id="-fffc0r_54">setAttribute(String name, Object value)</code>).</p></li><li class="list__item" id="-fffc0r_48"><p id="-fffc0r_55">R&eacute;cup&eacute;rer des donn&eacute;es (<code class="code" id="-fffc0r_56">getAttribute(String name)</code>).</p></li><li class="list__item" id="-fffc0r_49"><p id="-fffc0r_57">Supprimer des donn&eacute;es (<code class="code" id="-fffc0r_58">removeAttribute(String name)</code>).</p></li><li class="list__item" id="-fffc0r_50"><p id="-fffc0r_59">Obtenir l'identifiant unique de la session (<code class="code" id="-fffc0r_60">getId()</code>).</p></li><li class="list__item" id="-fffc0r_51"><p id="-fffc0r_61">Invalider (terminer) la session (<code class="code" id="-fffc0r_62">invalidate()</code>).</p></li><li class="list__item" id="-fffc0r_52"><p id="-fffc0r_63">G&eacute;rer le d&eacute;lai d'inactivit&eacute; (<code class="code" id="-fffc0r_64">setMaxInactiveInterval(int interval)</code>).</p></li></ul><p id="-fffc0r_43">Spring Boot g&egrave;re la cr&eacute;ation et la mise &agrave; disposition de cet objet <code class="code" id="-fffc0r_65">HttpSession</code> de mani&egrave;re transparente.</p></section></section><section class="chapter"><h2 id="utilisation-basique-des-sessions-dans-un-contr-leur-spring-boot" data-toc="utilisation-basique-des-sessions-dans-un-contr-leur-spring-boot">Utilisation Basique des Sessions dans un Contr&ocirc;leur Spring Boot</h2><p id="-fffc0r_66">Il existe plusieurs fa&ccedil;ons d'acc&eacute;der et de manipuler la session HTTP dans un contr&ocirc;leur Spring Boot.</p><section class="chapter"><h3 id="acc-s-via-httpservletrequest" data-toc="acc-s-via-httpservletrequest">Acc&egrave;s via <code class="code" id="-fffc0r_73">HttpServletRequest</code></h3><p id="-fffc0r_70">On peut obtenir la session &agrave; partir de l'objet <code class="code" id="-fffc0r_74">HttpServletRequest</code> inject&eacute; dans la m&eacute;thode du contr&ocirc;leur.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class BasicSessionController {
+
+    @GetMapping(&quot;/compteur-visites&quot;)
+    public String countVisits(HttpServletRequest request, Model model) {
+        // Obtient la session, la crée si elle n'existe pas (true)
+        HttpSession session = request.getSession(true);
+
+        // Récupère le compteur actuel de la session
+        Integer visitCount = (Integer) session.getAttribute(&quot;visitCounter&quot;);
+
+        if (visitCount == null) {
+            // Si le compteur n'existe pas, l'initialiser à 1
+            visitCount = 1;
+        } else {
+            // Sinon, l'incrémenter
+            visitCount++;
+        }
+
+        // Met à jour le compteur dans la session
+        session.setAttribute(&quot;visitCounter&quot;, visitCount);
+
+        // Ajoute le compteur au modèle pour l'afficher dans la vue
+        model.addAttribute(&quot;count&quot;, visitCount);
+
+        // Retourne le nom de la vue (ex: compteur-visites.html)
+        return &quot;compteur-visites&quot;;
+    }
+
+    @GetMapping(&quot;/reset-compteur&quot;)
+    public String resetCounter(HttpServletRequest request) {
+        HttpSession session = request.getSession(false); // Ne crée pas si n'existe pas
+        if (session != null) {
+            // Supprime l'attribut spécifique
+            session.removeAttribute(&quot;visitCounter&quot;);
+        }
+        // Redirige vers la page du compteur
+        return &quot;redirect:/compteur-visites&quot;;
+    }
+}
+</div><ul class="list _bullet" id="-fffc0r_72"><li class="list__item" id="-fffc0r_75"><p id="-fffc0r_80"><code class="code" id="-fffc0r_81">request.getSession(true)</code>: Obtient la session courante. Si aucune session n'existe pour cette requ&ecirc;te, une nouvelle session est cr&eacute;&eacute;e.</p></li><li class="list__item" id="-fffc0r_76"><p id="-fffc0r_82"><code class="code" id="-fffc0r_83">request.getSession(false)</code>: Obtient la session courante. Si aucune session n'existe, retourne <code class="code" id="-fffc0r_84">null</code> (utile pour v&eacute;rifier si une session est active sans en cr&eacute;er une).</p></li><li class="list__item" id="-fffc0r_77"><p id="-fffc0r_85"><code class="code" id="-fffc0r_86">session.setAttribute(name, value)</code>: Stocke un objet dans la session.</p></li><li class="list__item" id="-fffc0r_78"><p id="-fffc0r_87"><code class="code" id="-fffc0r_88">session.getAttribute(name)</code>: R&eacute;cup&egrave;re un objet de la session (n&eacute;cessite un cast).</p></li><li class="list__item" id="-fffc0r_79"><p id="-fffc0r_89"><code class="code" id="-fffc0r_90">session.removeAttribute(name)</code>: Supprime un attribut de la session.</p></li></ul></section><section class="chapter"><h3 id="injection-directe-de-httpsession" data-toc="injection-directe-de-httpsession">Injection directe de <code class="code" id="-fffc0r_95">HttpSession</code></h3><p id="-fffc0r_92">Spring MVC permet d'injecter directement l'objet <code class="code" id="-fffc0r_96">HttpSession</code> comme param&egrave;tre d'une m&eacute;thode de contr&ocirc;leur. C'est souvent consid&eacute;r&eacute; comme plus propre.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class InjectedSessionController {
+
+    @GetMapping(&quot;/info-session&quot;)
+    public String showSessionInfo(HttpSession session, Model model) {
+        // Récupère l'ID de la session
+        String sessionId = session.getId();
+
+        // Récupère un attribut (exemple: nom d'utilisateur stocké ailleurs)
+        String username = (String) session.getAttribute(&quot;loggedInUser&quot;);
+
+        if (username == null) {
+            username = &quot;Visiteur anonyme&quot;;
+        }
+
+        model.addAttribute(&quot;sessionId&quot;, sessionId);
+        model.addAttribute(&quot;user&quot;, username);
+
+        return &quot;info-session&quot;; // Nom de la vue (info-session.html)
+    }
+
+    @GetMapping(&quot;/terminer-session&quot;)
+    public String endSession(HttpSession session) {
+        // Invalide la session complète
+        session.invalidate();
+        // Redirige vers une page d'accueil ou de confirmation
+        return &quot;redirect:/&quot;;
+    }
+}
+</div><ul class="list _bullet" id="-fffc0r_94"><li class="list__item" id="-fffc0r_97"><p id="-fffc0r_99">L'injection de <code class="code" id="-fffc0r_100">HttpSession</code> est g&eacute;r&eacute;e par Spring. Si aucune session n'existe, Spring en cr&eacute;era une automatiquement ( &eacute;quivalent &agrave; <code class="code" id="-fffc0r_101">request.getSession(true)</code>).</p></li><li class="list__item" id="-fffc0r_98"><p id="-fffc0r_102"><code class="code" id="-fffc0r_103">session.invalidate()</code>: Termine la session. Tous les attributs sont supprim&eacute;s, et l'ID de session n'est plus valide. Une nouvelle session sera cr&eacute;&eacute;e lors de la prochaine requ&ecirc;te n&eacute;cessitant une session.</p></li></ul></section></section><section class="chapter"><h2 id="beans-de-port-e-session-sessionscope" data-toc="beans-de-port-e-session-sessionscope">Beans de Port&eacute;e Session (<code class="code" id="-fffc0r_108">@SessionScope</code>)</h2><p id="-fffc0r_105">Une approche plus orient&eacute;e objet et souvent pr&eacute;f&eacute;rable pour g&eacute;rer l'&eacute;tat li&eacute; &agrave; la session consiste &agrave; utiliser des beans Spring avec la port&eacute;e <code class="code" id="-fffc0r_109">session</code>. Un bean <code class="code" id="-fffc0r_110">@SessionScope</code> est une instance unique par session HTTP. Spring g&egrave;re le cycle de vie de ce bean et le lie automatiquement &agrave; la session de l'utilisateur courant.</p><section class="chapter"><h3 id="d-claration-d-un-bean-sessionscope" data-toc="d-claration-d-un-bean-sessionscope">D&eacute;claration d'un Bean <code class="code" id="-fffc0r_114">@SessionScope</code></h3><div class="code-block" data-lang="java">
+package fr.formation.spring.model;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
+
+import java.io.Serializable; // Important pour la sérialisation potentielle
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@Component
+@SessionScope // Définit la portée de ce bean à la session HTTP
+public class ShoppingCart implements Serializable {
+
+    private static final long serialVersionUID = 1L; // Bonne pratique pour Serializable
+
+    // Liste des articles dans le panier
+    private final List&lt;String&gt; items = new ArrayList&lt;&gt;();
+
+    public void addItem(String item) {
+        this.items.add(item);
+    }
+
+    public List&lt;String&gt; getItems() {
+        // Retourne une copie non modifiable pour l'extérieur
+        return Collections.unmodifiableList(this.items);
+    }
+
+    public void clearCart() {
+        this.items.clear();
+    }
+
+    public int getItemCount() {
+        return this.items.size();
+    }
+}
+</div><ul class="list _bullet" id="-fffc0r_113"><li class="list__item" id="-fffc0r_115"><p id="-fffc0r_118"><code class="code" id="-fffc0r_119">@Component</code> (ou <code class="code" id="-fffc0r_120">@Service</code>, <code class="code" id="-fffc0r_121">@Repository</code>) : Marque la classe comme un bean Spring.</p></li><li class="list__item" id="-fffc0r_116"><p id="-fffc0r_122"><code class="code" id="-fffc0r_123">@SessionScope</code>: Indique que Spring doit cr&eacute;er une instance de ce bean par session HTTP active. L'instance sera stock&eacute;e comme un attribut de session.</p></li><li class="list__item" id="-fffc0r_117"><p id="-fffc0r_124"><code class="code" id="-fffc0r_125">implements Serializable</code>: Bien que non strictement requis pour le stockage en m&eacute;moire par d&eacute;faut de Tomcat, c'est une <span class="control" id="-fffc0r_126">bonne pratique</span> et devient <span class="control" id="-fffc0r_127">n&eacute;cessaire</span> si vous configurez la persistance de session (par exemple, en base de donn&eacute;es ou Redis) ou dans un environnement clusteris&eacute; o&ugrave; les sessions peuvent &ecirc;tre s&eacute;rialis&eacute;es et transf&eacute;r&eacute;es.</p></li></ul></section><section class="chapter"><h3 id="injection-et-utilisation-dans-un-contr-leur" data-toc="injection-et-utilisation-dans-un-contr-leur">Injection et Utilisation dans un Contr&ocirc;leur</h3><p id="-fffc0r_128">Ce bean peut ensuite &ecirc;tre inject&eacute; directement dans les contr&ocirc;leurs (ou d'autres beans). Spring fournira l'instance correcte associ&eacute;e &agrave; la session de l'utilisateur effectuant la requ&ecirc;te.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import fr.formation.spring.model.ShoppingCart;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class CartController {
+
+    // Injection du bean de portée session
+    private final ShoppingCart shoppingCart;
+
+    @Autowired // L'injection par constructeur est recommandée
+    public CartController(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    @GetMapping(&quot;/panier&quot;)
+    public String viewCart(Model model) {
+        // Utilise directement le bean injecté
+        model.addAttribute(&quot;items&quot;, shoppingCart.getItems());
+        model.addAttribute(&quot;itemCount&quot;, shoppingCart.getItemCount());
+        return &quot;panier&quot;; // Vue panier.html
+    }
+
+    @PostMapping(&quot;/panier/ajouter&quot;)
+    public String addToCart(@RequestParam String item) {
+        // Ajoute un article via le bean de session
+        if (item != null &amp;&amp; !item.trim().isEmpty()) {
+            shoppingCart.addItem(item.trim());
+        }
+        // Redirige vers la vue du panier après l'ajout
+        return &quot;redirect:/panier&quot;;
+    }
+
+    @PostMapping(&quot;/panier/vider&quot;)
+    public String clearCart() {
+        // Vide le panier via le bean de session
+        shoppingCart.clearCart();
+        return &quot;redirect:/panier&quot;;
+    }
+}
+</div><p id="-fffc0r_130"><span class="control" id="-fffc0r_131">Comment &ccedil;a marche en interne ?</span> Spring n'injecte pas directement l'instance du bean <code class="code" id="-fffc0r_132">ShoppingCart</code> dans le contr&ocirc;leur (qui est g&eacute;n&eacute;ralement un singleton). Il injecte un <span class="control" id="-fffc0r_133">proxy</span> qui cible l'instance <code class="code" id="-fffc0r_134">ShoppingCart</code> r&eacute;elle associ&eacute;e &agrave; la session de la requ&ecirc;te courante. Cela permet d'avoir un contr&ocirc;leur singleton qui peut interagir avec des beans de port&eacute;e session sp&eacute;cifiques &agrave; chaque utilisateur.</p></section></section><section class="chapter"><h2 id="cas-d-utilisation-courants" data-toc="cas-d-utilisation-courants">Cas d'Utilisation Courants</h2><ol class="list _decimal" id="-fffc0r_135" type="1"><li class="list__item" id="-fffc0r_136"><p id="-fffc0r_141"><span class="control" id="-fffc0r_142">Gestion de l'authentification utilisateur :</span> Stocker des informations sur l'utilisateur connect&eacute; (ID, nom d'utilisateur, r&ocirc;les) apr&egrave;s une connexion r&eacute;ussie. <span class="emphasis" id="-fffc0r_143">Attention : Ne jamais stocker le mot de passe, m&ecirc;me hash&eacute;, en session.</span></p></li><li class="list__item" id="-fffc0r_137"><p id="-fffc0r_144"><span class="control" id="-fffc0r_145">Panier d'achat :</span> Maintenir la liste des articles s&eacute;lectionn&eacute;s par un utilisateur avant la validation de la commande. Le bean <code class="code" id="-fffc0r_146">@SessionScope</code> est id&eacute;al ici.</p></li><li class="list__item" id="-fffc0r_138"><p id="-fffc0r_147"><span class="control" id="-fffc0r_148">Pr&eacute;f&eacute;rences utilisateur :</span> Conserver des choix temporaires comme la langue, le th&egrave;me d'affichage, ou des filtres de recherche pendant la navigation.</p></li><li class="list__item" id="-fffc0r_139"><p id="-fffc0r_149"><span class="control" id="-fffc0r_150">Donn&eacute;es de formulaire multi-&eacute;tapes :</span> Stocker les informations saisies dans les &eacute;tapes pr&eacute;c&eacute;dentes d'un formulaire complexe (&quot;wizard&quot;).</p></li><li class="list__item" id="-fffc0r_140"><p id="-fffc0r_151"><span class="control" id="-fffc0r_152">Messages Flash :</span> Afficher des messages (succ&egrave;s, erreur) apr&egrave;s une redirection (voir section suivante).</p></li></ol></section><section class="chapter"><h2 id="s-curit-des-sessions-points-cruciaux" data-toc="s-curit-des-sessions-points-cruciaux">S&eacute;curit&eacute; des Sessions : Points Cruciaux</h2><p id="-fffc0r_153">La gestion des sessions est une cible fr&eacute;quente d'attaques. Il est <span class="control" id="-fffc0r_159">imp&eacute;ratif</span> de s&eacute;curiser leur utilisation.</p><section class="chapter"><h3 id="fixation-de-session-session-fixation" data-toc="fixation-de-session-session-fixation">Fixation de Session (Session Fixation)</h3><ul class="list _bullet" id="-fffc0r_160"><li class="list__item" id="-fffc0r_161"><p id="-fffc0r_163"><span class="control" id="-fffc0r_164">Attaque :</span> L'attaquant force le navigateur de la victime &agrave; utiliser un ID de session qu'il conna&icirc;t <span class="emphasis" id="-fffc0r_165">avant</span> que la victime ne s'authentifie. Une fois la victime authentifi&eacute;e, l'attaquant peut utiliser cet ID de session connu pour usurper la session authentifi&eacute;e.</p></li><li class="list__item" id="-fffc0r_162"><p id="-fffc0r_166"><span class="control" id="-fffc0r_168">Contre-mesure :</span> <span class="control" id="-fffc0r_169">Toujours</span> r&eacute;g&eacute;n&eacute;rer l'ID de session <span class="control" id="-fffc0r_170">imm&eacute;diatement apr&egrave;s une authentification r&eacute;ussie</span> (et id&eacute;alement lors de tout changement de niveau de privil&egrave;ge). Spring Security le fait automatiquement. Si vous g&eacute;rez l'authentification manuellement :</p><div class="code-block" data-lang="java">
+import jakarta.servlet.http.HttpServletRequest;
+// ... dans la méthode de login après vérification des identifiants ...
+public String loginSuccess(HttpServletRequest request) {
+    // ... vérifier mot de passe ...
+
+    // Régénère l'ID de session, invalide l'ancien
+    request.changeSessionId(); // Très important !
+
+    // Stocker les infos utilisateur dans la *nouvelle* session
+    HttpSession newSession = request.getSession();
+    newSession.setAttribute(&quot;loggedInUser&quot;, &quot;username&quot;); 
+
+    return &quot;redirect:/accueil-connecte&quot;;
+}
+</div></li></ul></section><section class="chapter"><h3 id="vol-de-session-session-hijacking" data-toc="vol-de-session-session-hijacking">Vol de Session (Session Hijacking)</h3><ul class="list _bullet" id="-fffc0r_171"><li class="list__item" id="-fffc0r_172"><p id="-fffc0r_174"><span class="control" id="-fffc0r_175">Attaque :</span> L'attaquant obtient l'ID de session valide d'une victime (par sniffing r&eacute;seau, XSS, etc.) et l'utilise pour acc&eacute;der &agrave; l'application en se faisant passer pour la victime.</p></li><li class="list__item" id="-fffc0r_173"><p id="-fffc0r_176"><span class="control" id="-fffc0r_178">Contre-mesures :</span></p><ul class="list _bullet" id="-fffc0r_177"><li class="list__item" id="-fffc0r_179"><p id="-fffc0r_182"><span class="control" id="-fffc0r_183">Utiliser HTTPS :</span> Chiffre la communication entre le client et le serveur, y compris le cookie de session, emp&ecirc;chant le sniffing sur des r&eacute;seaux non s&eacute;curis&eacute;s. C'est la mesure la plus importante.</p></li><li class="list__item" id="-fffc0r_180"><p id="-fffc0r_184"><span class="control" id="-fffc0r_186">Cookie <code class="code" id="-fffc0r_188">HttpOnly</code>:</span> Emp&ecirc;che l'acc&egrave;s au cookie de session via JavaScript c&ocirc;t&eacute; client. Cela mitige grandement le risque de vol via des attaques XSS (Cross-Site Scripting). Spring Boot active <code class="code" id="-fffc0r_187">HttpOnly</code> par d&eacute;faut pour le cookie de session. V&eacute;rifiez et forcez-le si n&eacute;cessaire :</p><div class="code-block" data-lang="properties">
+# Dans application.properties
+server.servlet.session.cookie.http-only=true 
+</div></li><li class="list__item" id="-fffc0r_181"><p id="-fffc0r_189"><span class="control" id="-fffc0r_192">Cookie <code class="code" id="-fffc0r_193">Secure</code>:</span> Indique au navigateur de n'envoyer le cookie que sur des connexions HTTPS. Spring Boot l'active automatiquement si HTTPS est d&eacute;tect&eacute; ou peut &ecirc;tre forc&eacute; :</p><div class="code-block" data-lang="properties">
+# Dans application.properties
+server.servlet.session.cookie.secure=true 
+</div><p id="-fffc0r_191">N&eacute;cessite que votre application soit servie via HTTPS.</p></li></ul></li></ul></section><section class="chapter"><h3 id="expiration-de-session-session-timeout" data-toc="expiration-de-session-session-timeout">Expiration de Session (Session Timeout)</h3><ul class="list _bullet" id="-fffc0r_194"><li class="list__item" id="-fffc0r_195"><p id="-fffc0r_198"><span class="control" id="-fffc0r_199">Risque :</span> Une session qui reste active trop longtemps apr&egrave;s une p&eacute;riode d'inactivit&eacute; augmente la fen&ecirc;tre d'opportunit&eacute; pour un attaquant si l'ID de session est compromis ou si l'ordinateur de la victime est laiss&eacute; sans surveillance.</p></li><li class="list__item" id="-fffc0r_196"><p id="-fffc0r_200"><span class="control" id="-fffc0r_202">Contre-mesure :</span> Configurer un d&eacute;lai d'expiration raisonnable (par exemple, 15-30 minutes d'inactivit&eacute;).</p><div class="code-block" data-lang="properties">
+# Dans application.properties
+# Délai en secondes (ici, 30 minutes)
+server.servlet.session.timeout=1800 
+# Ou en utilisant la notation Duration (plus lisible)
+# server.servlet.session.timeout=30m 
+</div></li><li class="list__item" id="-fffc0r_197"><p id="-fffc0r_203"><span class="control" id="-fffc0r_204">D&eacute;connexion explicite :</span> Toujours fournir un bouton/lien de d&eacute;connexion qui appelle <code class="code" id="-fffc0r_205">session.invalidate()</code>.</p></li></ul></section><section class="chapter"><h3 id="stockage-de-donn-es-sensibles" data-toc="stockage-de-donn-es-sensibles">Stockage de Donn&eacute;es Sensibles</h3><ul class="list _bullet" id="-fffc0r_206"><li class="list__item" id="-fffc0r_207"><p id="-fffc0r_209"><span class="control" id="-fffc0r_210">Risque :</span> Stocker des informations hautement sensibles (mots de passe, num&eacute;ros de carte de cr&eacute;dit complets, cl&eacute;s API priv&eacute;es) directement en session est <span class="control" id="-fffc0r_211">fortement d&eacute;conseill&eacute;</span>. M&ecirc;me si la session elle-m&ecirc;me est s&eacute;curis&eacute;e, cela augmente la surface d'attaque potentielle (acc&egrave;s m&eacute;moire du serveur, logs accidentels, erreurs de d&eacute;veloppement).</p></li><li class="list__item" id="-fffc0r_208"><p id="-fffc0r_212"><span class="control" id="-fffc0r_213">Bonne Pratique :</span> Ne stockez en session que des identifiants (ID utilisateur, ID panier), des &eacute;tats non critiques ( pr&eacute;f&eacute;rences), ou des donn&eacute;es temporaires non sensibles. R&eacute;cup&eacute;rez les donn&eacute;es sensibles depuis la base de donn&eacute;es lorsque c'est n&eacute;cessaire, en utilisant l'ID utilisateur stock&eacute; en session.</p></li></ul></section><section class="chapter"><h3 id="csrf-cross-site-request-forgery" data-toc="csrf-cross-site-request-forgery">CSRF (Cross-Site Request Forgery)</h3><p id="-fffc0r_214">Bien que non directement li&eacute; au <span class="emphasis" id="-fffc0r_216">vol</span> de session, CSRF exploite une session existante. L'attaquant incite la victime authentifi&eacute;e &agrave; ex&eacute;cuter involontairement une action sur l'application (ex: via un lien ou formulaire sur un autre site).</p><ul class="list _bullet" id="-fffc0r_215"><li class="list__item" id="-fffc0r_217"><p id="-fffc0r_218"><span class="control" id="-fffc0r_219">Contre-mesure :</span> Utiliser des tokens anti-CSRF. Spring Security fournit une protection robuste contre CSRF, qui est activ&eacute;e par d&eacute;faut. Si vous n'utilisez pas Spring Security, vous devrez impl&eacute;menter cette protection manuellement.</p></li></ul></section></section><section class="chapter"><h2 id="configuration-avanc-e-via-application-properties" data-toc="configuration-avanc-e-via-application-properties">Configuration Avanc&eacute;e (via <code class="code" id="-fffc0r_223">application.properties</code>)</h2><p id="-fffc0r_221">Spring Boot permet de configurer divers aspects de la gestion de session :</p><div class="code-block" data-lang="properties">
+# Configuration de la Session Servlet
+# Durée d'inactivité maximale avant expiration (format Duration)
+server.servlet.session.timeout=30m 
+# Nom du cookie de session (défaut: JSESSIONID)
+# Changer peut légèrement obscurcir, mais pas une mesure de sécurité forte
+# server.servlet.session.cookie.name=MYSESSIONID 
+# Le cookie est-il accessible uniquement via HTTP (non JS) ? (Défaut: true)
+server.servlet.session.cookie.http-only=true
+# Le cookie doit-il être envoyé uniquement via HTTPS ? (Défaut: false, mais activé si SSL/TLS est configuré)
+# À mettre à true si l'application est toujours servie en HTTPS
+server.servlet.session.cookie.secure=true 
+# Chemin pour lequel le cookie est valide (Défaut: /)
+# server.servlet.session.cookie.path=/ 
+# Domaine pour lequel le cookie est valide (utile pour les sous-domaines)
+# server.servlet.session.cookie.domain=example.com 
+# Âge maximum du cookie (en secondes). -1 signifie cookie de session (expire à la fermeture du navigateur)
+# Une valeur positive crée un cookie persistant.
+# server.servlet.session.cookie.max-age=-1 
+# Stratégie de suivi de session (cookie, url, ssl) - 'cookie' est le standard
+# server.servlet.session.tracking-modes=cookie 
+</div></section><section class="chapter"><h2 id="bonnes-pratiques-et-conseils" data-toc="bonnes-pratiques-et-conseils">Bonnes Pratiques et Conseils</h2><ol class="list _decimal" id="-fffc0r_224" type="1"><li class="list__item" id="-fffc0r_229"><p id="-fffc0r_237"><span class="control" id="-fffc0r_238">Utiliser avec Parcimonie :</span> Les sessions consomment de la m&eacute;moire serveur. Ne stockez que ce qui est strictement n&eacute;cessaire.</p></li><li class="list__item" id="-fffc0r_230"><p id="-fffc0r_239"><span class="control" id="-fffc0r_240">Pr&eacute;f&eacute;rer les Beans <code class="code" id="-fffc0r_242">@SessionScope</code>:</span> Pour l'&eacute;tat complexe li&eacute; &agrave; la session (panier, profil utilisateur), ils offrent une meilleure encapsulation et testabilit&eacute; que la manipulation directe d'attributs <code class="code" id="-fffc0r_241">HttpSession</code>.</p></li><li class="list__item" id="-fffc0r_231"><p id="-fffc0r_243"><span class="control" id="-fffc0r_244">Attention &agrave; la Taille des Objets :</span> &Eacute;vitez de stocker des objets volumineux en session. Cela impacte la m&eacute;moire et peut poser probl&egrave;me avec la r&eacute;plication ou la persistance de session. Stockez des identifiants et rechargez les donn&eacute;es si besoin.</p></li><li class="list__item" id="-fffc0r_232"><p id="-fffc0r_245"><span class="control" id="-fffc0r_246">Impl&eacute;menter <code class="code" id="-fffc0r_248">Serializable</code>:</span> M&ecirc;me si ce n'est pas toujours requis, c'est une bonne pratique pour les objets stock&eacute;s en session, surtout pour les beans <code class="code" id="-fffc0r_247">@SessionScope</code>.</p></li><li class="list__item" id="-fffc0r_233"><p id="-fffc0r_249"><span class="control" id="-fffc0r_250">S&eacute;curiser :</span> Appliquez <span class="control" id="-fffc0r_251">toutes</span> les mesures de s&eacute;curit&eacute; mentionn&eacute;es (HTTPS, HttpOnly, Secure, r&eacute;g&eacute;n&eacute;ration d'ID, timeouts courts, pas de donn&eacute;es sensibles). Utilisez Spring Security pour une gestion robuste de l'authentification et de la s&eacute;curit&eacute; des sessions.</p></li><li class="list__item" id="-fffc0r_234"><p id="-fffc0r_252"><span class="control" id="-fffc0r_253">Nettoyer :</span> Utilisez <code class="code" id="-fffc0r_254">session.removeAttribute()</code> lorsque les donn&eacute;es ne sont plus n&eacute;cessaires, et <code class="code" id="-fffc0r_255">session.invalidate()</code> lors de la d&eacute;connexion pour lib&eacute;rer les ressources.</p></li><li class="list__item" id="-fffc0r_235"><p id="-fffc0r_256"><span class="control" id="-fffc0r_257">Utiliser les Attributs Flash :</span> Pour les messages post-redirection, pr&eacute;f&eacute;rez <code class="code" id="-fffc0r_258">RedirectAttributes.addFlashAttribute()</code> &agrave; la manipulation manuelle de la session.</p></li><li class="list__item" id="-fffc0r_236"><p id="-fffc0r_259"><span class="control" id="-fffc0r_260">Tester :</span> Testez le comportement de votre application avec des sessions expir&eacute;es, des d&eacute;connexions, et essayez de simuler des sc&eacute;narios de s&eacute;curit&eacute;.</p></li></ol><p id="-fffc0r_225">##. Exercices Pratiques</p><section class="chapter"><h3 id="exercice-1-compteur-de-rafra-chissements" data-toc="exercice-1-compteur-de-rafra-chissements">Exercice 1 : Compteur de Rafra&icirc;chissements</h3><p id="-fffc0r_261"><span class="control" id="-fffc0r_265">Objectif :</span> Utiliser <code class="code" id="-fffc0r_266">HttpSession</code> directement pour compter combien de fois un utilisateur a rafra&icirc;chi une page sp&eacute;cifique.</p><p id="-fffc0r_262"><span class="control" id="-fffc0r_267">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-fffc0r_263" type="1"><li class="list__item" id="-fffc0r_268"><p id="-fffc0r_276">Cr&eacute;ez un contr&ocirc;leur <code class="code" id="-fffc0r_277">RefreshCounterController</code>.</p></li><li class="list__item" id="-fffc0r_269"><p id="-fffc0r_278">Cr&eacute;ez une m&eacute;thode GET mapp&eacute;e sur <code class="code" id="-fffc0r_279">/compteur-refresh</code>.</p></li><li class="list__item" id="-fffc0r_270"><p id="-fffc0r_280">Dans cette m&eacute;thode, acc&eacute;dez &agrave; <code class="code" id="-fffc0r_281">HttpSession</code> (en l'injectant ou via <code class="code" id="-fffc0r_282">HttpServletRequest</code>).</p></li><li class="list__item" id="-fffc0r_271"><p id="-fffc0r_283">R&eacute;cup&eacute;rez un attribut nomm&eacute; <code class="code" id="-fffc0r_284">&quot;refreshCount&quot;</code>.</p></li><li class="list__item" id="-fffc0r_272"><p id="-fffc0r_285">S'il n'existe pas, initialisez-le &agrave; 1. Sinon, incr&eacute;mentez sa valeur.</p></li><li class="list__item" id="-fffc0r_273"><p id="-fffc0r_286">Stockez la nouvelle valeur dans la session.</p></li><li class="list__item" id="-fffc0r_274"><p id="-fffc0r_287">Ajoutez la valeur du compteur au <code class="code" id="-fffc0r_288">Model</code> pour l'affichage.</p></li><li class="list__item" id="-fffc0r_275"><p id="-fffc0r_289">Cr&eacute;ez une vue Thymeleaf (<code class="code" id="-fffc0r_290">compteur-refresh.html</code>) qui affiche : &quot;Cette page a &eacute;t&eacute; rafra&icirc;chie X fois durant cette session.&quot;</p></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-1" data-toc="correction-exercice-1"><span class="control" id="-fffc0r_297">Correction Exercice 1</span></h4></div><div class="collapse__content"><p id="-fffc0r_292"><span class="emphasis" id="-fffc0r_298">Controller (<code class="code" id="-fffc0r_299">RefreshCounterController.java</code>):</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class RefreshCounterController {
+
+    @GetMapping(&quot;/compteur-refresh&quot;)
+    public String countRefreshes(HttpSession session, Model model) {
+        // Nom de l'attribut de session
+        final String REFRESH_COUNT_ATTR = &quot;refreshCount&quot;;
+
+        // Récupère la valeur actuelle, peut être null
+        Integer count = (Integer) session.getAttribute(REFRESH_COUNT_ATTR);
+
+        if (count == null) {
+            // Première visite/refresh sur cette page dans la session
+            count = 1;
+        } else {
+            // Incrémente le compteur
+            count++;
+        }
+
+        // Met à jour l'attribut dans la session
+        session.setAttribute(REFRESH_COUNT_ATTR, count);
+
+        // Ajoute au modèle pour la vue
+        model.addAttribute(&quot;refreshNumber&quot;, count);
+
+        return &quot;compteur-refresh&quot;; // Nom de la vue Thymeleaf
+    }
+}
+</div><p id="-fffc0r_294"><span class="emphasis" id="-fffc0r_300">View (<code class="code" id="-fffc0r_301">templates/compteur-refresh.html</code>):</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Compteur de Rafraîchissements&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Compteur de Rafraîchissements&lt;/h1&gt;
+&lt;p&gt;
+    Cette page a été rafraîchie
+    &lt;strong th:text=&quot;${refreshNumber}&quot;&gt;0&lt;/strong&gt;
+    fois durant cette session.
+&lt;/p&gt;
+&lt;p&gt;
+    &lt;a th:href=&quot;@{/compteur-refresh}&quot;&gt;Rafraîchir la page&lt;/a&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></div></div></section></section><section class="chapter"><h3 id="exercice-2-pr-f-rences-utilisateur-avec-bean-sessionscope" data-toc="exercice-2-pr-f-rences-utilisateur-avec-bean-sessionscope">Exercice 2 : Pr&eacute;f&eacute;rences Utilisateur avec Bean <code class="code" id="-fffc0r_307">@SessionScope</code></h3><p id="-fffc0r_303"><span class="control" id="-fffc0r_308">Objectif :</span> Utiliser un bean <code class="code" id="-fffc0r_309">@SessionScope</code> pour stocker et modifier une pr&eacute;f&eacute;rence utilisateur (par exemple, une couleur de fond).</p><p id="-fffc0r_304"><span class="control" id="-fffc0r_310">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-fffc0r_305" type="1"><li class="list__item" id="-fffc0r_311"><p id="-fffc0r_318">Cr&eacute;ez une classe <code class="code" id="-fffc0r_319">UserPreferences</code> annot&eacute;e avec <code class="code" id="-fffc0r_320">@Component</code> et <code class="code" id="-fffc0r_321">@SessionScope</code>. Elle doit impl&eacute;menter <code class="code" id="-fffc0r_322">Serializable</code>.</p></li><li class="list__item" id="-fffc0r_312"><p id="-fffc0r_323">Ajoutez un champ priv&eacute; <code class="code" id="-fffc0r_324">String backgroundColor</code> (avec &quot;white&quot; comme valeur par d&eacute;faut) et les getters/setters correspondants.</p></li><li class="list__item" id="-fffc0r_313"><p id="-fffc0r_325">Cr&eacute;ez un contr&ocirc;leur <code class="code" id="-fffc0r_326">PreferencesController</code>.</p></li><li class="list__item" id="-fffc0r_314"><p id="-fffc0r_327">Injectez le bean <code class="code" id="-fffc0r_328">UserPreferences</code> dans ce contr&ocirc;leur.</p></li><li class="list__item" id="-fffc0r_315"><p id="-fffc0r_329">Cr&eacute;ez une m&eacute;thode GET mapp&eacute;e sur <code class="code" id="-fffc0r_330">/preferences</code> qui affiche la pr&eacute;f&eacute;rence actuelle et un formulaire pour la changer. La couleur de fond actuelle doit &ecirc;tre ajout&eacute;e au <code class="code" id="-fffc0r_331">Model</code>.</p></li><li class="list__item" id="-fffc0r_316"><p id="-fffc0r_332">Cr&eacute;ez une m&eacute;thode POST mapp&eacute;e sur <code class="code" id="-fffc0r_333">/preferences/save</code> qui re&ccedil;oit la nouvelle couleur (<code class="code" id="-fffc0r_334">@RequestParam String color</code>). Mettez &agrave; jour la couleur dans le bean <code class="code" id="-fffc0r_335">UserPreferences</code>. Redirigez ensuite vers <code class="code" id="-fffc0r_336">/preferences</code>.</p></li><li class="list__item" id="-fffc0r_317"><p id="-fffc0r_337">Cr&eacute;ez une vue Thymeleaf (<code class="code" id="-fffc0r_339">preferences.html</code>) qui :</p><ul class="list _bullet" id="-fffc0r_338"><li class="list__item" id="-fffc0r_340"><p id="-fffc0r_343">Affiche la couleur actuelle.</p></li><li class="list__item" id="-fffc0r_341"><p id="-fffc0r_344">Utilise la couleur stock&eacute;e pour d&eacute;finir le style de fond du <code class="code" id="-fffc0r_345">&lt;body&gt;</code> (par exemple, <code class="code" id="-fffc0r_346">style=&quot;background-color: couleur;&quot;</code>).</p></li><li class="list__item" id="-fffc0r_342"><p id="-fffc0r_347">Contient un formulaire simple (un champ texte + bouton submit) pour soumettre une nouvelle couleur &agrave; <code class="code" id="-fffc0r_348">/preferences/save</code>.</p></li></ul></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-2" data-toc="correction-exercice-2"><span class="control" id="-fffc0r_357">Correction Exercice 2</span></h4></div><div class="collapse__content"><p id="-fffc0r_350"><span class="emphasis" id="-fffc0r_358">Bean (<code class="code" id="-fffc0r_359">UserPreferences.java</code>):</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.model;
+
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
+
+import java.io.Serializable;
+
+@Component
+@SessionScope
+public class UserPreferences implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    // Préférence de couleur de fond, blanc par défaut
+    private String backgroundColor = &quot;white&quot;;
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        // Simple validation: ne pas accepter de valeur vide ou nulle
+        if (backgroundColor != null &amp;&amp; !backgroundColor.trim().isEmpty()) {
+            this.backgroundColor = backgroundColor.trim();
+        }
+    }
+}
+</div><p id="-fffc0r_352"><span class="emphasis" id="-fffc0r_360">Controller (<code class="code" id="-fffc0r_361">PreferencesController.java</code>):</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import fr.formation.spring.model.UserPreferences;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class PreferencesController {
+
+    private final UserPreferences userPreferences;
+
+    @Autowired
+    public PreferencesController(UserPreferences userPreferences) {
+        this.userPreferences = userPreferences;
+    }
+
+    @GetMapping(&quot;/preferences&quot;)
+    public String showPreferences(Model model) {
+        // Ajoute la couleur actuelle au modèle pour la vue
+        model.addAttribute(&quot;currentBackgroundColor&quot;,
+                userPreferences.getBackgroundColor());
+        // Ajoute l'objet entier si besoin dans la vue (ici pas nécessaire)
+        // model.addAttribute(&quot;userPrefs&quot;, userPreferences); 
+        return &quot;preferences&quot;; // Vue preferences.html
+    }
+
+    @PostMapping(&quot;/preferences/save&quot;)
+    public String savePreferences(@RequestParam String color) {
+        // Met à jour la préférence via le bean de session
+        userPreferences.setBackgroundColor(color);
+        // Redirige vers la page des préférences pour voir le changement
+        return &quot;redirect:/preferences&quot;;
+    }
+}
+</div><p id="-fffc0r_354"><span class="emphasis" id="-fffc0r_362">View (<code class="code" id="-fffc0r_363">templates/preferences.html</code>):</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Préférences Utilisateur&lt;/title&gt;
+&lt;/head&gt;
+&lt;!-- Applique le style de fond dynamiquement --&gt;
+&lt;body th:style=&quot;'background-color:' + ${currentBackgroundColor}&quot;&gt;
+
+&lt;h1&gt;Préférences Utilisateur&lt;/h1&gt;
+
+&lt;p&gt;
+    La couleur de fond actuelle est :
+    &lt;strong th:text=&quot;${currentBackgroundColor}&quot;&gt;white&lt;/strong&gt;.
+&lt;/p&gt;
+
+&lt;h2&gt;Changer la couleur de fond&lt;/h2&gt;
+&lt;form th:action=&quot;@{/preferences/save}&quot; method=&quot;post&quot;&gt;
+    &lt;label for=&quot;colorInput&quot;&gt;Nouvelle couleur (nom ou code hex):&lt;/label&gt;
+    &lt;input type=&quot;text&quot; id=&quot;colorInput&quot; name=&quot;color&quot;
+           th:value=&quot;${currentBackgroundColor}&quot; required&gt;
+    &lt;button type=&quot;submit&quot;&gt;Sauvegarder&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;p&gt;
+    &lt;a th:href=&quot;@{/}&quot;&gt;Retour à l'accueil&lt;/a&gt;
+&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></div></div></section></section><section class="chapter"><h3 id="exercice-3-simulation-de-connexion-d-connexion-et-s-curit" data-toc="exercice-3-simulation-de-connexion-d-connexion-et-s-curit">Exercice 3 : Simulation de Connexion/D&eacute;connexion et S&eacute;curit&eacute;</h3><p id="-fffc0r_364"><span class="control" id="-fffc0r_368">Objectif :</span> Simuler une connexion utilisateur, stocker le nom d'utilisateur en session, l'afficher, et impl&eacute;menter la d&eacute;connexion en invalidant la session. Insister sur la r&eacute;g&eacute;n&eacute;ration de l'ID de session.</p><p id="-fffc0r_365"><span class="control" id="-fffc0r_369">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-fffc0r_366" type="1"><li class="list__item" id="-fffc0r_370"><p id="-fffc0r_376">Cr&eacute;ez un contr&ocirc;leur <code class="code" id="-fffc0r_377">AuthController</code>.</p></li><li class="list__item" id="-fffc0r_371"><p id="-fffc0r_378">Cr&eacute;ez une m&eacute;thode GET pour <code class="code" id="-fffc0r_379">/login</code> qui affiche un formulaire de connexion simple (champ <code class="code" id="-fffc0r_380">username</code> uniquement, pas de mot de passe pour simplifier).</p></li><li class="list__item" id="-fffc0r_372"><p id="-fffc0r_381">Cr&eacute;ez une m&eacute;thode POST pour <code class="code" id="-fffc0r_383">/login</code> qui re&ccedil;oit le <code class="code" id="-fffc0r_384">username</code>.</p><ul class="list _bullet" id="-fffc0r_382"><li class="list__item" id="-fffc0r_385"><p id="-fffc0r_389">Simulez une authentification r&eacute;ussie si le <code class="code" id="-fffc0r_390">username</code> n'est pas vide.</p></li><li class="list__item" id="-fffc0r_386"><p id="-fffc0r_391"><span class="control" id="-fffc0r_392">Important :</span> Obtenez <code class="code" id="-fffc0r_393">HttpServletRequest</code> et appelez <code class="code" id="-fffc0r_394">request.changeSessionId()</code> pour r&eacute;g&eacute;n&eacute;rer l'ID de session.</p></li><li class="list__item" id="-fffc0r_387"><p id="-fffc0r_395">Obtenez la <span class="emphasis" id="-fffc0r_396">nouvelle</span> session (via <code class="code" id="-fffc0r_397">request.getSession()</code>) et stockez le <code class="code" id="-fffc0r_398">username</code> dans un attribut <code class="code" id="-fffc0r_399">&quot;loggedInUser&quot;</code>.</p></li><li class="list__item" id="-fffc0r_388"><p id="-fffc0r_400">Redirigez vers une page <code class="code" id="-fffc0r_401">/accueil</code>.</p></li></ul></li><li class="list__item" id="-fffc0r_373"><p id="-fffc0r_402">Cr&eacute;ez une m&eacute;thode GET pour <code class="code" id="-fffc0r_404">/accueil</code>.</p><ul class="list _bullet" id="-fffc0r_403"><li class="list__item" id="-fffc0r_405"><p id="-fffc0r_409">Acc&eacute;dez &agrave; la session.</p></li><li class="list__item" id="-fffc0r_406"><p id="-fffc0r_410">R&eacute;cup&eacute;rez l'attribut <code class="code" id="-fffc0r_411">&quot;loggedInUser&quot;</code>.</p></li><li class="list__item" id="-fffc0r_407"><p id="-fffc0r_412">Si l'utilisateur est connect&eacute; (attribut non null), affichez &quot;Bienvenue, [username] !&quot; avec un lien/bouton de d&eacute;connexion.</p></li><li class="list__item" id="-fffc0r_408"><p id="-fffc0r_413">Sinon, affichez &quot;Veuillez vous connecter.&quot; avec un lien vers <code class="code" id="-fffc0r_414">/login</code>.</p></li></ul></li><li class="list__item" id="-fffc0r_374"><p id="-fffc0r_415">Cr&eacute;ez une m&eacute;thode GET ou POST pour <code class="code" id="-fffc0r_417">/logout</code>.</p><ul class="list _bullet" id="-fffc0r_416"><li class="list__item" id="-fffc0r_418"><p id="-fffc0r_421">Acc&eacute;dez &agrave; la session.</p></li><li class="list__item" id="-fffc0r_419"><p id="-fffc0r_422">Appelez <code class="code" id="-fffc0r_423">session.invalidate()</code>.</p></li><li class="list__item" id="-fffc0r_420"><p id="-fffc0r_424">Redirigez vers <code class="code" id="-fffc0r_425">/accueil</code>.</p></li></ul></li><li class="list__item" id="-fffc0r_375"><p id="-fffc0r_426">Cr&eacute;ez les vues Thymeleaf n&eacute;cessaires (<code class="code" id="-fffc0r_427">login.html</code>, <code class="code" id="-fffc0r_428">accueil.html</code>).</p></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-3" data-toc="correction-exercice-3"><span class="control" id="-fffc0r_440">Correction Exercice 3</span></h4></div><div class="collapse__content"><p id="-fffc0r_430"><span class="emphasis" id="-fffc0r_441">Controller (<code class="code" id="-fffc0r_442">AuthController.java</code>):</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class AuthController {
+
+    // Affiche le formulaire de login
+    @GetMapping(&quot;/login&quot;)
+    public String showLoginForm() {
+        return &quot;login&quot;; // Vue login.html
+    }
+
+    // Traite la soumission du formulaire de login
+    @PostMapping(&quot;/login&quot;)
+    public String handleLogin(@RequestParam String username,
+                              HttpServletRequest request) {
+
+        // Vérification très basique (ne pas faire ça en production !)
+        if (username != null &amp;&amp; !username.trim().isEmpty()) {
+            // *** Sécurité : Régénérer l'ID de session après login ***
+            request.changeSessionId();
+
+            // Obtenir la *nouvelle* session après régénération
+            HttpSession session = request.getSession();
+
+            // Stocker l'info utilisateur dans la session
+            session.setAttribute(&quot;loggedInUser&quot;, username.trim());
+
+            // Rediriger vers la page d'accueil sécurisée
+            return &quot;redirect:/accueil&quot;;
+        } else {
+            // Échec de la &quot;connexion&quot;, rediriger vers le formulaire avec erreur
+            // (Pour simplifier, on redirige juste vers login)
+            return &quot;redirect:/login?error&quot;;
+        }
+    }
+
+    // Affiche la page d'accueil, change selon l'état de connexion
+    @GetMapping(&quot;/accueil&quot;)
+    public String showHome(HttpSession session, Model model) {
+        String username = (String) session.getAttribute(&quot;loggedInUser&quot;);
+
+        if (username != null) {
+            // Utilisateur connecté
+            model.addAttribute(&quot;username&quot;, username);
+            return &quot;accueil-connecte&quot;; // Vue accueil-connecte.html
+        } else {
+            // Utilisateur non connecté
+            return &quot;accueil-public&quot;; // Vue accueil-public.html
+        }
+    }
+
+    // Gère la déconnexion
+    @GetMapping(&quot;/logout&quot;)
+    public String handleLogout(HttpSession session) {
+        // Invalide la session
+        session.invalidate();
+        // Redirige vers la page publique
+        return &quot;redirect:/accueil&quot;;
+    }
+}
+</div><p id="-fffc0r_432"><span class="emphasis" id="-fffc0r_443">View (<code class="code" id="-fffc0r_444">templates/login.html</code>):</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;&lt;title&gt;Connexion&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Connexion&lt;/h1&gt;
+&lt;!-- Affiche un message d'erreur si ?error est dans l'URL --&gt;
+&lt;p th:if=&quot;${param.error}&quot; style=&quot;color:red;&quot;&gt;
+    Nom d'utilisateur requis.
+&lt;/p&gt;
+&lt;form th:action=&quot;@{/login}&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;username&quot;&gt;Nom d'utilisateur :&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; name=&quot;username&quot; required&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;submit&quot;&gt;Se connecter&lt;/button&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="-fffc0r_434"><span class="emphasis" id="-fffc0r_445">View (<code class="code" id="-fffc0r_446">templates/accueil-connecte.html</code>):</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;&lt;title&gt;Accueil&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Accueil&lt;/h1&gt;
+&lt;p&gt;
+    Bienvenue, &lt;strong th:text=&quot;${username}&quot;&gt;Utilisateur&lt;/strong&gt; !
+&lt;/p&gt;
+&lt;form th:action=&quot;@{/logout}&quot; method=&quot;get&quot;&gt; &lt;!-- Ou POST --&gt;
+    &lt;button type=&quot;submit&quot;&gt;Se déconnecter&lt;/button&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="-fffc0r_436"><span class="emphasis" id="-fffc0r_447">View (<code class="code" id="-fffc0r_448">templates/accueil-public.html</code>):</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;&lt;title&gt;Accueil&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Accueil&lt;/h1&gt;
+&lt;p&gt;Veuillez vous connecter pour accéder au contenu.&lt;/p&gt;
+&lt;p&gt;
+    &lt;a th:href=&quot;@{/login}&quot;&gt;Se connecter&lt;/a&gt;
+&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="-fffc0r_438"><span class="emphasis" id="-fffc0r_449">(Note : Pour simplifier, deux vues d'accueil ont &eacute;t&eacute; cr&eacute;&eacute;es. On pourrait utiliser <code class="code" id="-fffc0r_450">th:if</code> dans une seule vue <code class="code" id="-fffc0r_451">accueil.html</code>)</span></p></div></div></section></section></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="-fffc0r_452">La gestion des sessions est un aspect fondamental des applications web stateful. Spring Boot facilite grandement l'utilisation de <code class="code" id="-fffc0r_453">HttpSession</code> et propose une alternative &eacute;l&eacute;gante avec les beans <code class="code" id="-fffc0r_454">@SessionScope</code>. Cependant, la simplicit&eacute; d'utilisation ne doit pas occulter les <span class="control" id="-fffc0r_455">imp&eacute;ratifs de s&eacute;curit&eacute;</span>. La protection contre la fixation et le vol de session, la gestion correcte des timeouts, et l'utilisation prudente des donn&eacute;es stock&eacute;es sont essentielles pour cr&eacute;er des applications robustes et s&eacute;curis&eacute;es. Pour des besoins d'authentification et d'autorisation complexes, l'utilisation de <span class="control" id="-fffc0r_456">Spring Security</span> est fortement recommand&eacute;e, car il int&egrave;gre nativement la plupart de ces bonnes pratiques de s&eacute;curit&eacute; li&eacute;es aux sessions.</p></section><div class="last-modified">Last modified: 11 mai 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-01-les-fichier-env.html" class="navigation-links__prev">Les fichier .env</a><a href="005-00-les-messages-flash.html" class="navigation-links__next">Les messages flash</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

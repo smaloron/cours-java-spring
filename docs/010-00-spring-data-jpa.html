@@ -1,0 +1,1189 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-05-11T08:51:19.815281"><title>Spring Data JPA | Spring</title><script type="application/json" id="virtual-toc-data">[{"id":"qu-est-ce-que-jpa","level":0,"title":"Qu\u0027est-ce que JPA ?","anchor":"#qu-est-ce-que-jpa"},{"id":"qu-est-ce-que-spring-data-jpa","level":0,"title":"Qu\u0027est-ce que Spring Data JPA ?","anchor":"#qu-est-ce-que-spring-data-jpa"},{"id":"configuration-du-projet","level":0,"title":"Configuration du Projet","anchor":"#configuration-du-projet"},{"id":"concepts-fondamentaux","level":0,"title":"Concepts Fondamentaux","anchor":"#concepts-fondamentaux"},{"id":"m-thodes-de-requ-te-query-methods","level":0,"title":"Méthodes de Requête (Query Methods)","anchor":"#m-thodes-de-requ-te-query-methods"},{"id":"les-associations","level":0,"title":"Les Associations","anchor":"#les-associations"},{"id":"bonnes-pratiques-avec-spring-data-jpa","level":0,"title":"Bonnes Pratiques avec Spring Data JPA","anchor":"#bonnes-pratiques-avec-spring-data-jpa"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Spring Data JPA | Spring"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/010-00-spring-data-jpa.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Spring Data JPA | Spring"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/010-00-spring-data-jpa.html#webpage",
+    "url": "writerside-documentation/010-00-spring-data-jpa.html",
+    "name": "Spring Data JPA | Spring",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring Help"
+}</script><!-- End Schema.org --></head><body data-id="010-00-Spring-Data-JPA" data-main-title="Spring Data JPA" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="010-00-Spring-Data-JPA" id="010-00-Spring-Data-JPA.md">Spring Data JPA</h1><section class="chapter"><h2 id="qu-est-ce-que-jpa" data-toc="qu-est-ce-que-jpa">Qu'est-ce que JPA ?</h2><p id="trpxp3_11">JPA (Java Persistence API) est une <span class="control" id="trpxp3_13">sp&eacute;cification</span> Java standard (faisant partie de Jakarta EE, anciennement Java EE) qui d&eacute;crit comment g&eacute;rer les donn&eacute;es relationnelles dans les applications Java. Elle fournit un ensemble d'interfaces et d'annotations pour d&eacute;finir un mapping Objet-Relationnel (ORM - Object-Relational Mapping). JPA n'est <span class="emphasis" id="trpxp3_14">pas</span> une impl&eacute;mentation en soi, mais un standard. Les impl&eacute;mentations populaires incluent Hibernate (la plus courante), EclipseLink et OpenJPA.</p><p id="trpxp3_12"><span class="control" id="trpxp3_15">Objectif principal de JPA :</span> Permettre aux d&eacute;veloppeurs de manipuler des objets Java &quot;normaux&quot; (appel&eacute;s Entit&eacute;s) et de laisser le framework JPA g&eacute;rer la traduction vers les op&eacute;rations SQL n&eacute;cessaires pour persister, lire, mettre &agrave; jour ou supprimer ces objets dans une base de donn&eacute;es relationnelle.</p></section><section class="chapter"><h2 id="qu-est-ce-que-spring-data-jpa" data-toc="qu-est-ce-que-spring-data-jpa">Qu'est-ce que Spring Data JPA ?</h2><p id="trpxp3_16">Spring Data JPA est un module du projet <span class="control" id="trpxp3_20">Spring Data</span>. Son but est de <span class="control" id="trpxp3_21">simplifier consid&eacute;rablement</span> l'impl&eacute;mentation des couches d'acc&egrave;s aux donn&eacute;es bas&eacute;es sur JPA. Il s'appuie sur la sp&eacute;cification JPA et une impl&eacute;mentation sous-jacente (g&eacute;n&eacute;ralement Hibernate par d&eacute;faut avec Spring Boot) mais fournit une abstraction suppl&eacute;mentaire puissante : les <span class="control" id="trpxp3_22">Repositories</span>.</p><p id="trpxp3_17"><span class="control" id="trpxp3_23">Avantages cl&eacute;s de Spring Data JPA :</span></p><ol class="list _decimal" id="trpxp3_18" type="1"><li class="list__item" id="trpxp3_24"><p id="trpxp3_30"><span class="control" id="trpxp3_31">R&eacute;duction du code r&eacute;p&eacute;titif (Boilerplate) :</span> Plus besoin d'&eacute;crire manuellement les impl&eacute;mentations des DAO (Data Access Objects) pour les op&eacute;rations CRUD (Create, Read, Update, Delete) de base.</p></li><li class="list__item" id="trpxp3_25"><p id="trpxp3_32"><span class="control" id="trpxp3_33">Repositories d&eacute;claratifs :</span> Il suffit de d&eacute;finir une interface de repository. Spring Data JPA fournit l'impl&eacute;mentation automatiquement au runtime.</p></li><li class="list__item" id="trpxp3_26"><p id="trpxp3_34"><span class="control" id="trpxp3_35">Requ&ecirc;tes d&eacute;riv&eacute;es (Derived Queries) :</span> G&eacute;n&eacute;ration automatique de requ&ecirc;tes SQL/JPQL &agrave; partir du nom des m&eacute;thodes d&eacute;finies dans l'interface du repository.</p></li><li class="list__item" id="trpxp3_27"><p id="trpxp3_36"><span class="control" id="trpxp3_37">Requ&ecirc;tes personnalis&eacute;es faciles :</span> Support pour &eacute;crire des requ&ecirc;tes JPQL ou SQL natives via des annotations (<code class="code" id="trpxp3_38">@Query</code>).</p></li><li class="list__item" id="trpxp3_28"><p id="trpxp3_39"><span class="control" id="trpxp3_40">Int&eacute;gration transparente avec Spring :</span> Gestion des transactions, injection de d&eacute;pendances, configuration simplifi&eacute;e, etc.</p></li><li class="list__item" id="trpxp3_29"><p id="trpxp3_41"><span class="control" id="trpxp3_42">Support de la pagination et du tri.</span></p></li></ol><p id="trpxp3_19"><span class="control" id="trpxp3_43">Cas d'utilisation :</span> Spring Data JPA est id&eacute;al pour la plupart des applications Java d'entreprise ou web qui n&eacute;cessitent une interaction avec une base de donn&eacute;es relationnelle. Il acc&eacute;l&egrave;re le d&eacute;veloppement tout en favorisant des pratiques de codage propres et maintenables pour la couche de persistance.</p></section><section class="chapter"><h2 id="configuration-du-projet" data-toc="configuration-du-projet">Configuration du Projet</h2><p id="trpxp3_44">Pour utiliser Spring Data JPA, une configuration minimale est requise. Avec Spring Boot, cette configuration est grandement simplifi&eacute;e.</p><section class="chapter"><h3 id="d-pendances-maven" data-toc="d-pendances-maven">D&eacute;pendances (Maven)</h3><p id="trpxp3_48">Il faut ajouter les d&eacute;pendances suivantes dans le fichier <code class="code" id="trpxp3_50">pom.xml</code>:</p><div class="code-block" data-lang="markup">
+
+&lt;dependencies&gt;
+    &lt;!-- Dépendance principale pour Spring Data JPA --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Dépendance pour la base de données (exemple avec H2, une base en mémoire) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+        &lt;artifactId&gt;h2&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt; &lt;!-- Souvent utilisée pour le développement/test --&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Alternative : Dépendance pour PostgreSQL --&gt;
+    &lt;!--
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+        &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+    --&gt;
+
+    &lt;!-- Optionnel mais utile : Lombok pour réduire le code boilerplate (getters, setters...) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+        &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Dépendances Spring Boot de base (souvent déjà présentes) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</div></section><section class="chapter"><h3 id="configuration-de-la-source-de-donn-es" data-toc="configuration-de-la-source-de-donn-es">Configuration de la Source de Donn&eacute;es</h3><p id="trpxp3_51">La configuration de la connexion &agrave; la base de donn&eacute;es se fait g&eacute;n&eacute;ralement dans le fichier <code class="code" id="trpxp3_58">application.properties</code> (ou <code class="code" id="trpxp3_59">application.yml</code>).</p><p id="trpxp3_52"><span class="control" id="trpxp3_60">Exemple pour H2 (base en m&eacute;moire) :</span></p><div class="code-block" data-lang="properties">
+# Configuration de la source de données H2
+spring.datasource.url=jdbc:h2:mem:testdb # URL de la base en mémoire nommée 'testdb'
+spring.datasource.driverClassName=org.h2.Driver # Classe du driver JDBC
+spring.datasource.username=sa # Utilisateur (par défaut pour H2)
+spring.datasource.password=# Mot de passe (vide par défaut pour H2)
+# Configuration JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect # Dialecte SQL spécifique à H2
+spring.jpa.hibernate.ddl-auto=update # Stratégie de génération/mise à jour du schéma (create, create-drop, update, validate, none)
+spring.jpa.show-sql=true # Afficher les requêtes SQL générées dans les logs (utile pour le debug)
+spring.jpa.properties.hibernate.format_sql=true # Formater le SQL affiché pour une meilleure lisibilité
+# Activer la console H2 (accessible via http://localhost:8080/h2-console par défaut)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console # Chemin d'accès à la console
+</div><p id="trpxp3_54"><span class="control" id="trpxp3_61">Exemple pour PostgreSQL :</span></p><div class="code-block" data-lang="properties">
+# Configuration de la source de données PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/mydatabase # URL de votre base PostgreSQL
+spring.datasource.username=myuser # Votre utilisateur PostgreSQL
+spring.datasource.password=mypassword # Votre mot de passe PostgreSQL
+# Configuration JPA/Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect # Dialecte SQL spécifique à PostgreSQL
+spring.jpa.hibernate.ddl-auto=update # ou validate en production
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+</div><p id="trpxp3_56"><span class="control" id="trpxp3_62">Conseil (<code class="code" id="trpxp3_63">ddl-auto</code>) :</span></p><ul class="list _bullet" id="trpxp3_57"><li class="list__item" id="trpxp3_64"><p id="trpxp3_69"><code class="code" id="trpxp3_70">create</code>: Cr&eacute;e le sch&eacute;ma &agrave; chaque d&eacute;marrage, d&eacute;truisant les donn&eacute;es pr&eacute;c&eacute;dentes. Utile pour les tests.</p></li><li class="list__item" id="trpxp3_65"><p id="trpxp3_71"><code class="code" id="trpxp3_72">create-drop</code>: Cr&eacute;e le sch&eacute;ma au d&eacute;marrage et le supprime &agrave; l'arr&ecirc;t. Utile pour les tests.</p></li><li class="list__item" id="trpxp3_66"><p id="trpxp3_73"><code class="code" id="trpxp3_74">update</code>: Met &agrave; jour le sch&eacute;ma existant (ajoute des colonnes, etc.) sans supprimer les donn&eacute;es. Pratique en d&eacute;veloppement, mais <span class="control" id="trpxp3_75">risqu&eacute; en production</span> (peut &eacute;chouer sur des changements complexes).</p></li><li class="list__item" id="trpxp3_67"><p id="trpxp3_76"><code class="code" id="trpxp3_77">validate</code>: Valide que le sch&eacute;ma de la base correspond aux entit&eacute;s mapp&eacute;es, sans rien modifier. Recommand&eacute; pour la production.</p></li><li class="list__item" id="trpxp3_68"><p id="trpxp3_78"><code class="code" id="trpxp3_79">none</code>: Ne fait rien concernant le sch&eacute;ma. N&eacute;cessite une gestion manuelle (via des outils comme Flyway ou Liquibase, ce qui est la meilleure pratique pour la production).</p></li></ul></section><section class="chapter"><h3 id="activation-des-repositories-jpa" data-toc="activation-des-repositories-jpa">Activation des Repositories JPA</h3><p id="trpxp3_80">Avec Spring Boot, si la d&eacute;pendance <code class="code" id="trpxp3_82">spring-boot-starter-data-jpa</code> est pr&eacute;sente, la configuration est automatique. L'annotation <code class="code" id="trpxp3_83">@EnableJpaRepositories</code> est implicitement ajout&eacute;e. Elle demande &agrave; Spring de scanner le package (et ses sous-packages) de la classe annot&eacute;e (g&eacute;n&eacute;ralement la classe principale de l'application) pour trouver les interfaces h&eacute;ritant de <code class="code" id="trpxp3_84">JpaRepository</code> (ou d'autres interfaces Spring Data).</p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+// Pas nécessaire avec Spring Boot si les repos sont dans le même package ou un sous-package
+// import org.springframework.data.jpa.repository.config.EnableJpaRepositories; 
+@SpringBootApplication
+// @EnableJpaRepositories // Peut être utilisé pour spécifier un package différent pour les repositories
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+</div></section></section><section class="chapter"><h2 id="concepts-fondamentaux" data-toc="concepts-fondamentaux">Concepts Fondamentaux</h2><section class="chapter"><h3 id="entit-s-jpa-entity" data-toc="entit-s-jpa-entity">Entit&eacute;s JPA (<code class="code" id="trpxp3_94">@Entity</code>)</h3><p id="trpxp3_90">Une entit&eacute; est une classe Java simple (POJO - Plain Old Java Object) qui est mapp&eacute;e &agrave; une table dans la base de donn&eacute;es.</p><ul class="list _bullet" id="trpxp3_91"><li class="list__item" id="trpxp3_95"><p id="trpxp3_101"><span class="control" id="trpxp3_102"><code class="code" id="trpxp3_103">@Entity</code>:</span> Marque la classe comme une entit&eacute; JPA.</p></li><li class="list__item" id="trpxp3_96"><p id="trpxp3_104"><span class="control" id="trpxp3_105"><code class="code" id="trpxp3_106">@Table(name = &quot;nom_table&quot;)</code>:</span> (Optionnel) Sp&eacute;cifie le nom de la table dans la base de donn&eacute;es. Si omis, le nom de la classe est g&eacute;n&eacute;ralement utilis&eacute;.</p></li><li class="list__item" id="trpxp3_97"><p id="trpxp3_107"><span class="control" id="trpxp3_108"><code class="code" id="trpxp3_109">@Id</code>:</span> Marque un champ comme cl&eacute; primaire de l'entit&eacute;.</p></li><li class="list__item" id="trpxp3_98"><p id="trpxp3_110"><span class="control" id="trpxp3_111"><code class="code" id="trpxp3_115">@GeneratedValue(strategy = ...)</code>:</span> Sp&eacute;cifie comment la valeur de la cl&eacute; primaire est g&eacute;n&eacute;r&eacute;e (par exemple, <code class="code" id="trpxp3_112">GenerationType.IDENTITY</code> pour une colonne auto-incr&eacute;ment&eacute;e, <code class="code" id="trpxp3_113">GenerationType.SEQUENCE</code>, <code class="code" id="trpxp3_114">GenerationType.AUTO</code>).</p></li><li class="list__item" id="trpxp3_99"><p id="trpxp3_116"><span class="control" id="trpxp3_117"><code class="code" id="trpxp3_118">@Column(name = &quot;nom_colonne&quot;, nullable = false, length = 100)</code>:</span> (Optionnel) Mappe un champ &agrave; une colonne sp&eacute;cifique et d&eacute;finit ses propri&eacute;t&eacute;s (nom, nullabilit&eacute;, longueur, etc.).</p></li><li class="list__item" id="trpxp3_100"><p id="trpxp3_119"><span class="control" id="trpxp3_120">Annotations de mapping de type :</span> <code class="code" id="trpxp3_121">@Temporal</code> (pour les dates), <code class="code" id="trpxp3_122">@Enumerated</code> (pour les enums), <code class="code" id="trpxp3_123">@Lob</code> (pour les grands objets), <code class="code" id="trpxp3_124">@Transient</code> (pour ignorer un champ lors de la persistance).</p></li></ul><p id="trpxp3_92"><span class="control" id="trpxp3_125">Exemple :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.model;
+
+import jakarta.persistence.*; // Utilise jakarta.persistence.* avec Spring Boot 3+
+// import javax.persistence.*; // Utilise javax.persistence.* avec Spring Boot 2.x
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDate; // Utiliser java.time pour les dates modernes
+
+@Entity // Marque cette classe comme une entité JPA
+@Table(name = &quot;users&quot;) // Mappe à la table &quot;users&quot;
+@Getter // Lombok: génère les getters
+@Setter // Lombok: génère les setters
+@NoArgsConstructor // Lombok: génère un constructeur sans arguments (requis par JPA)
+@AllArgsConstructor // Lombok: génère un constructeur avec tous les arguments
+public class User {
+
+    @Id // Clé primaire
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Stratégie d'auto-incrémentation (commune)
+    private Long id;
+
+    @Column(name = &quot;user_name&quot;, nullable = false, unique = true, length = 50) // Colonne spécifique
+    private String username; // Nom d'utilisateur
+
+    @Column(nullable = false) // La colonne s'appellera &quot;email&quot; par défaut
+    private String email; // Adresse email
+
+    @Column(name = &quot;registration_date&quot;) // Colonne pour la date d'inscription
+    private LocalDate registrationDate; // Date d'inscription
+
+    private boolean active; // Un champ booléen (souvent mappé à un type booléen ou entier en BDD)
+
+    // Constructeurs, Getters, Setters, toString, equals/hashCode sont importants
+    // Lombok aide à réduire ce code répétitif
+}
+</div></section><section class="chapter"><h3 id="repositories-spring-data-jparepository" data-toc="repositories-spring-data-jparepository">Repositories Spring Data (<code class="code" id="trpxp3_131">JpaRepository</code>)</h3><p id="trpxp3_127">Un repository est une interface qui fournit les m&eacute;thodes pour interagir avec la base de donn&eacute;es pour une entit&eacute; sp&eacute;cifique. Spring Data JPA g&eacute;n&egrave;re l'impl&eacute;mentation de cette interface au runtime.</p><ul class="list _bullet" id="trpxp3_128"><li class="list__item" id="trpxp3_132"><p id="trpxp3_134"><span class="control" id="trpxp3_136">H&eacute;ritage :</span> L'interface doit h&eacute;riter de <code class="code" id="trpxp3_137">JpaRepository&lt;TypeEntite, TypeId&gt;</code> (ou <code class="code" id="trpxp3_138">CrudRepository</code>, <code class="code" id="trpxp3_139">PagingAndSortingRepository</code>).</p><ul class="list _bullet" id="trpxp3_135"><li class="list__item" id="trpxp3_140"><p id="trpxp3_143"><code class="code" id="trpxp3_144">CrudRepository</code>: Fournit les m&eacute;thodes CRUD de base.</p></li><li class="list__item" id="trpxp3_141"><p id="trpxp3_145"><code class="code" id="trpxp3_146">PagingAndSortingRepository</code>: Ajoute la pagination et le tri.</p></li><li class="list__item" id="trpxp3_142"><p id="trpxp3_147"><code class="code" id="trpxp3_148">JpaRepository</code>: H&eacute;rite des deux pr&eacute;c&eacute;dents et ajoute des m&eacute;thodes sp&eacute;cifiques &agrave; JPA (comme <code class="code" id="trpxp3_149">flush()</code>, <code class="code" id="trpxp3_150">saveAndFlush()</code>, <code class="code" id="trpxp3_151">findAll()</code> avec <code class="code" id="trpxp3_152">Sort</code>, etc.). <span class="control" id="trpxp3_153">Il est g&eacute;n&eacute;ralement recommand&eacute; d'utiliser <code class="code" id="trpxp3_154">JpaRepository</code>.</span></p></li></ul></li><li class="list__item" id="trpxp3_133"><p id="trpxp3_155"><span class="control" id="trpxp3_156">Aucune impl&eacute;mentation manuelle requise</span> pour les op&eacute;rations de base.</p></li></ul><p id="trpxp3_129"><span class="control" id="trpxp3_157">Exemple :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository; // Annotation optionnelle mais recommandée pour la clarté
+
+import java.util.Optional;
+
+@Repository // Indique que c'est un bean Spring de type Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; { // User est l'entité, Long est le type de l'ID
+
+    // Spring Data JPA fournira l'implémentation pour :
+    // save(), findById(), findAll(), deleteById(), count(), existsById(), etc.
+
+    // Exemple de méthode de requête dérivée (voir section suivante)
+    Optional&lt;User&gt; findByEmail(String email); // Trouve un utilisateur par son email
+}
+</div></section><section class="chapter"><h3 id="utilisation-du-repository-dans-un-service" data-toc="utilisation-du-repository-dans-un-service">Utilisation du Repository dans un Service</h3><p id="trpxp3_158">Les repositories sont g&eacute;n&eacute;ralement inject&eacute;s dans des classes de service (<code class="code" id="trpxp3_161">@Service</code>) qui contiennent la logique m&eacute;tier.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.service;
+
+import fr.formation.spring.demo.model.User;
+import fr.formation.spring.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Important pour la gestion des transactions
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Service // Indique que c'est un bean Spring de type Service
+public class UserService {
+
+    private final UserRepository userRepository; // Injection du repository via le constructeur (bonne pratique)
+
+    @Autowired // L'injection par constructeur est préférée à @Autowired sur le champ
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Créer un nouvel utilisateur
+    @Transactional // Assure que l'opération est transactionnelle
+    public User createUser(String username, String email) {
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setEmail(email);
+        newUser.setRegistrationDate(LocalDate.now()); // Définit la date d'inscription
+        newUser.setActive(true); // Active l'utilisateur par défaut
+        return userRepository.save(newUser); // Sauvegarde l'utilisateur et retourne l'entité persistée (avec ID)
+    }
+
+    // Trouver un utilisateur par son ID
+    @Transactional(readOnly = true) // Transaction en lecture seule (optimisation)
+    public Optional&lt;User&gt; findUserById(Long id) {
+        return userRepository.findById(id); // Retourne un Optional&lt;User&gt;
+    }
+
+    // Trouver tous les utilisateurs
+    @Transactional(readOnly = true)
+    public List&lt;User&gt; findAllUsers() {
+        return userRepository.findAll(); // Retourne la liste de tous les utilisateurs
+    }
+
+    // Trouver un utilisateur par email (utilise la méthode dérivée)
+    @Transactional(readOnly = true)
+    public Optional&lt;User&gt; findUserByEmail(String email) {
+        return userRepository.findByEmail(email); // Utilise la méthode définie dans l'interface
+    }
+
+    // Mettre à jour un utilisateur (exemple simple)
+    @Transactional
+    public Optional&lt;User&gt; updateUserEmail(Long id, String newEmail) {
+        Optional&lt;User&gt; userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setEmail(newEmail);
+            // Pas besoin d'appeler save() explicitement ici si la méthode est @Transactional.
+            // Hibernate détecte le changement sur l'entité managée et la met à jour lors du commit de la transaction.
+            // Cependant, appeler save() est aussi possible et parfois plus clair.
+            // userRepository.save(user);
+            return Optional.of(user);
+        } else {
+            return Optional.empty(); // Utilisateur non trouvé
+        }
+    }
+
+    // Supprimer un utilisateur
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id); // Supprime l'utilisateur par son ID
+    }
+}
+</div><p id="trpxp3_160"><span class="control" id="trpxp3_162">Conseil (<code class="code" id="trpxp3_165">@Transactional</code>) :</span> Il est crucial d'annoter les m&eacute;thodes de service qui modifient des donn&eacute;es avec <code class="code" id="trpxp3_163">@Transactional</code>. Cela garantit que les op&eacute;rations sont ex&eacute;cut&eacute;es dans une transaction ACID. Pour les m&eacute;thodes de lecture seule, utiliser <code class="code" id="trpxp3_164">@Transactional(readOnly = true)</code> peut am&eacute;liorer les performances car cela donne des indications &agrave; la base de donn&eacute;es et au provider JPA pour optimiser l'acc&egrave;s.</p></section><section class="chapter"><h3 id="exercice-1-crud-de-base" data-toc="exercice-1-crud-de-base">Exercice 1 : CRUD de base</h3><ol class="list _decimal" id="trpxp3_166" type="1"><li class="list__item" id="trpxp3_169"><p id="trpxp3_171"><span class="control" id="trpxp3_172">Objectif :</span> Mettre en pratique la cr&eacute;ation d'une entit&eacute;, d'un repository et d'un service pour des op&eacute;rations CRUD simples.</p></li><li class="list__item" id="trpxp3_170"><p id="trpxp3_173"><span class="control" id="trpxp3_175">&Eacute;nonc&eacute; :</span></p><ul class="list _bullet" id="trpxp3_174"><li class="list__item" id="trpxp3_176"><p id="trpxp3_180">Cr&eacute;ez une entit&eacute; <code class="code" id="trpxp3_181">Product</code> avec les champs : <code class="code" id="trpxp3_182">id</code> (Long, auto-g&eacute;n&eacute;r&eacute;), <code class="code" id="trpxp3_183">name</code> (String, non null), <code class="code" id="trpxp3_184">price</code> (Double, non null), <code class="code" id="trpxp3_185">creationDate</code> (LocalDate).</p></li><li class="list__item" id="trpxp3_177"><p id="trpxp3_186">Cr&eacute;ez une interface <code class="code" id="trpxp3_187">ProductRepository</code> h&eacute;ritant de <code class="code" id="trpxp3_188">JpaRepository</code>.</p></li><li class="list__item" id="trpxp3_178"><p id="trpxp3_189">Cr&eacute;ez une classe <code class="code" id="trpxp3_191">ProductService</code> avec des m&eacute;thodes pour :</p><ul class="list _bullet" id="trpxp3_190"><li class="list__item" id="trpxp3_192"><p id="trpxp3_196">Cr&eacute;er un produit (<code class="code" id="trpxp3_197">createProduct</code>).</p></li><li class="list__item" id="trpxp3_193"><p id="trpxp3_198">R&eacute;cup&eacute;rer un produit par son ID (<code class="code" id="trpxp3_199">findProductById</code>).</p></li><li class="list__item" id="trpxp3_194"><p id="trpxp3_200">R&eacute;cup&eacute;rer tous les produits (<code class="code" id="trpxp3_201">findAllProducts</code>).</p></li><li class="list__item" id="trpxp3_195"><p id="trpxp3_202">Supprimer un produit (<code class="code" id="trpxp3_203">deleteProduct</code>).</p></li></ul></li><li class="list__item" id="trpxp3_179"><p id="trpxp3_204">(Optionnel) &Eacute;crivez un test simple ou une classe CommandLineRunner pour tester ces m&eacute;thodes.</p></li></ul></li></ol><section class="chapter"><h4 id="correction-exercice-1" data-toc="correction-exercice-1">Correction Exercice 1</h4><p id="trpxp3_205"><span class="control" id="trpxp3_214">Entit&eacute; <code class="code" id="trpxp3_215">Product</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = &quot;products&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name; // Nom du produit
+
+    @Column(nullable = false)
+    private Double price; // Prix du produit
+
+    @Column(name = &quot;creation_date&quot;)
+    private LocalDate creationDate; // Date de création
+}
+</div><p id="trpxp3_207"><span class="control" id="trpxp3_216">Repository <code class="code" id="trpxp3_217">ProductRepository</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+    // Aucune méthode supplémentaire nécessaire pour le CRUD de base
+}
+</div><p id="trpxp3_209"><span class="control" id="trpxp3_218">Service <code class="code" id="trpxp3_219">ProductService</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.service;
+
+import fr.formation.spring.demo.model.Product;
+import fr.formation.spring.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Transactional
+    public Product createProduct(String name, Double price) {
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        product.setCreationDate(LocalDate.now());
+        return productRepository.save(product); // Sauvegarde le nouveau produit
+    }
+
+    @Transactional(readOnly = true)
+    public Optional&lt;Product&gt; findProductById(Long id) {
+        return productRepository.findById(id); // Recherche par ID
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;Product&gt; findAllProducts() {
+        return productRepository.findAll(); // Récupère tous les produits
+    }
+
+    @Transactional
+    public void deleteProduct(Long id) {
+        if (productRepository.existsById(id)) { // Bonne pratique: vérifier si l'entité existe avant de supprimer
+            productRepository.deleteById(id); // Supprime le produit
+        } else {
+            System.err.println(&quot;Produit non trouvé pour la suppression: ID = &quot; + id);
+            // Ou lancer une exception appropriée
+            // throw new ProductNotFoundException(&quot;Product with id &quot; + id + &quot; not found&quot;);
+        }
+    }
+}
+</div><p id="trpxp3_211"><span class="control" id="trpxp3_220">(Optionnel) Test avec <code class="code" id="trpxp3_221">CommandLineRunner</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo;
+
+import fr.formation.spring.demo.model.Product;
+import fr.formation.spring.demo.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+@Component // Pour que Spring Boot l'exécute au démarrage
+public class AppRunner implements CommandLineRunner {
+
+    @Autowired
+    private ProductService productService;
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println(&quot;--- Début des tests ProductService ---&quot;);
+
+        // Création de produits
+        Product laptop = productService.createProduct(&quot;Laptop Pro&quot;, 1200.50);
+        Product keyboard = productService.createProduct(&quot;Mechanical Keyboard&quot;, 150.75);
+        System.out.println(&quot;Produits créés: &quot; + laptop + &quot;, &quot; + keyboard);
+
+        // Recherche par ID
+        Optional&lt;Product&gt; foundLaptop = productService.findProductById(laptop.getId());
+        foundLaptop.ifPresent(p -&gt; System.out.println(&quot;Produit trouvé par ID: &quot; + p));
+
+        Optional&lt;Product&gt; notFound = productService.findProductById(999L);
+        if (!notFound.isPresent()) {
+            System.out.println(&quot;Produit avec ID 999 non trouvé (attendu).&quot;);
+        }
+
+        // Récupérer tous les produits
+        List&lt;Product&gt; allProducts = productService.findAllProducts();
+        System.out.println(&quot;Tous les produits (&quot; + allProducts.size() + &quot;):&quot;);
+        allProducts.forEach(System.out::println); // Suppose une méthode toString() dans Product
+
+        // Suppression d'un produit
+        System.out.println(&quot;Suppression du clavier (ID: &quot; + keyboard.getId() + &quot;)&quot;);
+        productService.deleteProduct(keyboard.getId());
+
+        // Vérifier la suppression
+        allProducts = productService.findAllProducts();
+        System.out.println(&quot;Produits après suppression (&quot; + allProducts.size() + &quot;):&quot;);
+        allProducts.forEach(System.out::println);
+
+        System.out.println(&quot;--- Fin des tests ProductService ---&quot;);
+    }
+}
+// N'oubliez pas d'ajouter une méthode toString() à l'entité Product pour un affichage lisible.
+// Exemple avec Lombok : @ToString
+</div></section></section></section><section class="chapter"><h2 id="m-thodes-de-requ-te-query-methods" data-toc="m-thodes-de-requ-te-query-methods">M&eacute;thodes de Requ&ecirc;te (Query Methods)</h2><p id="trpxp3_222">Spring Data JPA offre plusieurs fa&ccedil;ons de d&eacute;finir des requ&ecirc;tes.</p><section class="chapter"><h3 id="requ-tes-d-riv-es-derived-query-methods" data-toc="requ-tes-d-riv-es-derived-query-methods">Requ&ecirc;tes D&eacute;riv&eacute;es (Derived Query Methods)</h3><p id="trpxp3_226">C'est l'une des fonctionnalit&eacute;s les plus puissantes. Spring Data JPA peut <span class="control" id="trpxp3_236">d&eacute;duire automatiquement la requ&ecirc;te JPQL</span> &agrave; ex&eacute;cuter simplement &agrave; partir du <span class="control" id="trpxp3_237">nom de la m&eacute;thode</span> d&eacute;finie dans l'interface du repository.</p><p id="trpxp3_227">La convention suit le format <code class="code" id="trpxp3_238">find...By...</code>, <code class="code" id="trpxp3_239">read...By...</code>, <code class="code" id="trpxp3_240">query...By...</code>, <code class="code" id="trpxp3_241">count...By...</code>, <code class="code" id="trpxp3_242">get...By...</code>, <code class="code" id="trpxp3_243">delete...By...</code>, <code class="code" id="trpxp3_244">remove...By...</code>. La partie apr&egrave;s <code class="code" id="trpxp3_245">By</code> d&eacute;finit les crit&egrave;res de recherche, bas&eacute;s sur les noms des attributs de l'entit&eacute;.</p><p id="trpxp3_228"><span class="control" id="trpxp3_246">Mots-cl&eacute;s courants :</span></p><ul class="list _bullet" id="trpxp3_229"><li class="list__item" id="trpxp3_247"><p id="trpxp3_257"><code class="code" id="trpxp3_258">And</code>, <code class="code" id="trpxp3_259">Or</code>: Pour combiner plusieurs crit&egrave;res.</p></li><li class="list__item" id="trpxp3_248"><p id="trpxp3_260"><code class="code" id="trpxp3_261">Is</code>, <code class="code" id="trpxp3_262">Equals</code>: &Eacute;galit&eacute; (souvent implicite). <code class="code" id="trpxp3_263">findByEmail(String email)</code> est &eacute;quivalent &agrave; <code class="code" id="trpxp3_264">findByEmailIs(String email)</code>.</p></li><li class="list__item" id="trpxp3_249"><p id="trpxp3_265"><code class="code" id="trpxp3_266">Between</code>: <code class="code" id="trpxp3_267">findByStartDateBetween(Date start, Date end)</code>.</p></li><li class="list__item" id="trpxp3_250"><p id="trpxp3_268"><code class="code" id="trpxp3_269">LessThan</code>, <code class="code" id="trpxp3_270">LessThanEqual</code>, <code class="code" id="trpxp3_271">GreaterThan</code>, <code class="code" id="trpxp3_272">GreaterThanEqual</code>: Comparaisons.</p></li><li class="list__item" id="trpxp3_251"><p id="trpxp3_273"><code class="code" id="trpxp3_274">IsNull</code>, <code class="code" id="trpxp3_275">IsNotNull</code>: V&eacute;rification de nullit&eacute;.</p></li><li class="list__item" id="trpxp3_252"><p id="trpxp3_276"><code class="code" id="trpxp3_277">Like</code>, <code class="code" id="trpxp3_278">NotLike</code>, <code class="code" id="trpxp3_279">StartingWith</code>, <code class="code" id="trpxp3_280">EndingWith</code>, <code class="code" id="trpxp3_281">Containing</code>: Recherche de cha&icirc;nes (patterns SQL LIKE).</p></li><li class="list__item" id="trpxp3_253"><p id="trpxp3_282"><code class="code" id="trpxp3_283">OrderBy</code>: Pour trier les r&eacute;sultats. <code class="code" id="trpxp3_284">findByAgeOrderByLastnameAsc(int age)</code>.</p></li><li class="list__item" id="trpxp3_254"><p id="trpxp3_285"><code class="code" id="trpxp3_286">In</code>, <code class="code" id="trpxp3_287">NotIn</code>: Pour v&eacute;rifier si une valeur est dans une collection. <code class="code" id="trpxp3_288">findByIdIn(Collection&lt;Long&gt; ids)</code>.</p></li><li class="list__item" id="trpxp3_255"><p id="trpxp3_289"><code class="code" id="trpxp3_290">True</code>, <code class="code" id="trpxp3_291">False</code>: Pour les champs bool&eacute;ens. <code class="code" id="trpxp3_292">findByActiveTrue()</code>.</p></li><li class="list__item" id="trpxp3_256"><p id="trpxp3_293"><code class="code" id="trpxp3_294">IgnoreCase</code>: Pour ignorer la casse dans les comparaisons de cha&icirc;nes. <code class="code" id="trpxp3_295">findByUsernameIgnoreCase(String username)</code>.</p></li></ul><p id="trpxp3_230"><span class="control" id="trpxp3_296">Exemples dans <code class="code" id="trpxp3_297">UserRepository</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    // Trouve un utilisateur par son email (ignorant la casse)
+    Optional&lt;User&gt; findByEmailIgnoreCase(String email);
+
+    // Trouve tous les utilisateurs dont le nom d'utilisateur contient une chaîne donnée
+    List&lt;User&gt; findByUsernameContaining(String partialUsername);
+
+    // Trouve tous les utilisateurs actifs enregistrés après une certaine date, triés par nom d'utilisateur
+    List&lt;User&gt; findByActiveTrueAndRegistrationDateAfterOrderByUsernameAsc(LocalDate date);
+
+    // Compte le nombre d'utilisateurs actifs
+    long countByActiveTrue();
+
+    // Supprime les utilisateurs inactifs enregistrés avant une certaine date
+    // Retourne le nombre d'enregistrements supprimés
+    long deleteByActiveFalseAndRegistrationDateBefore(LocalDate date);
+}
+</div><p id="trpxp3_232"><span class="control" id="trpxp3_298">Avantages :</span></p><ul class="list _bullet" id="trpxp3_233"><li class="list__item" id="trpxp3_299"><p id="trpxp3_302">Tr&egrave;s rapide &agrave; &eacute;crire pour des requ&ecirc;tes simples et courantes.</p></li><li class="list__item" id="trpxp3_300"><p id="trpxp3_303">Pas de JPQL/SQL &agrave; &eacute;crire.</p></li><li class="list__item" id="trpxp3_301"><p id="trpxp3_304">V&eacute;rification de la syntaxe au d&eacute;marrage de l'application (si le nom de m&eacute;thode est invalide ou fait r&eacute;f&eacute;rence &agrave; un champ inexistant, l'application ne d&eacute;marrera pas).</p></li></ul><p id="trpxp3_234"><span class="control" id="trpxp3_305">Inconv&eacute;nients :</span></p><ul class="list _bullet" id="trpxp3_235"><li class="list__item" id="trpxp3_306"><p id="trpxp3_308">Les noms de m&eacute;thodes peuvent devenir tr&egrave;s longs et difficiles &agrave; lire pour des requ&ecirc;tes complexes.</p></li><li class="list__item" id="trpxp3_307"><p id="trpxp3_309">Limit&eacute; aux capacit&eacute;s d'interpr&eacute;tation de Spring Data JPA. Ne couvre pas toutes les possibilit&eacute;s de JPQL/SQL.</p></li></ul></section><section class="chapter"><h3 id="requ-tes-personnalis-es-avec-query" data-toc="requ-tes-personnalis-es-avec-query">Requ&ecirc;tes Personnalis&eacute;es avec <code class="code" id="trpxp3_314">@Query</code></h3><p id="trpxp3_311">Pour des requ&ecirc;tes plus complexes ou sp&eacute;cifiques, l'annotation <code class="code" id="trpxp3_315">@Query</code> permet d'&eacute;crire directement du JPQL (Java Persistence Query Language) ou du SQL natif.</p><section class="chapter"><h4 id="utilisation-de-jpql-par-d-faut" data-toc="utilisation-de-jpql-par-d-faut"><span class="control" id="trpxp3_320">Utilisation de JPQL (par d&eacute;faut)</span></h4><p id="trpxp3_317">JPQL est similaire &agrave; SQL, mais op&egrave;re sur les <span class="control" id="trpxp3_321">entit&eacute;s</span> et leurs <span class="control" id="trpxp3_322">attributs</span> plut&ocirc;t que sur les tables et colonnes.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying; // Pour les requêtes UPDATE/DELETE
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param; // Pour les paramètres nommés
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    // Exemple avec JPQL et paramètres positionnels (?1, ?2...)
+    @Query(&quot;SELECT u FROM User u WHERE u.active = ?1 AND u.email LIKE %?2%&quot;)
+    List&lt;User&gt; findActiveUsersWithEmailDomain(boolean active, String emailDomain);
+
+    // Exemple avec JPQL et paramètres nommés (:paramName) - Préférable pour la lisibilité
+    @Query(&quot;SELECT u FROM User u WHERE u.username = :uname OR u.email = :email&quot;)
+    Optional&lt;User&gt; findByUsernameOrEmail(@Param(&quot;uname&quot;) String username, @Param(&quot;email&quot;) String email);
+
+    // Exemple de requête de mise à jour (nécessite @Modifying et @Transactional dans le service appelant)
+    @Modifying // Indique une requête qui modifie des données (INSERT, UPDATE, DELETE)
+    @Query(&quot;UPDATE User u SET u.active = false WHERE u.id = :userId&quot;)
+    int deactivateUser(@Param(&quot;userId&quot;) Long id);
+
+    // Exemple pour charger uniquement certains champs (DTO Projection - voir section avancée)
+    // Suppose une classe DTO UserSummary(Long id, String username)
+    @Query(&quot;SELECT new fr.formation.spring.demo.dto.UserSummary(u.id, u.username) FROM User u WHERE u.active = true&quot;)
+    List&lt;fr.formation.spring.demo.dto.UserSummary&gt; findActiveUserSummaries();
+}
+</div><p id="trpxp3_319"><span class="control" id="trpxp3_323">Conseil :</span> Pr&eacute;f&eacute;rez les param&egrave;tres nomm&eacute;s (<code class="code" id="trpxp3_324">:paramName</code>) aux param&egrave;tres positionnels (<code class="code" id="trpxp3_325">?1</code>, <code class="code" id="trpxp3_326">?2</code>) car ils rendent la requ&ecirc;te plus lisible et moins sujette aux erreurs si l'ordre des arguments de la m&eacute;thode change.</p></section><section class="chapter"><h4 id="utilisation-de-sql-natif" data-toc="utilisation-de-sql-natif"><span class="control" id="trpxp3_335">Utilisation de SQL Natif</span></h4><p id="trpxp3_328">Parfois, il est n&eacute;cessaire d'utiliser des fonctionnalit&eacute;s sp&eacute;cifiques &agrave; la base de donn&eacute;es ou d'&eacute;crire des requ&ecirc;tes tr&egrave;s complexes qui sont difficiles &agrave; exprimer en JPQL. <code class="code" id="trpxp3_336">@Query</code> peut aussi ex&eacute;cuter du SQL natif.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+
+    // Exemple avec SQL natif (notez nativeQuery = true)
+    // La requête utilise les noms de tables et colonnes réels de la BDD
+    @Query(value = &quot;SELECT * FROM users u WHERE u.user_name LIKE :pattern%&quot;, nativeQuery = true)
+    List&lt;User&gt; findUsersByUsernameStartingWithNative(@Param(&quot;pattern&quot;) String pattern);
+
+    // Attention: le mapping du résultat vers l'entité User est géré par JPA,
+    // mais pour des requêtes natives complexes retournant des types non-entité,
+    // il faudra peut-être utiliser un ResultTransformer ou une Projection.
+
+    // Exemple de requête native complexe (par exemple, utilisant une fonction spécifique à la BDD)
+    @Query(value = &quot;SELECT u.id, u.user_name, calculate_user_score(u.id) as score FROM users u WHERE u.active = true&quot;, nativeQuery = true)
+    List&lt;Object[]&gt; findActiveUsersWithScoreNative(); // Retourne une liste de tableaux d'objets
+    // Il faudrait ensuite mapper ce Object[] manuellement ou utiliser une projection.
+}
+</div><p id="trpxp3_330"><span class="control" id="trpxp3_337">Quand utiliser le SQL natif ?</span></p><ul class="list _bullet" id="trpxp3_331"><li class="list__item" id="trpxp3_338"><p id="trpxp3_341">Lorsque la requ&ecirc;te utilise des fonctionnalit&eacute;s SQL sp&eacute;cifiques &agrave; la base de donn&eacute;es (fonctions, syntaxes particuli&egrave;res, hints).</p></li><li class="list__item" id="trpxp3_339"><p id="trpxp3_342">Pour des optimisations tr&egrave;s sp&eacute;cifiques qui ne peuvent &ecirc;tre atteintes avec JPQL.</p></li><li class="list__item" id="trpxp3_340"><p id="trpxp3_343">Lors de l'int&eacute;gration avec un sch&eacute;ma de base de donn&eacute;es existant et complexe.</p></li></ul><p id="trpxp3_332"><span class="control" id="trpxp3_344">Inconv&eacute;nients du SQL natif :</span></p><ul class="list _bullet" id="trpxp3_333"><li class="list__item" id="trpxp3_345"><p id="trpxp3_348">Perte de la portabilit&eacute; de la base de donn&eacute;es (la requ&ecirc;te peut ne pas fonctionner si on change de SGBD).</p></li><li class="list__item" id="trpxp3_346"><p id="trpxp3_349">Moins de s&eacute;curit&eacute; typ&eacute;e par rapport &agrave; JPQL (on manipule des noms de colonnes en cha&icirc;nes de caract&egrave;res).</p></li><li class="list__item" id="trpxp3_347"><p id="trpxp3_350">Le mapping des r&eacute;sultats peut &ecirc;tre plus complexe.</p></li></ul><p id="trpxp3_334"><span class="control" id="trpxp3_351">Bonne pratique :</span> Utiliser les requ&ecirc;tes d&eacute;riv&eacute;es pour le simple, JPQL pour le complexe standard, et SQL natif en dernier recours pour des cas sp&eacute;cifiques.</p></section></section><section class="chapter"><h3 id="exercice-2-requ-tes-d-riv-es-et-query" data-toc="exercice-2-requ-tes-d-riv-es-et-query">Exercice 2 : Requ&ecirc;tes D&eacute;riv&eacute;es et <code class="code" id="trpxp3_356">@Query</code></h3><ol class="list _decimal" id="trpxp3_353" type="1"><li class="list__item" id="trpxp3_357"><p id="trpxp3_359"><span class="control" id="trpxp3_360">Objectif :</span> S'entra&icirc;ner &agrave; cr&eacute;er des m&eacute;thodes de requ&ecirc;te d&eacute;riv&eacute;es et des requ&ecirc;tes personnalis&eacute;es avec <code class="code" id="trpxp3_361">@Query</code>.</p></li><li class="list__item" id="trpxp3_358"><p id="trpxp3_362"><span class="control" id="trpxp3_364">&Eacute;nonc&eacute; (en utilisant l'entit&eacute; <code class="code" id="trpxp3_365">Product</code> de l'exercice 1) :</span></p><ul class="list _bullet" id="trpxp3_363"><li class="list__item" id="trpxp3_366"><p id="trpxp3_368">Dans <code class="code" id="trpxp3_370">ProductRepository</code>, ajoutez les m&eacute;thodes suivantes :</p><ul class="list _bullet" id="trpxp3_369"><li class="list__item" id="trpxp3_371"><p id="trpxp3_375">Une m&eacute;thode d&eacute;riv&eacute;e pour trouver tous les produits dont le prix est sup&eacute;rieur &agrave; une valeur donn&eacute;e (<code class="code" id="trpxp3_376">findProductsWithPriceGreaterThan</code>).</p></li><li class="list__item" id="trpxp3_372"><p id="trpxp3_377">Une m&eacute;thode d&eacute;riv&eacute;e pour trouver tous les produits dont le nom contient une cha&icirc;ne donn&eacute;e (ignorant la casse) et cr&eacute;&eacute;s avant une certaine date (<code class="code" id="trpxp3_378">findProductsByNameContainingIgnoreCaseAndCreationDateBefore</code>).</p></li><li class="list__item" id="trpxp3_373"><p id="trpxp3_379">Une m&eacute;thode utilisant <code class="code" id="trpxp3_380">@Query</code> (JPQL) pour trouver le produit le plus cher (<code class="code" id="trpxp3_381">findMostExpensiveProduct</code>). Elle ne devrait retourner qu'un seul <code class="code" id="trpxp3_382">Product</code> (ou <code class="code" id="trpxp3_383">Optional&lt;Product&gt;</code>).</p></li><li class="list__item" id="trpxp3_374"><p id="trpxp3_384">Une m&eacute;thode utilisant <code class="code" id="trpxp3_385">@Query</code> (JPQL) et <code class="code" id="trpxp3_386">@Modifying</code> pour augmenter le prix de tous les produits d'un certain pourcentage (<code class="code" id="trpxp3_387">increasePriceByPercentage</code>). Prenez le pourcentage en argument (par exemple, 10.0 pour 10%).</p></li></ul></li><li class="list__item" id="trpxp3_367"><p id="trpxp3_388">Dans <code class="code" id="trpxp3_389">ProductService</code>, ajoutez des m&eacute;thodes pour appeler ces nouvelles m&eacute;thodes du repository. Assurez-vous que la m&eacute;thode appelant <code class="code" id="trpxp3_390">increasePriceByPercentage</code> est transactionnelle.</p></li></ul></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-2" data-toc="correction-exercice-2">Correction Exercice 2</h4></div><div class="collapse__content"><p id="trpxp3_391"><span class="control" id="trpxp3_398">Repository <code class="code" id="trpxp3_399">ProductRepository</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+
+    // Méthode dérivée pour trouver les produits dont le prix est supérieur à une valeur donnée
+    List&lt;Product&gt; findByPriceGreaterThan(Double minPrice);
+
+    // Méthode dérivée pour trouver les produits par nom (ignorant casse) et date de création
+    List&lt;Product&gt; findByNameContainingIgnoreCaseAndCreationDateBefore(String nameSubstring, LocalDate date);
+
+    // Méthode avec @Query (JPQL) pour trouver le produit le plus cher
+    // Utilise ORDER BY et prend le premier résultat (LIMIT 1 implicite par Optional/single result)
+    @Query(&quot;SELECT p FROM Product p ORDER BY p.price DESC&quot;)
+    List&lt;Product&gt; findTopPricedProduct(); // On récupère une liste pour prendre le premier élément dans le service
+
+    // Alternative retournant directement un Optional (peut lever NonUniqueResultException si plusieurs ont le même prix max)
+    // @Query(&quot;SELECT p FROM Product p WHERE p.price = (SELECT MAX(pr.price) FROM Product pr)&quot;)
+    // List&lt;Product&gt; findMostExpensiveProducts(); // Retourner une liste est plus sûr
+
+    // Ou via une méthode dédiée de Spring Data (plus simple si disponible)
+    Optional&lt;Product&gt; findTopByOrderByPriceDesc();
+
+
+    // Méthode avec @Query (JPQL) et @Modifying pour augmenter les prix
+    @Modifying // Important pour indiquer une modification
+    @Query(&quot;UPDATE Product p SET p.price = p.price * (1 + :percentage / 100.0)&quot;)
+    int increasePriceByPercentage(@Param(&quot;percentage&quot;) Double percentage);
+}
+</div><p id="trpxp3_393"><span class="control" id="trpxp3_400">Service <code class="code" id="trpxp3_401">ProductService</code> (ajouts) :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.service;
+
+import fr.formation.spring.demo.model.Product;
+import fr.formation.spring.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    // ... (méthodes précédentes : createProduct, findProductById, findAllProducts, deleteProduct) ...
+
+    @Transactional(readOnly = true)
+    public List&lt;Product&gt; findProductsWithPriceGreaterThan(Double minPrice) {
+        return productRepository.findByPriceGreaterThan(minPrice);
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;Product&gt; findProductsByNameAndDate(String nameSubstring, LocalDate date) {
+        return productRepository.findByNameContainingIgnoreCaseAndCreationDateBefore(nameSubstring, date);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional&lt;Product&gt; findMostExpensiveProduct() {
+        // Utilisation de la méthode Spring Data dédiée:
+        return productRepository.findTopByOrderByPriceDesc();
+
+        // Alternative avec la requête @Query retournant une liste:
+        // List&lt;Product&gt; topPriced = productRepository.findTopPricedProduct();
+        // return topPriced.isEmpty() ? Optional.empty() : Optional.of(topPriced.get(0));
+    }
+
+    @Transactional // Transactionnelle car elle modifie des données
+    public int increaseAllProductPrices(Double percentage) {
+        if (percentage &lt; 0) {
+            throw new IllegalArgumentException(&quot;Le pourcentage doit être positif.&quot;);
+        }
+        return productRepository.increasePriceByPercentage(percentage); // Appelle la méthode @Modifying
+    }
+}
+</div><p id="trpxp3_395"><span class="control" id="trpxp3_402">(Optionnel) Test dans <code class="code" id="trpxp3_403">AppRunner</code>:</span></p><div class="code-block" data-lang="java">
+// ... dans la méthode run() d'AppRunner ...
+System.out.println(&quot;\n--- Tests de requêtes avancées ---&quot;);
+
+// Ajout de quelques produits supplémentaires
+productService.
+
+createProduct(&quot;Mousepad XL&quot;,25.0);
+productService.
+
+createProduct(&quot;Webcam HD&quot;,80.0);
+productService.
+
+createProduct(&quot;Gaming Laptop&quot;,1800.0);
+
+// Test findProductsWithPriceGreaterThan
+System.out.
+
+println(&quot;Produits coûtant plus de 100:&quot;);
+productService.
+
+findProductsWithPriceGreaterThan(100.0).
+
+forEach(System.out::println);
+
+// Test findProductsByNameAndDate
+System.out.
+
+println(&quot;Produits contenant 'Laptop' créés avant demain:&quot;);
+productService.
+
+findProductsByNameAndDate(&quot;Laptop&quot;,LocalDate.now().
+
+plusDays(1)).
+
+forEach(System.out::println);
+
+// Test findMostExpensiveProduct
+Optional&lt;Product&gt; mostExpensive = productService.findMostExpensiveProduct();
+mostExpensive.
+
+ifPresent(p -&gt;System.out.
+
+println(&quot;Produit le plus cher: &quot;+p));
+
+// Test increaseAllProductPrices
+        System.out.
+
+println(&quot;Augmentation des prix de 10%...&quot;);
+
+int updatedCount = productService.increaseAllProductPrices(10.0);
+System.out.
+
+println(updatedCount +&quot; produits mis à jour.&quot;);
+
+// Afficher les produits après augmentation
+System.out.
+
+println(&quot;Produits après augmentation de prix:&quot;);
+productService.
+
+findAllProducts().
+
+forEach(System.out::println);
+
+System.out.
+
+println(&quot;--- Fin des tests de requêtes avancées ---&quot;);
+
+</div></div></div></section></section></section><section class="chapter"><h2 id="les-associations" data-toc="les-associations">Les Associations</h2><p id="trpxp3_404">Les associations d&eacute;finissent comment les entit&eacute;s sont li&eacute;es les unes aux autres, refl&eacute;tant les relations dans la base de donn&eacute;es (cl&eacute;s &eacute;trang&egrave;res). JPA fournit des annotations pour mapper ces relations.</p><p id="trpxp3_405">Il existe quatre types principaux d'associations :</p><ol class="list _decimal" id="trpxp3_406" type="1"><li class="list__item" id="trpxp3_415"><p id="trpxp3_419"><span class="control" id="trpxp3_420"><code class="code" id="trpxp3_421">@OneToOne</code></span>: Une instance d'une entit&eacute; est li&eacute;e &agrave; exactement une instance d'une autre entit&eacute; (ex: Utilisateur et ProfilUtilisateur).</p></li><li class="list__item" id="trpxp3_416"><p id="trpxp3_422"><span class="control" id="trpxp3_423"><code class="code" id="trpxp3_424">@OneToMany</code></span>: Une instance d'une entit&eacute; est li&eacute;e &agrave; plusieurs instances d'une autre entit&eacute; (ex: Auteur et ses Livres).</p></li><li class="list__item" id="trpxp3_417"><p id="trpxp3_425"><span class="control" id="trpxp3_426"><code class="code" id="trpxp3_428">@ManyToOne</code></span>: Plusieurs instances d'une entit&eacute; sont li&eacute;es &agrave; une seule instance d'une autre entit&eacute; (ex: Plusieurs Livres et un Auteur). C'est l'inverse de <code class="code" id="trpxp3_427">@OneToMany</code>.</p></li><li class="list__item" id="trpxp3_418"><p id="trpxp3_429"><span class="control" id="trpxp3_430"><code class="code" id="trpxp3_431">@ManyToMany</code></span>: Plusieurs instances d'une entit&eacute; sont li&eacute;es &agrave; plusieurs instances d'une autre entit&eacute; (ex: &Eacute;tudiant et Cours).</p></li></ol><p id="trpxp3_407">Les associations peuvent &ecirc;tre <span class="control" id="trpxp3_432">unidirectionnelles</span> (la navigation n'est possible que dans un sens) ou * <span class="emphasis" id="trpxp3_433">bidirectionnelles</span>* (la navigation est possible dans les deux sens).</p><p id="trpxp3_408"><span class="control" id="trpxp3_434">Concepts Cl&eacute;s :</span></p><ul class="list _bullet" id="trpxp3_409"><li class="list__item" id="trpxp3_435"><p id="trpxp3_441"><span class="control" id="trpxp3_442">C&ocirc;t&eacute; Propri&eacute;taire (Owning Side) :</span> Le c&ocirc;t&eacute; de la relation qui est responsable de la gestion de la cl&eacute; &eacute;trang&egrave;re dans la base de donn&eacute;es. C'est g&eacute;n&eacute;ralement le c&ocirc;t&eacute; qui <span class="emphasis" id="trpxp3_443">n'a pas</span> l'attribut <code class="code" id="trpxp3_444">mappedBy</code>. Pour <code class="code" id="trpxp3_445">@ManyToOne</code> et <code class="code" id="trpxp3_446">@OneToOne</code> unidirectionnel/bidirectionnel, c'est le c&ocirc;t&eacute; qui porte l'annotation et souvent <code class="code" id="trpxp3_447">@JoinColumn</code>. Pour <code class="code" id="trpxp3_448">@ManyToMany</code>, un c&ocirc;t&eacute; doit &ecirc;tre d&eacute;sign&eacute; comme propri&eacute;taire (celui sans <code class="code" id="trpxp3_449">mappedBy</code>).</p></li><li class="list__item" id="trpxp3_436"><p id="trpxp3_450"><span class="control" id="trpxp3_451"><code class="code" id="trpxp3_453">mappedBy</code>:</span> Utilis&eacute; sur le c&ocirc;t&eacute; <span class="control" id="trpxp3_452">non-propri&eacute;taire</span> d'une relation bidirectionnelle pour indiquer que la relation est mapp&eacute;e (g&eacute;r&eacute;e) par un attribut sp&eacute;cifique du c&ocirc;t&eacute; propri&eacute;taire.</p></li><li class="list__item" id="trpxp3_437"><p id="trpxp3_454"><span class="control" id="trpxp3_455"><code class="code" id="trpxp3_458">@JoinColumn</code>:</span> Sp&eacute;cifie la colonne de cl&eacute; &eacute;trang&egrave;re dans la table de l'entit&eacute; propri&eacute;taire. Utilis&eacute; principalement avec <code class="code" id="trpxp3_456">@OneToOne</code> et <code class="code" id="trpxp3_457">@ManyToOne</code>.</p></li><li class="list__item" id="trpxp3_438"><p id="trpxp3_459"><span class="control" id="trpxp3_460"><code class="code" id="trpxp3_463">@JoinTable</code>:</span> Utilis&eacute; avec <code class="code" id="trpxp3_461">@ManyToMany</code> (et parfois avec <code class="code" id="trpxp3_462">@OneToMany</code> unidirectionnel) pour sp&eacute;cifier la table de jointure qui lie les deux entit&eacute;s.</p></li><li class="list__item" id="trpxp3_439"><p id="trpxp3_464"><span class="control" id="trpxp3_466">Fetch Types (Strat&eacute;gies de chargement) :</span> D&eacute;termine <span class="emphasis" id="trpxp3_467">quand</span> les donn&eacute;es associ&eacute;es sont charg&eacute;es de la base de donn&eacute;es.</p><ul class="list _bullet" id="trpxp3_465"><li class="list__item" id="trpxp3_468"><p id="trpxp3_470"><span class="control" id="trpxp3_471"><code class="code" id="trpxp3_474">FetchType.EAGER</code>:</span> Les donn&eacute;es associ&eacute;es sont charg&eacute;es <span class="control" id="trpxp3_472">imm&eacute;diatement</span> en m&ecirc;me temps que l'entit&eacute; propri&eacute;taire. <span class="control" id="trpxp3_473">D&eacute;faut pour <code class="code" id="trpxp3_475">@OneToOne</code> et <code class="code" id="trpxp3_476">@ManyToOne</code>.</span></p></li><li class="list__item" id="trpxp3_469"><p id="trpxp3_477"><span class="control" id="trpxp3_478"><code class="code" id="trpxp3_481">FetchType.LAZY</code>:</span> Les donn&eacute;es associ&eacute;es ne sont charg&eacute;es que <span class="control" id="trpxp3_479">lorsqu'on y acc&egrave;de explicitement</span> pour la premi&egrave;re fois (par exemple, en appelant le getter). <span class="control" id="trpxp3_480">D&eacute;faut pour <code class="code" id="trpxp3_482">@OneToMany</code> et <code class="code" id="trpxp3_483">@ManyToMany</code>.</span></p></li></ul></li><li class="list__item" id="trpxp3_440"><p id="trpxp3_484"><span class="control" id="trpxp3_485">Cascading Operations (Op&eacute;rations en cascade) :</span> D&eacute;termine quelles op&eacute;rations JPA (persist, merge, remove, refresh, detach) effectu&eacute;es sur l'entit&eacute; propri&eacute;taire doivent &ecirc;tre propag&eacute;es aux entit&eacute;s associ&eacute;es. D&eacute;fini via l'attribut <code class="code" id="trpxp3_486">cascade</code> (ex: <code class="code" id="trpxp3_487">cascade = CascadeType.ALL</code>, <code class="code" id="trpxp3_488">cascade = {CascadeType.PERSIST, CascadeType.MERGE}</code>).</p></li></ul><section class="chapter"><h3 id="1-relation-onetoone" data-toc="1-relation-onetoone">1. Relation <code class="code" id="trpxp3_504">@OneToOne</code></h3><p id="trpxp3_490">Une relation un-&agrave;-un. Par exemple, un <code class="code" id="trpxp3_505">User</code> peut avoir un seul <code class="code" id="trpxp3_506">UserProfile</code>.</p><p id="trpxp3_491"><span class="control" id="trpxp3_507">Diagramme UML (PlantUML) :</span></p><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="341px" preserveAspectRatio="none" style="width:232px;height:341px;background:#FFFFFF;" version="1.1" viewBox="0 0 232 341" width="232px" zoomAndPan="magnify"><defs/><g><!--class User--><g id="elem_User"><rect codeLine="4" fill="#F1F1F1" height="97.4648" id="User" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="218" x="7" y="7"/><ellipse cx="96.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M100.3643,29 L92.6445,29 L92.6445,16.6069 L100.3643,16.6069 L100.3643,18.7651 L95.0933,18.7651 L95.0933,21.438 L99.8662,21.438 L99.8662,23.5962 L95.0933,23.5962 L95.0933,26.8418 L100.3643,26.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31" x="116.75" y="28.291">User</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="224" y1="39" y2="39"/><ellipse cx="18" cy="52.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="27" y="56.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="8" x2="224" y1="63.4883" y2="63.4883"/><ellipse cx="18" cy="77.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="117" x="27" y="81.0234">username: String</text><ellipse cx="18" cy="93.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="192" x="27" y="97.5117">userProfile: UserProfile &#171;FK&#187;</text></g><!--class UserProfile--><g id="elem_UserProfile"><rect codeLine="11" fill="#F1F1F1" height="130.4414" id="UserProfile" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="141" x="45.5" y="204"/><ellipse cx="75.8" cy="220" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M79.9143,226 L72.1945,226 L72.1945,213.6069 L79.9143,213.6069 L79.9143,215.7651 L74.6433,215.7651 L74.6433,218.438 L79.4162,218.438 L79.4162,220.5962 L74.6433,220.5962 L74.6433,223.8418 L79.9143,223.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="93.2" y="225.291">UserProfile</text><line style="stroke:#181818;stroke-width:0.5;" x1="46.5" x2="185.5" y1="236" y2="236"/><ellipse cx="56.5" cy="249.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="65.5" y="253.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="46.5" x2="185.5" y1="260.4883" y2="260.4883"/><ellipse cx="56.5" cy="274.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="65.5" y="278.0234">firstName: String</text><ellipse cx="56.5" cy="290.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="112" x="65.5" y="294.5117">lastName: String</text><ellipse cx="56.5" cy="307.209" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71" x="65.5" y="311">bio: String</text><ellipse cx="56.5" cy="323.6973" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="65.5" y="327.4883">user: User &#171;FK&#187;</text></g><!--link User to UserProfile--><g id="link_User_UserProfile"><path codeLine="20" d="M116,103.95 C116,133.6 116,171.9 116,204.15 " fill="none" id="User-UserProfile" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="93" y="150.6184">has</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="105.65" y="125.5312">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="24" x="90.6125" y="193.3453">0..1</text></g><!--SRC=[TOvD2i8m58JtESMGhRJeDfGktIWYI0yGCRKFqwIyn4KHxsv84UlVRkORc9bm8JTerZqiEHF7mS1pxBmGnaMA8vfW63S1B40dXQrtvsIA8fDh2ftkZS8XCkLaWdlsBTd4cvT1LQqtTItkRztFyDz4InpYxdF3wX_mIFxhoFHWDfsjNCdK3xaiowJcDnGw7Hu0]--></g></svg></div><p id="trpxp3_493"><span class="control" id="trpxp3_508">a) Unidirectionnelle (<code class="code" id="trpxp3_509">User</code>-&gt; <code class="code" id="trpxp3_510">UserProfile</code>)</span></p><p id="trpxp3_494">Seul <code class="code" id="trpxp3_511">User</code> conna&icirc;t <code class="code" id="trpxp3_512">UserProfile</code>.</p><div class="code-block" data-lang="java">
+// Entité UserProfile (simple)
+@Entity
+@Table(name = &quot;user_profiles&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserProfile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String bio; // Biographie
+    // ... autres champs spécifiques au profil
+}
+
+// Entité User (côté propriétaire)
+@Entity
+@Table(name = &quot;users&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    // EAGER par défaut, LAZY est souvent mieux. Cascade.ALL inclut PERSIST, MERGE, REMOVE... orphanRemoval=true supprime le profil si on l'enlève de l'utilisateur (user.setUserProfile(null))
+    @JoinColumn(name = &quot;profile_id&quot;, referencedColumnName = &quot;id&quot;)
+    // Définit la clé étrangère 'profile_id' dans la table 'users' qui référence la colonne 'id' de 'user_profiles'
+    private UserProfile userProfile; // Référence vers le profil
+}
+</div><ul class="list _bullet" id="trpxp3_496"><li class="list__item" id="trpxp3_513"><p id="trpxp3_517"><code class="code" id="trpxp3_518">@JoinColumn</code> est sur le c&ocirc;t&eacute; propri&eacute;taire (<code class="code" id="trpxp3_519">User</code>), indiquant que la table <code class="code" id="trpxp3_520">users</code> aura une colonne <code class="code" id="trpxp3_521">profile_id</code>.</p></li><li class="list__item" id="trpxp3_514"><p id="trpxp3_522"><code class="code" id="trpxp3_523">fetch = FetchType.LAZY</code> est explicitement d&eacute;fini. Bien que EAGER soit le d&eacute;faut pour <code class="code" id="trpxp3_524">@OneToOne</code>, LAZY est souvent pr&eacute;f&eacute;rable pour &eacute;viter de charger des donn&eacute;es inutiles.</p></li><li class="list__item" id="trpxp3_515"><p id="trpxp3_525"><code class="code" id="trpxp3_526">cascade = CascadeType.ALL</code>: Si on sauvegarde un <code class="code" id="trpxp3_527">User</code> avec un nouveau <code class="code" id="trpxp3_528">UserProfile</code> non persist&eacute;, le profil sera aussi sauvegard&eacute;. Si on supprime le <code class="code" id="trpxp3_529">User</code>, le <code class="code" id="trpxp3_530">UserProfile</code> associ&eacute; sera aussi supprim&eacute;.</p></li><li class="list__item" id="trpxp3_516"><p id="trpxp3_531"><code class="code" id="trpxp3_532">orphanRemoval = true</code>: Si on fait <code class="code" id="trpxp3_533">user.setUserProfile(null)</code> et qu'on sauvegarde <code class="code" id="trpxp3_534">user</code>, l'ancien <code class="code" id="trpxp3_535">UserProfile</code> associ&eacute; sera supprim&eacute; de la base. Utile pour les relations o&ugrave; l'entit&eacute; enfant ne peut exister sans le parent.</p></li></ul><p id="trpxp3_497"><span class="control" id="trpxp3_536">b) Bidirectionnelle (<code class="code" id="trpxp3_537">User</code> &lt;-&gt; <code class="code" id="trpxp3_538">UserProfile</code>)</span></p><p id="trpxp3_498">Les deux entit&eacute;s se connaissent mutuellement.</p><div class="code-block" data-lang="java">
+// Entité UserProfile (côté non-propriétaire)
+@Entity
+@Table(name = &quot;user_profiles&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class UserProfile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String bio;
+
+    // mappedBy indique que la gestion de la relation (clé étrangère)
+    // se trouve dans l'attribut 'userProfile' de l'entité User.
+    @OneToOne(mappedBy = &quot;userProfile&quot;, fetch = FetchType.LAZY)
+    // LAZY est important ici pour éviter les chargements circulaires
+    private User user; // Référence vers l'utilisateur
+}
+
+// Entité User (côté propriétaire - identique à l'unidirectionnel)
+@Entity
+@Table(name = &quot;users&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = &quot;profile_id&quot;, referencedColumnName = &quot;id&quot;) // La FK est ici
+    private UserProfile userProfile;
+
+    // **Bonne pratique : Ajouter des méthodes de synchronisation pour les relations bidirectionnelles**
+    public void setUserProfile(UserProfile profile) {
+        if (profile == null) {
+            if (this.userProfile != null) {
+                this.userProfile.setUser(null); // Nettoie l'ancienne référence
+            }
+        } else {
+            profile.setUser(this); // Met à jour l'autre côté
+        }
+        this.userProfile = profile; // Met à jour ce côté
+    }
+}
+</div><ul class="list _bullet" id="trpxp3_500"><li class="list__item" id="trpxp3_539"><p id="trpxp3_541">Le c&ocirc;t&eacute; <code class="code" id="trpxp3_542">UserProfile</code> a l'attribut <code class="code" id="trpxp3_543">mappedBy = &quot;userProfile&quot;</code>, indiquant qu'il n'est pas propri&eacute;taire de la relation. Il n'y aura pas de colonne de cl&eacute; &eacute;trang&egrave;re dans la table <code class="code" id="trpxp3_544">user_profiles</code> pour cette relation.</p></li><li class="list__item" id="trpxp3_540"><p id="trpxp3_545"><span class="control" id="trpxp3_546">Conseil :</span> Dans les relations bidirectionnelles, il est <span class="control" id="trpxp3_547">crucial</span> de maintenir la coh&eacute;rence des deux c&ocirc;t&eacute;s de la relation en m&eacute;moire. Utilisez des m&eacute;thodes helper (comme <code class="code" id="trpxp3_548">setUserProfile</code> ci-dessus) pour vous assurer que lorsque vous d&eacute;finissez la relation d'un c&ocirc;t&eacute;, l'autre c&ocirc;t&eacute; est &eacute;galement mis &agrave; jour.</p></li></ul><p id="trpxp3_501"><span class="control" id="trpxp3_549">Cas d'utilisation <code class="code" id="trpxp3_550">@OneToOne</code>:</span></p><ul class="list _bullet" id="trpxp3_502"><li class="list__item" id="trpxp3_551"><p id="trpxp3_554">Profil utilisateur d&eacute;taill&eacute; s&eacute;par&eacute; de l'entit&eacute; utilisateur principale.</p></li><li class="list__item" id="trpxp3_552"><p id="trpxp3_555">Configuration sp&eacute;cifique associ&eacute;e &agrave; une entit&eacute;.</p></li><li class="list__item" id="trpxp3_553"><p id="trpxp3_556">Division d'une table tr&egrave;s large en deux pour des raisons de performance ou de logique.</p></li></ul></section><section class="chapter"><h3 id="2-relations-onetomany-manytoone" data-toc="2-relations-onetomany-manytoone">2. Relations <code class="code" id="trpxp3_569">@OneToMany</code>/<code class="code" id="trpxp3_570">@ManyToOne</code></h3><p id="trpxp3_558">La relation la plus courante. Un <code class="code" id="trpxp3_571">Author</code> peut &eacute;crire plusieurs <code class="code" id="trpxp3_572">Book</code>s (<code class="code" id="trpxp3_573">@OneToMany</code>), et chaque <code class="code" id="trpxp3_574">Book</code> a un seul <code class="code" id="trpxp3_575">Author</code> (<code class="code" id="trpxp3_576">@ManyToOne</code>).</p><p id="trpxp3_559"><span class="control" id="trpxp3_577">Diagramme UML (PlantUML) :</span></p><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="308px" preserveAspectRatio="none" style="width:177px;height:308px;background:#FFFFFF;" version="1.1" viewBox="0 0 177 308" width="177px" zoomAndPan="magnify"><defs/><g><!--class Author--><g id="elem_Author"><rect codeLine="4" fill="#F1F1F1" height="97.4648" id="Author" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="155" x="11" y="7"/><ellipse cx="60.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M64.3643,29 L56.6445,29 L56.6445,16.6069 L64.3643,16.6069 L64.3643,18.7651 L59.0933,18.7651 L59.0933,21.438 L63.8662,21.438 L63.8662,23.5962 L59.0933,23.5962 L59.0933,26.8418 L64.3643,26.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="80.75" y="28.291">Author</text><line style="stroke:#181818;stroke-width:0.5;" x1="12" x2="165" y1="39" y2="39"/><ellipse cx="22" cy="52.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="31" y="56.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="12" x2="165" y1="63.4883" y2="63.4883"/><ellipse cx="22" cy="77.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="31" y="81.0234">name: String</text><ellipse cx="22" cy="93.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="129" x="31" y="97.5117">books: List&lt;Book&gt;</text></g><!--class Book--><g id="elem_Book"><rect codeLine="11" fill="#F1F1F1" height="97.4648" id="Book" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="163" x="7" y="204"/><ellipse cx="67.25" cy="220" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M71.3643,226 L63.6445,226 L63.6445,213.6069 L71.3643,213.6069 L71.3643,215.7651 L66.0933,215.7651 L66.0933,218.438 L70.8662,218.438 L70.8662,220.5962 L66.0933,220.5962 L66.0933,223.8418 L71.3643,223.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="87.75" y="225.291">Book</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="169" y1="236" y2="236"/><ellipse cx="18" cy="249.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="27" y="253.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="8" x2="169" y1="260.4883" y2="260.4883"/><ellipse cx="18" cy="274.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="27" y="278.0234">title: String</text><ellipse cx="18" cy="290.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="137" x="27" y="294.5117">author: Author &#171;FK&#187;</text></g><!--link Author to Book--><g id="link_Author_Book"><path codeLine="18" d="M88.5,103.94 C88.5,134.48 88.5,173.75 88.5,204.24 " fill="none" id="Author-Book" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="38" x="49.5" y="150.6584">writes</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="78.15" y="125.5153">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="87.8813" y="192.8165">*</text></g><!--SRC=[ROtB2i8m44Nt-OfBbfOkt8PGq8KRtVa5AGOTscPACaMA-EzDwWC4TtFkp9oREWgZYsv0Jy7BF7fmb1ihvOEGpDXDcI8U2XNeOd3YS5MewyB13TxWB95ALg5bxb8-eIHsd-T6FR-UmlyjUTt_QDnQQJxLrXwEpQfw1tghyolqHh-i1lT8ujC2]--></g></svg></div><p id="trpxp3_561"><span class="control" id="trpxp3_578">Mapping Bidirectionnel (le plus fr&eacute;quent) :</span></p><div class="code-block" data-lang="java">
+// Entité Author (côté &quot;One&quot;)
+@Entity
+@Table(name = &quot;authors&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    // mappedBy indique que la FK est gérée par l'attribut 'author' de l'entité Book.
+    // LAZY est le défaut et FORTEMENT RECOMMANDÉ pour les collections.
+    // CascadeType.ALL: Si on supprime l'auteur, ses livres sont aussi supprimés.
+    // orphanRemoval=true: Si on retire un livre de la collection (author.getBooks().remove(book)), le livre sera supprimé de la BDD.
+    @OneToMany(mappedBy = &quot;author&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List&lt;Book&gt; books = new ArrayList&lt;&gt;(); // Initialiser la collection est une bonne pratique
+
+    // **Bonne pratique : Méthodes helper pour gérer la collection**
+    public void addBook(Book book) {
+        this.books.add(book);
+        book.setAuthor(this); // Maintient la cohérence bidirectionnelle
+    }
+
+    public void removeBook(Book book) {
+        this.books.remove(book);
+        book.setAuthor(null); // Maintient la cohérence bidirectionnelle
+    }
+}
+
+// Entité Book (côté &quot;Many&quot;, propriétaire de la relation)
+@Entity
+@Table(name = &quot;books&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+
+    // EAGER est le défaut pour @ManyToOne, mais LAZY est souvent préférable si l'auteur n'est pas toujours nécessaire.
+    // Cascade n'est généralement pas mis ici (on ne veut pas supprimer l'auteur si on supprime un livre).
+    @ManyToOne(fetch = FetchType.LAZY) // LAZY recommandé
+    @JoinColumn(name = &quot;author_id&quot;, nullable = false)
+    // La colonne FK 'author_id' dans la table 'books'. nullable=false assure qu'un livre a toujours un auteur.
+    private Author author; // Référence vers l'auteur
+}
+</div><ul class="list _bullet" id="trpxp3_563"><li class="list__item" id="trpxp3_579"><p id="trpxp3_584">Le c&ocirc;t&eacute; <code class="code" id="trpxp3_585">@ManyToOne</code> (<code class="code" id="trpxp3_586">Book</code>) est presque toujours le <span class="control" id="trpxp3_587">c&ocirc;t&eacute; propri&eacute;taire</span>. Il contient la cl&eacute; &eacute;trang&egrave;re (<code class="code" id="trpxp3_588">@JoinColumn</code>).</p></li><li class="list__item" id="trpxp3_580"><p id="trpxp3_589">Le c&ocirc;t&eacute; <code class="code" id="trpxp3_590">@OneToMany</code> (<code class="code" id="trpxp3_591">Author</code>) utilise <code class="code" id="trpxp3_592">mappedBy</code> pour pointer vers l'attribut de l'entit&eacute; <code class="code" id="trpxp3_593">Book</code> qui g&egrave;re la relation.</p></li><li class="list__item" id="trpxp3_581"><p id="trpxp3_594"><span class="control" id="trpxp3_595"><code class="code" id="trpxp3_597">FetchType.LAZY</code> est crucial pour <code class="code" id="trpxp3_598">@OneToMany</code>.</span> Charger tous les livres d'un auteur &agrave; chaque fois que l'auteur est charg&eacute; (EAGER) peut entra&icirc;ner des probl&egrave;mes de performance majeurs, surtout si l'auteur a beaucoup de livres. C'est le fameux probl&egrave;me <span class="control" id="trpxp3_596">N+1</span>.</p></li><li class="list__item" id="trpxp3_582"><p id="trpxp3_599">Pour <code class="code" id="trpxp3_600">@ManyToOne</code>, <code class="code" id="trpxp3_601">FetchType.EAGER</code> est le d&eacute;faut. C'est souvent acceptable si l'entit&eacute; associ&eacute;e (l'auteur) est petite et fr&eacute;quemment n&eacute;cessaire. Cependant, si l'entit&eacute; associ&eacute;e est complexe ou rarement n&eacute;cessaire, ou si vous chargez de nombreux <code class="code" id="trpxp3_602">Book</code>s, il est pr&eacute;f&eacute;rable de passer &agrave; <code class="code" id="trpxp3_603">FetchType.LAZY</code> pour &eacute;viter de charger l'auteur pour chaque livre individuellement (peut aussi causer N+1).</p></li><li class="list__item" id="trpxp3_583"><p id="trpxp3_604">Les <span class="control" id="trpxp3_605">m&eacute;thodes helper</span> (<code class="code" id="trpxp3_606">addBook</code>, <code class="code" id="trpxp3_607">removeBook</code>) sont essentielles pour maintenir la coh&eacute;rence de la relation dans le mod&egrave;le objet.</p></li></ul><p id="trpxp3_564"><span class="control" id="trpxp3_608">Le Probl&egrave;me N+1 Select :</span></p><ul class="list _bullet" id="trpxp3_565"><li class="list__item" id="trpxp3_609"><p id="trpxp3_612">Se produit lorsque vous chargez N entit&eacute;s (par ex., tous les <code class="code" id="trpxp3_613">Book</code>s) et que vous acc&eacute;dez ensuite &agrave; une association LAZY (par ex., <code class="code" id="trpxp3_614">book.getAuthor()</code>) pour chacune d'elles en dehors de la requ&ecirc;te initiale.</p></li><li class="list__item" id="trpxp3_610"><p id="trpxp3_615">R&eacute;sultat : 1 requ&ecirc;te pour charger les N livres, puis N requ&ecirc;tes suppl&eacute;mentaires pour charger l'auteur de chaque livre. Tr&egrave;s inefficace.</p></li><li class="list__item" id="trpxp3_611"><p id="trpxp3_616"><span class="control" id="trpxp3_618">Solutions :</span></p><ul class="list _bullet" id="trpxp3_617"><li class="list__item" id="trpxp3_619"><p id="trpxp3_622">Utiliser <code class="code" id="trpxp3_623">JOIN FETCH</code> dans une requ&ecirc;te <code class="code" id="trpxp3_624">@Query</code> (JPQL) : <code class="code" id="trpxp3_625">SELECT b FROM Book b JOIN FETCH b.author WHERE ...</code> charge les livres et leurs auteurs en une seule requ&ecirc;te.</p></li><li class="list__item" id="trpxp3_620"><p id="trpxp3_626">Utiliser <code class="code" id="trpxp3_627">@EntityGraph</code>: Permet de sp&eacute;cifier dynamiquement ou statiquement quelles associations LAZY doivent &ecirc;tre charg&eacute;es EAGERment pour une requ&ecirc;te sp&eacute;cifique.</p></li><li class="list__item" id="trpxp3_621"><p id="trpxp3_628">Passer l'association en EAGER (d&eacute;conseill&eacute; pour les collections, peut &ecirc;tre acceptable pour <code class="code" id="trpxp3_629">@ManyToOne</code> si justifi&eacute;).</p></li></ul></li></ul><p id="trpxp3_566"><span class="control" id="trpxp3_630">Cas d'utilisation <code class="code" id="trpxp3_631">@OneToMany</code>/<code class="code" id="trpxp3_632">@ManyToOne</code>:</span></p><ul class="list _bullet" id="trpxp3_567"><li class="list__item" id="trpxp3_633"><p id="trpxp3_634">La relation la plus fr&eacute;quente : Cat&eacute;gories et Produits, Commandes et Lignes de commande, Utilisateurs et Posts, D&eacute;partements et Employ&eacute;s, etc.</p></li></ul></section><section class="chapter"><h3 id="3-relation-manytomany" data-toc="3-relation-manytomany">3. Relation <code class="code" id="trpxp3_653">@ManyToMany</code></h3><p id="trpxp3_636">Plusieurs instances d'une entit&eacute; peuvent &ecirc;tre li&eacute;es &agrave; plusieurs instances d'une autre. N&eacute;cessite une **table de jointure ** interm&eacute;diaire dans la base de donn&eacute;es. Par exemple, un <code class="code" id="trpxp3_654">Student</code> peut s'inscrire &agrave; plusieurs <code class="code" id="trpxp3_655">Course</code>s, et un <code class="code" id="trpxp3_656">Course</code> peut avoir plusieurs <code class="code" id="trpxp3_657">Student</code>s.</p><p id="trpxp3_637"><span class="control" id="trpxp3_658">Diagramme UML (PlantUML) :</span></p><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="458px" preserveAspectRatio="none" style="width:321px;height:458px;background:#FFFFFF;" version="1.1" viewBox="0 0 321 458" width="321px" zoomAndPan="magnify"><defs/><g><!--class Student--><g id="elem_Student"><rect codeLine="4" fill="#F1F1F1" height="97.4648" id="Student" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="179" x="12" y="7"/><ellipse cx="70.75" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M74.8643,29 L67.1445,29 L67.1445,16.6069 L74.8643,16.6069 L74.8643,18.7651 L69.5933,18.7651 L69.5933,21.438 L74.3662,21.438 L74.3662,23.5962 L69.5933,23.5962 L69.5933,26.8418 L74.8643,26.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="91.25" y="28.291">Student</text><line style="stroke:#181818;stroke-width:0.5;" x1="13" x2="190" y1="39" y2="39"/><ellipse cx="23" cy="52.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="32" y="56.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="13" x2="190" y1="63.4883" y2="63.4883"/><ellipse cx="23" cy="77.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="32" y="81.0234">name: String</text><ellipse cx="23" cy="93.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153" x="32" y="97.5117">courses: Set&lt;Course&gt;</text></g><!--class Course--><g id="elem_Course"><rect codeLine="11" fill="#F1F1F1" height="97.4648" id="Course" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="189" x="7" y="353.6"/><ellipse cx="72.75" cy="369.6" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M76.8643,375.6 L69.1445,375.6 L69.1445,363.2069 L76.8643,363.2069 L76.8643,365.3651 L71.5933,365.3651 L71.5933,368.038 L76.3662,368.038 L76.3662,370.1962 L71.5933,370.1962 L71.5933,373.4418 L76.8643,373.4418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="93.25" y="374.891">Course</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="195" y1="385.6" y2="385.6"/><ellipse cx="18" cy="399.3441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="27" y="403.1352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="8" x2="195" y1="410.0883" y2="410.0883"/><ellipse cx="18" cy="423.8324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="27" y="427.6234">title: String</text><ellipse cx="18" cy="440.3207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="163" x="27" y="444.1117">students: Set&lt;Student&gt;</text></g><!--class Student_Course--><g id="elem_Student_Course"><rect codeLine="18" fill="#F1F1F1" height="89.5977" id="Student_Course" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="175" x="139" y="184"/><ellipse cx="169.3" cy="204.3105" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M173.4143,210.3105 L165.6945,210.3105 L165.6945,197.9175 L173.4143,197.9175 L173.4143,200.0757 L168.1433,200.0757 L168.1433,202.7485 L172.9162,202.7485 L172.9162,204.9067 L168.1433,204.9067 L168.1433,208.1523 L173.4143,208.1523 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="66" x="208.2" y="200.6016">&#171;join table&#187;</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="186.7" y="216.668">Student_Course</text><line style="stroke:#181818;stroke-width:0.5;" x1="140" x2="313" y1="224.6211" y2="224.6211"/><ellipse cx="150" cy="238.3652" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="149" x="159" y="242.1563">student_id: Long &#171;FK&#187;</text><ellipse cx="150" cy="254.8535" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="159" y="258.6445">course_id: Long &#171;FK&#187;</text><line style="stroke:#181818;stroke-width:0.5;" x1="140" x2="313" y1="265.5977" y2="265.5977"/></g><ellipse cx="101.5" cy="228.8" fill="#181818" rx="2" ry="2" style="stroke:#181818;stroke-width:1.0;"/><!--link Student to apoint6--><g id="link_Student_apoint6"><path d="M101.5,103.78 C101.5,149.85 101.5,214.05 101.5,226.62 " fill="none" id="Student-apoint6" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="43" x="57.5" y="161.7684">enrolls</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="100.2297" y="124.8779">*</text></g><!--link apoint6 to Course--><g id="link_apoint6_Course"><path d="M101.5,231.25 C101.5,244.46 101.5,308.26 101.5,354.02 " fill="none" id="apoint6-Course" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="100.8813" y="342.7023">*</text></g><!--link apoint6 to Student_Course--><g id="link_apoint6_Student_Course"><path d="M103.67,228.6 C108.76,228.6 122.28,228.6 138.58,228.6 " fill="none" id="apoint6-Student_Course" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/></g><!--SRC=[ROzD3e8m48NtFSM4bNzm04AwCN6ZEmz0gaoqMbhI3WjYlBi35FzNxRnv-TwRSDMsKLxLOBH5wXe4v-diX41BcZhOKrln5su2bg2h77REdWIaQJzRLMFE5gzxRGb7r_g0WIMaOZqCKjoVh57vZsA3-M25CJZ2OertMfJAI2sAYzCMI1qCIjc7l23bbCQkpLRAOJUM_Lbnm7HpiaYutV34a1pGUcTC4BDeMiNL7BBigz83]--></g></svg></div><p id="trpxp3_639"><span class="control" id="trpxp3_659">Mapping Bidirectionnel :</span></p><div class="code-block" data-lang="java">
+// Entité Student (un des côtés)
+@Entity
+@Table(name = &quot;students&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    // LAZY est le défaut et fortement recommandé.
+    // Cascade: Souvent PERSIST et MERGE sont utiles (si on ajoute un cours à un étudiant existant, la relation est créée).
+    // REMOVE est rarement utilisé ici (supprimer un étudiant ne devrait généralement pas supprimer les cours).
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = &quot;student_course&quot;, // Nom de la table de jointure
+            joinColumns = @JoinColumn(name = &quot;student_id&quot;), // Clé étrangère dans la table de jointure pointant vers Student
+            inverseJoinColumns = @JoinColumn(name = &quot;course_id&quot;) // Clé étrangère dans la table de jointure pointant vers Course
+    )
+    private Set&lt;Course&gt; courses = new HashSet&lt;&gt;(); // Utiliser Set est courant pour éviter les doublons
+
+    // Méthodes Helper pour la cohérence
+    public void addCourse(Course course) {
+        this.courses.add(course);
+        course.getStudents().add(this);
+    }
+
+    public void removeCourse(Course course) {
+        this.courses.remove(course);
+        course.getStudents().remove(this);
+    }
+}
+
+// Entité Course (l'autre côté, non-propriétaire)
+@Entity
+@Table(name = &quot;courses&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+
+    // mappedBy indique que la configuration @JoinTable se trouve sur l'attribut 'courses' de Student.
+    // LAZY est le défaut et recommandé.
+    @ManyToMany(mappedBy = &quot;courses&quot;, fetch = FetchType.LAZY)
+    private Set&lt;Student&gt; students = new HashSet&lt;&gt;(); // Initialiser la collection
+}
+</div><ul class="list _bullet" id="trpxp3_641"><li class="list__item" id="trpxp3_660"><p id="trpxp3_665">Un seul c&ocirc;t&eacute; (ici <code class="code" id="trpxp3_666">Student</code>) d&eacute;finit la <code class="code" id="trpxp3_667">@JoinTable</code>. L'autre c&ocirc;t&eacute; utilise <code class="code" id="trpxp3_668">mappedBy</code>.</p></li><li class="list__item" id="trpxp3_661"><p id="trpxp3_669"><code class="code" id="trpxp3_670">@JoinTable</code> configure la table interm&eacute;diaire : nom de la table (<code class="code" id="trpxp3_671">name</code>), colonne de cl&eacute; &eacute;trang&egrave;re pour l'entit&eacute; propri&eacute;taire (<code class="code" id="trpxp3_672">joinColumns</code>), et colonne de cl&eacute; &eacute;trang&egrave;re pour l'entit&eacute; inverse (<code class="code" id="trpxp3_673">inverseJoinColumns</code>).</p></li><li class="list__item" id="trpxp3_662"><p id="trpxp3_674"><code class="code" id="trpxp3_675">FetchType.LAZY</code> est le d&eacute;faut et essentiel pour les performances.</p></li><li class="list__item" id="trpxp3_663"><p id="trpxp3_676">L'utilisation de <code class="code" id="trpxp3_677">Set</code> au lieu de <code class="code" id="trpxp3_678">List</code> est fr&eacute;quente pour les relations Many-to-Many pour repr&eacute;senter l'unicit&eacute; de la relation.</p></li><li class="list__item" id="trpxp3_664"><p id="trpxp3_679">Les m&eacute;thodes helper (<code class="code" id="trpxp3_680">addCourse</code>, <code class="code" id="trpxp3_681">removeCourse</code>) sont &agrave; nouveau cruciales pour la gestion bidirectionnelle.</p></li></ul><p id="trpxp3_642"><span class="control" id="trpxp3_682">Alternative : Mod&eacute;liser la table de jointure comme une Entit&eacute;</span></p><p id="trpxp3_643">Parfois, la table de jointure contient plus d'informations que juste les deux cl&eacute;s &eacute;trang&egrave;res (par ex., date d'inscription, note, statut). Dans ce cas, il est pr&eacute;f&eacute;rable de mod&eacute;liser la table de jointure comme une entit&eacute; &agrave; part enti&egrave;re et de remplacer la relation <code class="code" id="trpxp3_683">@ManyToMany</code> par deux relations <code class="code" id="trpxp3_684">@OneToMany</code>/<code class="code" id="trpxp3_685">@ManyToOne</code>.</p><p id="trpxp3_644"><span class="control" id="trpxp3_686">Exemple avec <code class="code" id="trpxp3_687">Enrollment</code>:</span></p><style>.theme-dark .plantuml > svg {filter: hue-rotate(180deg) invert(0.9);}div.plantuml {overflow-x: auto;}</style><div class="plantuml"><?xml version="1.0" encoding="us-ascii" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="341px" preserveAspectRatio="none" style="width:565px;height:341px;background:#FFFFFF;" version="1.1" viewBox="0 0 565 341" width="565px" zoomAndPan="magnify"><defs/><g><!--class Student--><g id="elem_Student"><rect codeLine="4" fill="#F1F1F1" height="97.4648" id="Student" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="234" x="7" y="7"/><ellipse cx="93.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M97.3643,29 L89.6445,29 L89.6445,16.6069 L97.3643,16.6069 L97.3643,18.7651 L92.0933,18.7651 L92.0933,21.438 L96.8662,21.438 L96.8662,23.5962 L92.0933,23.5962 L92.0933,26.8418 L97.3643,26.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="113.75" y="28.291">Student</text><line style="stroke:#181818;stroke-width:0.5;" x1="8" x2="240" y1="39" y2="39"/><ellipse cx="18" cy="52.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="27" y="56.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="8" x2="240" y1="63.4883" y2="63.4883"/><ellipse cx="18" cy="77.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="27" y="81.0234">name: String</text><ellipse cx="18" cy="93.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="208" x="27" y="97.5117">enrollments: Set&lt;Enrollment&gt;</text></g><!--class Course--><g id="elem_Course"><rect codeLine="11" fill="#F1F1F1" height="97.4648" id="Course" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="234" x="324" y="7"/><ellipse cx="412.25" cy="23" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M416.3643,29 L408.6445,29 L408.6445,16.6069 L416.3643,16.6069 L416.3643,18.7651 L411.0933,18.7651 L411.0933,21.438 L415.8662,21.438 L415.8662,23.5962 L411.0933,23.5962 L411.0933,26.8418 L416.3643,26.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="432.75" y="28.291">Course</text><line style="stroke:#181818;stroke-width:0.5;" x1="325" x2="557" y1="39" y2="39"/><ellipse cx="335" cy="52.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="344" y="56.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="325" x2="557" y1="63.4883" y2="63.4883"/><ellipse cx="335" cy="77.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="344" y="81.0234">title: String</text><ellipse cx="335" cy="93.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="208" x="344" y="97.5117">enrollments: Set&lt;Enrollment&gt;</text></g><!--class Enrollment--><g id="elem_Enrollment"><rect codeLine="18" fill="#F1F1F1" height="130.4414" id="Enrollment" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="206" x="179" y="204"/><ellipse cx="240.25" cy="220" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M244.3643,226 L236.6445,226 L236.6445,213.6069 L244.3643,213.6069 L244.3643,215.7651 L239.0933,215.7651 L239.0933,218.438 L243.8662,218.438 L243.8662,220.5962 L239.0933,220.5962 L239.0933,223.8418 L244.3643,223.8418 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="260.75" y="225.291">Enrollment</text><line style="stroke:#181818;stroke-width:0.5;" x1="180" x2="384" y1="236" y2="236"/><ellipse cx="190" cy="249.7441" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="199" y="253.5352">id: Long</text><line style="stroke:#181818;stroke-width:1.0;" x1="180" x2="384" y1="260.4883" y2="260.4883"/><ellipse cx="190" cy="274.2324" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="199" y="278.0234">student: Student &#171;FK&#187;</text><ellipse cx="190" cy="290.7207" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="138" x="199" y="294.5117">course: Course &#171;FK&#187;</text><ellipse cx="190" cy="307.209" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180" x="199" y="311">enrollmentDate: LocalDate</text><ellipse cx="190" cy="323.6973" fill="none" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="89" x="199" y="327.4883">grade: String</text></g><!--link Student to Enrollment--><g id="link_Student_Enrollment"><path codeLine="27" d="M210,103.95 C210,133.6 210,171.9 210,204.15 " fill="none" id="Student-Enrollment" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="187" y="150.6184">has</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="248.125" y="124.5093">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="195.3281" y="193.3453">*</text></g><!--link Course to Enrollment--><g id="link_Course_Enrollment"><path codeLine="28" d="M354.5,103.95 C354.5,133.6 354.5,171.9 354.5,204.15 " fill="none" id="Course-Enrollment" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="22" x="331.5" y="150.6184">has</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="8" x="306.9063" y="119.4002">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="6" x="356.5359" y="193.3453">*</text></g><!--SRC=[dO-z3i8m38JtF8MLaQe3QrHruMUX6qyGjLORaIPLaWuLujrn0lr1GWnizjtfyzdVb1caaprePJ1C0u9reRECeGagJ70DOqCZt1bae1e1bJKjWpoFkv4z2eeu5RKCq3YhTKzvJpA6uhG89Niip8CTdSVlI0heVvYh6haVu4GcnRzU4SjFHN6-b6NowbH9pDKspdh_A0D6PYrr79FREjciTQdEpEPxJdU1x_Ysce1EUlO-yYFo1000]--></g></svg></div><div class="code-block" data-lang="java">
+// Entité intermédiaire Enrollment
+@Entity
+@Table(name = &quot;enrollments&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Enrollment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;student_id&quot;)
+    private Student student;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;course_id&quot;)
+    private Course course;
+
+    @Column(name = &quot;enrollment_date&quot;)
+    private LocalDate enrollmentDate;
+
+    private String grade; // Note obtenue
+
+    // Constructeurs, equals/hashCode basés sur student et course pourraient être utiles
+}
+
+// Entité Student (modifiée)
+@Entity
+@Table(name = &quot;students&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = &quot;student&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set&lt;Enrollment&gt; enrollments = new HashSet&lt;&gt;();
+}
+
+// Entité Course (modifiée)
+@Entity
+@Table(name = &quot;courses&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+
+    @OneToMany(mappedBy = &quot;course&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set&lt;Enrollment&gt; enrollments = new HashSet&lt;&gt;();
+}
+</div><ul class="list _bullet" id="trpxp3_647"><li class="list__item" id="trpxp3_688"><p id="trpxp3_690">Cette approche est plus flexible car elle permet d'ajouter des attributs &agrave; la relation elle-m&ecirc;me.</p></li><li class="list__item" id="trpxp3_689"><p id="trpxp3_691">Elle transforme la relation Many-to-Many logique en deux relations One-to-Many physiques.</p></li></ul><p id="trpxp3_648"><span class="control" id="trpxp3_692">Cas d'utilisation <code class="code" id="trpxp3_693">@ManyToMany</code>:</span></p><ul class="list _bullet" id="trpxp3_649"><li class="list__item" id="trpxp3_694"><p id="trpxp3_697">&Eacute;tudiants et Cours.</p></li><li class="list__item" id="trpxp3_695"><p id="trpxp3_698">Utilisateurs et R&ocirc;les.</p></li><li class="list__item" id="trpxp3_696"><p id="trpxp3_699">Articles de blog et Tags.</p></li></ul><p id="trpxp3_650"><span class="control" id="trpxp3_700">Conseil G&eacute;n&eacute;ral sur les Associations :</span></p><ul class="list _bullet" id="trpxp3_651"><li class="list__item" id="trpxp3_701"><p id="trpxp3_707"><span class="control" id="trpxp3_708">Privil&eacute;giez LAZY Fetching</span>, surtout pour les collections (<code class="code" id="trpxp3_709">@OneToMany</code>, <code class="code" id="trpxp3_710">@ManyToMany</code>). Utilisez EAGER avec parcimonie et seulement si vous &ecirc;tes s&ucirc;r d'avoir <span class="emphasis" id="trpxp3_711">toujours</span> besoin des donn&eacute;es associ&eacute;es et que la cardinalit&eacute; est faible (ex: <code class="code" id="trpxp3_712">@OneToOne</code>, parfois <code class="code" id="trpxp3_713">@ManyToOne</code>).</p></li><li class="list__item" id="trpxp3_702"><p id="trpxp3_714"><span class="control" id="trpxp3_715">R&eacute;solvez les probl&egrave;mes N+1</span> en utilisant <code class="code" id="trpxp3_716">JOIN FETCH</code> ou <code class="code" id="trpxp3_717">@EntityGraph</code> lorsque vous avez besoin de charger des associations LAZY en m&ecirc;me temps que l'entit&eacute; principale.</p></li><li class="list__item" id="trpxp3_703"><p id="trpxp3_718"><span class="control" id="trpxp3_719">Impl&eacute;mentez des m&eacute;thodes helper</span> pour maintenir la coh&eacute;rence des relations bidirectionnelles.</p></li><li class="list__item" id="trpxp3_704"><p id="trpxp3_720"><span class="control" id="trpxp3_721">Soyez prudent avec <code class="code" id="trpxp3_723">CascadeType.ALL</code> et <code class="code" id="trpxp3_724">CascadeType.REMOVE</code>.</span> Assurez-vous que la s&eacute;mantique de suppression en cascade correspond &agrave; votre logique m&eacute;tier. <code class="code" id="trpxp3_722">orphanRemoval=true</code> est souvent utile pour les relations &quot;parent-enfant&quot; strictes.</p></li><li class="list__item" id="trpxp3_705"><p id="trpxp3_725"><span class="control" id="trpxp3_726">Utilisez <code class="code" id="trpxp3_732">Set</code> pour les collections o&ugrave; l'ordre n'importe pas et o&ugrave; les doublons ne sont pas souhait&eacute;s</span> (souvent le cas pour <code class="code" id="trpxp3_727">@ManyToMany</code> et parfois <code class="code" id="trpxp3_728">@OneToMany</code>). Utilisez <code class="code" id="trpxp3_729">List</code> si l'ordre est important (peut n&eacute;cessiter <code class="code" id="trpxp3_730">@OrderColumn</code> ou <code class="code" id="trpxp3_731">@OrderBy</code>).</p></li><li class="list__item" id="trpxp3_706"><p id="trpxp3_733"><span class="control" id="trpxp3_734">Impl&eacute;mentez <code class="code" id="trpxp3_739">equals()</code> et <code class="code" id="trpxp3_740">hashCode()</code></span> correctement dans vos entit&eacute;s, surtout si vous les utilisez dans des <code class="code" id="trpxp3_735">Set</code> ou comme cl&eacute;s de <code class="code" id="trpxp3_736">Map</code>. Basez-les de pr&eacute;f&eacute;rence sur la cl&eacute; primaire (<code class="code" id="trpxp3_737">id</code>) si elle est stable, ou sur un identifiant m&eacute;tier unique. Soyez prudent avec les champs li&eacute;s aux associations dans ces m&eacute;thodes pour &eacute;viter les <code class="code" id="trpxp3_738">LazyInitializationException</code> ou les boucles infinies.</p></li></ul></section><section class="chapter"><h3 id="exercice-3-mise-en-place-d-une-relation-onetomany-manytoone" data-toc="exercice-3-mise-en-place-d-une-relation-onetomany-manytoone">Exercice 3 : Mise en place d'une relation <code class="code" id="trpxp3_745">@OneToMany</code>/<code class="code" id="trpxp3_746">@ManyToOne</code></h3><ol class="list _decimal" id="trpxp3_742" type="1"><li class="list__item" id="trpxp3_747"><p id="trpxp3_749"><span class="control" id="trpxp3_750">Objectif :</span> Cr&eacute;er et utiliser une relation bidirectionnelle <code class="code" id="trpxp3_751">@OneToMany</code>/<code class="code" id="trpxp3_752">@ManyToOne</code>.</p></li><li class="list__item" id="trpxp3_748"><p id="trpxp3_753"><span class="control" id="trpxp3_755">&Eacute;nonc&eacute; :</span></p><ul class="list _bullet" id="trpxp3_754"><li class="list__item" id="trpxp3_756"><p id="trpxp3_763">Cr&eacute;ez une nouvelle entit&eacute; <code class="code" id="trpxp3_764">Category</code> avec les champs : <code class="code" id="trpxp3_765">id</code> (Long, auto-g&eacute;n&eacute;r&eacute;), <code class="code" id="trpxp3_766">name</code> (String, unique, non null).</p></li><li class="list__item" id="trpxp3_757"><p id="trpxp3_767">Modifiez l'entit&eacute; <code class="code" id="trpxp3_768">Product</code> (des exercices pr&eacute;c&eacute;dents) pour ajouter une relation <code class="code" id="trpxp3_769">@ManyToOne</code> vers <code class="code" id="trpxp3_770">Category</code>. Un produit doit appartenir &agrave; une cat&eacute;gorie. Assurez-vous que la cl&eacute; &eacute;trang&egrave;re (<code class="code" id="trpxp3_771">category_id</code>) est dans la table <code class="code" id="trpxp3_772">products</code> et n'est pas nulle. Utilisez le FetchType LAZY.</p></li><li class="list__item" id="trpxp3_758"><p id="trpxp3_773">Modifiez l'entit&eacute; <code class="code" id="trpxp3_774">Category</code> pour ajouter la relation inverse <code class="code" id="trpxp3_775">@OneToMany</code> vers <code class="code" id="trpxp3_776">Product</code>. La cat&eacute;gorie doit avoir une liste (<code class="code" id="trpxp3_777">List</code>) de produits. Utilisez <code class="code" id="trpxp3_778">mappedBy</code>, <code class="code" id="trpxp3_779">CascadeType.ALL</code> (pour que la suppression d'une cat&eacute;gorie supprime ses produits - attention, c'est un choix m&eacute;tier potentiellement dangereux, mais pour l'exercice c'est ok), <code class="code" id="trpxp3_780">orphanRemoval=true</code> et le FetchType LAZY.</p></li><li class="list__item" id="trpxp3_759"><p id="trpxp3_781">Ajoutez des m&eacute;thodes helper dans <code class="code" id="trpxp3_782">Category</code> pour ajouter et retirer des produits (<code class="code" id="trpxp3_783">addProduct</code>, <code class="code" id="trpxp3_784">removeProduct</code>), en maintenant la coh&eacute;rence bidirectionnelle.</p></li><li class="list__item" id="trpxp3_760"><p id="trpxp3_785">Cr&eacute;ez un <code class="code" id="trpxp3_786">CategoryRepository</code>.</p></li><li class="list__item" id="trpxp3_761"><p id="trpxp3_787">Dans <code class="code" id="trpxp3_788">ProductService</code>, modifiez la m&eacute;thode <code class="code" id="trpxp3_789">createProduct</code> pour accepter un <code class="code" id="trpxp3_790">categoryId</code> et lier le nouveau produit &agrave; la cat&eacute;gorie existante. Vous devrez r&eacute;cup&eacute;rer la cat&eacute;gorie via le <code class="code" id="trpxp3_791">CategoryRepository</code>.</p></li><li class="list__item" id="trpxp3_762"><p id="trpxp3_792">(Optionnel) Ajoutez une m&eacute;thode dans <code class="code" id="trpxp3_793">ProductService</code> ou un nouveau service <code class="code" id="trpxp3_794">CategoryService</code> pour trouver tous les produits d'une cat&eacute;gorie donn&eacute;e.</p></li></ul></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-3" data-toc="correction-exercice-3">Correction Exercice 3</h4></div><div class="collapse__content"><p id="trpxp3_795"><span class="control" id="trpxp3_806">Entit&eacute; <code class="code" id="trpxp3_807">Category</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = &quot;categories&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name; // Nom de la catégorie
+
+    @OneToMany(
+            mappedBy = &quot;category&quot;, // Mappé par le champ 'category' dans Product
+            cascade = CascadeType.ALL, // Supprimer Catégorie supprime Produits associés
+            orphanRemoval = true, // Retirer un produit de la liste le supprime
+            fetch = FetchType.LAZY // Chargement paresseux (défaut mais explicite)
+    )
+    private List&lt;Product&gt; products = new ArrayList&lt;&gt;(); // Liste des produits de cette catégorie
+
+    // Méthode helper pour ajouter un produit
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.setCategory(this); // Assure la cohérence bidirectionnelle
+    }
+
+    // Méthode helper pour retirer un produit
+    public void removeProduct(Product product) {
+        this.products.remove(product);
+        product.setCategory(null); // Assure la cohérence bidirectionnelle
+    }
+
+    // toString, equals, hashCode (si nécessaire, attention aux boucles avec products)
+    @Override
+    public String toString() {
+        return &quot;Category{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                '}'; // Ne pas inclure la liste de produits pour éviter LazyInitializationException ou boucle
+    }
+}
+</div><p id="trpxp3_797"><span class="control" id="trpxp3_808">Entit&eacute; <code class="code" id="trpxp3_809">Product</code> (modifi&eacute;e) :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = &quot;products&quot;)
+@Getter
+@Setter
+@NoArgsConstructor
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name; // Nom du produit
+
+    @Column(nullable = false)
+    private Double price; // Prix du produit
+
+    @Column(name = &quot;creation_date&quot;)
+    private LocalDate creationDate; // Date de création
+
+    // Nouvelle relation ManyToOne vers Category
+    @ManyToOne(fetch = FetchType.LAZY) // Chargement paresseux recommandé
+    @JoinColumn(name = &quot;category_id&quot;, nullable = false) // Clé étrangère dans la table 'products', non nulle
+    private Category category; // Référence vers la catégorie
+
+    @Override
+    public String toString() {
+        return &quot;Product{&quot; +
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, price=&quot; + price +
+                &quot;, creationDate=&quot; + creationDate +
+                &quot;, categoryId=&quot; + (category != null ? category.getId() : &quot;null&quot;) + // Affiche l'ID de la catégorie si chargée
+                '}';
+    }
+}
+</div><p id="trpxp3_799"><span class="control" id="trpxp3_810">Repository <code class="code" id="trpxp3_811">CategoryRepository</code>:</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.repository;
+
+import fr.formation.spring.demo.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface CategoryRepository extends JpaRepository&lt;Category, Long&gt; {
+    // Optionnel: trouver une catégorie par nom
+    Optional&lt;Category&gt; findByName(String name);
+}
+</div><p id="trpxp3_801"><span class="control" id="trpxp3_812">Service <code class="code" id="trpxp3_813">ProductService</code> (modifi&eacute;) :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.service;
+
+import fr.formation.spring.demo.model.Category;
+import fr.formation.spring.demo.model.Product;
+import fr.formation.spring.demo.repository.CategoryRepository; // Importer le nouveau repository
+import fr.formation.spring.demo.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+// Importer une exception personnalisée ou utiliser une exception existante
+import jakarta.persistence.EntityNotFoundException; // ou une exception personnalisée
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository; // Injecter CategoryRepository
+
+    @Autowired
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository; // Initialiser dans le constructeur
+    }
+
+    // Modifié pour accepter categoryId
+    @Transactional
+    public Product createProduct(String name, Double price, Long categoryId) {
+        // Récupérer la catégorie
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -&gt; new EntityNotFoundException(&quot;Category not found with id: &quot; + categoryId));
+
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        product.setCreationDate(LocalDate.now());
+        // Lier le produit à la catégorie (important!)
+        product.setCategory(category);
+
+        // Note: Pas besoin d'appeler category.addProduct(product) ici explicitement
+        // car la sauvegarde du produit (côté propriétaire de la FK) suffit
+        // pour établir le lien en BDD. L'appel à category.addProduct est surtout
+        // utile si on manipule la collection côté Category en mémoire.
+        // Cependant, si CascadeType.PERSIST est sur Category.products,
+        // et que le produit est nouveau, il serait persisté via la catégorie.
+        // Ici, on persiste Product directement.
+
+        return productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional&lt;Product&gt; findProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;Product&gt; findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteProduct(Long id) {
+        // La suppression du produit mettra automatiquement à jour la collection
+        // dans la catégorie associée si elle est chargée en mémoire,
+        // mais la relation FK est supprimée de toute façon.
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        } else {
+            System.err.println(&quot;Produit non trouvé pour suppression: ID = &quot; + id);
+            // throw new EntityNotFoundException(&quot;Product not found with id: &quot; + id);
+        }
+    }
+
+    // ... (autres méthodes : findProductsWithPriceGreaterThan, etc.) ...
+
+    // (Optionnel) Trouver les produits par catégorie
+    @Transactional(readOnly = true)
+    public List&lt;Product&gt; findProductsByCategoryId(Long categoryId) {
+        // Option 1: Utiliser une requête dérivée dans ProductRepository
+        // Il faudrait ajouter à ProductRepository: List&lt;Product&gt; findByCategoryId(Long categoryId);
+        // return productRepository.findByCategoryId(categoryId);
+
+        // Option 2: Récupérer la catégorie et accéder à sa liste de produits
+        // ATTENTION: Nécessite une transaction active car products est LAZY
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -&gt; new EntityNotFoundException(&quot;Category not found with id: &quot; + categoryId));
+        // Accéder à la collection déclenche le chargement LAZY
+        // Hibernate.initialize(category.getProducts()); // Peut être nécessaire dans certains contextes hors Spring Data JPA direct
+        return category.getProducts(); // Retourne la liste des produits (peut être une copie ou proxy selon l'impl JPA)
+        // Note: Cette approche charge la catégorie puis les produits (potentiel N+1 si fait en boucle sur plusieurs catégories)
+    }
+
+    // (Optionnel mais recommandé) Méthode utilisant JOIN FETCH pour éviter N+1
+    // Nécessite une méthode dans CategoryRepository:
+    // @Query(&quot;SELECT c FROM Category c LEFT JOIN FETCH c.products WHERE c.id = :id&quot;)
+    // Optional&lt;Category&gt; findByIdWithProducts(@Param(&quot;id&quot;) Long id);
+     /*
+     @Transactional(readOnly = true)
+     public List&lt;Product&gt; findProductsByCategoryIdEfficiently(Long categoryId) {
+         Category category = categoryRepository.findByIdWithProducts(categoryId)
+                 .orElseThrow(() -&gt; new EntityNotFoundException(&quot;Category not found with id: &quot; + categoryId));
+         return new ArrayList&lt;&gt;(category.getProducts()); // Retourner une copie peut être plus sûr
+     }
+     */
+}
+
+// N'oubliez pas d'ajouter la méthode findByCategoryId ou findByIdWithProducts
+// au ProductRepository ou CategoryRepository si vous utilisez les options correspondantes.
+// Exemple pour ProductRepository:
+// List&lt;Product&gt; findByCategoryId(Long categoryId);
+</div><p id="trpxp3_803"><span class="control" id="trpxp3_814">(Optionnel) Test dans <code class="code" id="trpxp3_815">AppRunner</code>:</span></p><div class="code-block" data-lang="java">
+// ... dans la méthode run() d'AppRunner ...
+System.out.println(&quot;\n--- Tests Associations Catégorie/Produit ---&quot;);
+
+// Injecter CategoryRepository
+@Autowired
+private CategoryRepository categoryRepository;
+
+// Créer des catégories
+Category electronics = new Category();
+electronics.
+
+setName(&quot;Electronics&quot;);
+
+Category books = new Category();
+books.
+
+setName(&quot;Books&quot;);
+
+electronics =categoryRepository.
+
+save(electronics);
+
+books =categoryRepository.
+
+save(books);
+System.out.
+
+println(&quot;Catégories créées: &quot;+electronics +&quot;, &quot;+books);
+
+// Créer des produits associés à des catégories
+Product laptop = productService.createProduct(&quot;Laptop Pro&quot;, 1200.50, electronics.getId());
+Product keyboard = productService.createProduct(&quot;Mechanical Keyboard&quot;, 150.75, electronics.getId());
+Product javaBook = productService.createProduct(&quot;Effective Java&quot;, 45.00, books.getId());
+
+System.out.
+
+println(&quot;Produits créés et liés: &quot;+laptop +&quot;, &quot;+keyboard+&quot;, &quot;+javaBook);
+
+// Récupérer un produit et vérifier sa catégorie (nécessite transaction ou fetch EAGER/JOIN)
+Optional&lt;Product&gt; foundLaptop = productService.findProductById(laptop.getId());
+if(foundLaptop.
+
+isPresent()){
+Product p = foundLaptop.get();
+// Pour accéder à la catégorie LAZY, il faut être dans une transaction ou utiliser JOIN FETCH
+// L'appel à toString() tel que défini précédemment devrait fonctionner s'il est appelé
+// depuis une méthode de service @Transactional. Sinon, un appel direct à p.getCategory().getName()
+// hors transaction lèverait une LazyInitializationException.
+// On va utiliser la méthode findProductsByCategoryId pour tester.
+}
+
+// Trouver les produits d'une catégorie
+        System.out.
+
+println(&quot;Produits dans la catégorie 'Electronics':&quot;);
+
+List&lt;Product&gt; electronicProducts = productService.findProductsByCategoryId(electronics.getId());
+electronicProducts.
+
+forEach(System.out::println);
+
+System.out.
+
+println(&quot;Produits dans la catégorie 'Books':&quot;);
+
+List&lt;Product&gt; bookProducts = productService.findProductsByCategoryId(books.getId());
+bookProducts.
+
+forEach(System.out::println);
+
+// Tester la suppression en cascade (ATTENTION!)
+// System.out.println(&quot;Suppression de la catégorie 'Books' (ID: &quot; + books.getId() + &quot;)...&quot;);
+// categoryRepository.deleteById(books.getId());
+// System.out.println(&quot;Vérification de la suppression des produits de la catégorie 'Books':&quot;);
+// Optional&lt;Product&gt; deletedBook = productService.findProductById(javaBook.getId());
+// if (!deletedBook.isPresent()) {
+//     System.out.println(&quot;Produit 'Effective Java' supprimé (attendu).&quot;);
+// }
+
+System.out.
+
+println(&quot;--- Fin des tests Associations ---&quot;);
+</div></div></div></section></section></section><section class="chapter"><h2 id="bonnes-pratiques-avec-spring-data-jpa" data-toc="bonnes-pratiques-avec-spring-data-jpa">Bonnes Pratiques avec Spring Data JPA</h2><ol class="list _decimal" id="trpxp3_816" type="1"><li class="list__item" id="trpxp3_817"><p id="trpxp3_832"><span class="control" id="trpxp3_833">Utiliser l'injection de d&eacute;pendances par constructeur :</span> Pour injecter les repositories dans les services. C'est plus propre et facilite les tests.</p></li><li class="list__item" id="trpxp3_818"><p id="trpxp3_834"><span class="control" id="trpxp3_835">Placer <code class="code" id="trpxp3_836">@Transactional</code> au niveau du Service :</span> La logique m&eacute;tier et la d&eacute;marcation des transactions doivent r&eacute;sider dans la couche Service, pas dans la couche Repository ou Controller.</p></li><li class="list__item" id="trpxp3_819"><p id="trpxp3_837"><span class="control" id="trpxp3_838">Utiliser <code class="code" id="trpxp3_839">@Transactional(readOnly = true)</code>:</span> Pour les op&eacute;rations de lecture seule, afin d'optimiser les performances.</p></li><li class="list__item" id="trpxp3_820"><p id="trpxp3_840"><span class="control" id="trpxp3_841">Pr&eacute;f&eacute;rer <code class="code" id="trpxp3_845">FetchType.LAZY</code>:</span> Surtout pour les collections (<code class="code" id="trpxp3_842">@OneToMany</code>, <code class="code" id="trpxp3_843">@ManyToMany</code>). Charger EAGERment peut entra&icirc;ner des probl&egrave;mes de performance (N+1) et charger inutilement des donn&eacute;es. Utiliser EAGER seulement si l'association est <span class="emphasis" id="trpxp3_844">toujours</span> n&eacute;cessaire et de faible cardinalit&eacute;.</p></li><li class="list__item" id="trpxp3_821"><p id="trpxp3_846"><span class="control" id="trpxp3_847">R&eacute;soudre les Probl&egrave;mes N+1 :</span> Utiliser <code class="code" id="trpxp3_848">JOIN FETCH</code> dans les requ&ecirc;tes <code class="code" id="trpxp3_849">@Query</code> ou <code class="code" id="trpxp3_850">@EntityGraph</code> pour charger les associations LAZY n&eacute;cessaires en une seule requ&ecirc;te lorsque c'est pertinent.</p></li><li class="list__item" id="trpxp3_822"><p id="trpxp3_851"><span class="control" id="trpxp3_852">G&eacute;rer les Relations Bidirectionnelles :</span> Toujours maintenir la coh&eacute;rence des deux c&ocirc;t&eacute;s de la relation en m&eacute;moire &agrave; l'aide de m&eacute;thodes helper (<code class="code" id="trpxp3_853">addXxx</code>, <code class="code" id="trpxp3_854">removeXxx</code>).</p></li><li class="list__item" id="trpxp3_823"><p id="trpxp3_855"><span class="control" id="trpxp3_856">Choisir le bon Repository Parent :</span> <code class="code" id="trpxp3_857">JpaRepository</code> est g&eacute;n&eacute;ralement le meilleur choix car il offre le plus de fonctionnalit&eacute;s. <code class="code" id="trpxp3_858">CrudRepository</code> ou <code class="code" id="trpxp3_859">PagingAndSortingRepository</code> peuvent suffire si moins de fonctionnalit&eacute;s sont n&eacute;cessaires.</p></li><li class="list__item" id="trpxp3_824"><p id="trpxp3_860"><span class="control" id="trpxp3_861">Utiliser les Requ&ecirc;tes D&eacute;riv&eacute;es pour le Simple :</span> Elles sont concises et s&ucirc;res.</p></li><li class="list__item" id="trpxp3_825"><p id="trpxp3_862"><span class="control" id="trpxp3_863">Utiliser <code class="code" id="trpxp3_865">@Query</code> (JPQL) pour le Complexe :</span> Pour les requ&ecirc;tes qui ne peuvent pas &ecirc;tre exprim&eacute;es facilement par les noms de m&eacute;thodes. Pr&eacute;f&eacute;rer les param&egrave;tres nomm&eacute;s (<code class="code" id="trpxp3_864">:paramName</code>).</p></li><li class="list__item" id="trpxp3_826"><p id="trpxp3_866"><span class="control" id="trpxp3_867">Utiliser le SQL Natif avec Parcimonie :</span> Seulement lorsque n&eacute;cessaire pour des fonctionnalit&eacute;s sp&eacute;cifiques &agrave; la BDD ou des optimisations pointues.</p></li><li class="list__item" id="trpxp3_827"><p id="trpxp3_868"><span class="control" id="trpxp3_869">Utiliser <code class="code" id="trpxp3_871">Optional&lt;T&gt;</code>:</span> Pour les m&eacute;thodes qui peuvent ne retourner aucune entit&eacute; (comme <code class="code" id="trpxp3_870">findById</code>). Cela force l'appelant &agrave; g&eacute;rer le cas o&ugrave; l'entit&eacute; n'est pas trouv&eacute;e.</p></li><li class="list__item" id="trpxp3_828"><p id="trpxp3_872"><span class="control" id="trpxp3_873">Impl&eacute;menter <code class="code" id="trpxp3_874">equals()</code> et <code class="code" id="trpxp3_875">hashCode()</code>:</span> Correctement, en se basant sur l'ID (si stable apr&egrave;s persistance) ou un identifiant m&eacute;tier, surtout si les entit&eacute;s sont utilis&eacute;es dans des collections (Set, Map). Attention aux champs d'association LAZY dans ces m&eacute;thodes.</p></li><li class="list__item" id="trpxp3_829"><p id="trpxp3_876"><span class="control" id="trpxp3_877">Envisager les DTOs (Data Transfer Objects) / Projections :</span> Pour ne r&eacute;cup&eacute;rer que les donn&eacute;es n&eacute;cessaires de la base, surtout pour les API ou les vues en lecture seule. Cela am&eacute;liore les performances et d&eacute;couple la couche de persistance de la couche de pr&eacute;sentation. Spring Data JPA supporte les projections (bas&eacute;es sur interface ou classe).</p></li><li class="list__item" id="trpxp3_830"><p id="trpxp3_878"><span class="control" id="trpxp3_879">G&eacute;rer le Sch&eacute;ma de BDD en Production :</span> Ne pas utiliser <code class="code" id="trpxp3_880">spring.jpa.hibernate.ddl-auto=update</code> en production. Utiliser <code class="code" id="trpxp3_881">validate</code> ou <code class="code" id="trpxp3_882">none</code> et g&eacute;rer les migrations de sch&eacute;ma avec des outils comme Flyway ou Liquibase.</p></li><li class="list__item" id="trpxp3_831"><p id="trpxp3_883"><span class="control" id="trpxp3_884">Attention aux Cascades :</span> Utiliser <code class="code" id="trpxp3_885">CascadeType</code> judicieusement. <code class="code" id="trpxp3_886">CascadeType.ALL</code> peut &ecirc;tre pratique mais aussi dangereux (ex: supprimer un <code class="code" id="trpxp3_887">Author</code> supprime tous ses <code class="code" id="trpxp3_888">Book</code>s). <code class="code" id="trpxp3_889">CascadeType.REMOVE</code> est particuli&egrave;rement &agrave; surveiller. <code class="code" id="trpxp3_890">orphanRemoval=true</code> est utile pour les relations de composition strictes.</p></li></ol></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="trpxp3_891">Spring Data JPA est un outil extr&ecirc;mement puissant et productif pour simplifier la couche d'acc&egrave;s aux donn&eacute;es dans les applications Spring. En masquant une grande partie du code r&eacute;p&eacute;titif li&eacute; &agrave; JPA et en offrant des fonctionnalit&eacute;s comme les repositories d&eacute;claratifs et les requ&ecirc;tes d&eacute;riv&eacute;es, il permet aux d&eacute;veloppeurs de se concentrer sur la logique m&eacute;tier.</p><p id="trpxp3_892">Ma&icirc;triser les concepts d'entit&eacute;s, de repositories, de m&eacute;thodes de requ&ecirc;te, et surtout des associations (avec leurs implications sur le fetching et le N+1), est essentiel pour utiliser Spring Data JPA efficacement et construire des applications performantes et maintenables. L'application rigoureuse des bonnes pratiques garantira une base solide pour la persistance des donn&eacute;es de votre application.</p></section><div class="last-modified">Last modified: 11 mai 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="005-00-les-messages-flash.html" class="navigation-links__prev">Les messages flash</a><a href="020-00-la-gestion-des-formulaires.html" class="navigation-links__next">La gestion des formulaires</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

@@ -1,0 +1,1617 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-05-11T08:51:20.455943"><title>La gestion des formulaires | Spring</title><script type="application/json" id="virtual-toc-data">[{"id":"introduction-aux-formulaires-web-et-spring-mvc","level":0,"title":"Introduction aux Formulaires Web et Spring MVC","anchor":"#introduction-aux-formulaires-web-et-spring-mvc"},{"id":"le-flux-de-base-affichage-et-soumission","level":0,"title":"Le Flux de Base : Affichage et Soumission","anchor":"#le-flux-de-base-affichage-et-soumission"},{"id":"data-transfer-objects-dto-pourquoi-et-comment","level":0,"title":"Data Transfer Objects (DTO) : Pourquoi et Comment","anchor":"#data-transfer-objects-dto-pourquoi-et-comment"},{"id":"validation-des-donn-es","level":0,"title":"Validation des Données","anchor":"#validation-des-donn-es"},{"id":"gestion-de-l-upload-de-fichiers","level":0,"title":"Gestion de l\u0027Upload de Fichiers","anchor":"#gestion-de-l-upload-de-fichiers"},{"id":"s-curit-des-formulaires","level":0,"title":"Sécurité des Formulaires","anchor":"#s-curit-des-formulaires"},{"id":"bonnes-pratiques-et-patterns","level":0,"title":"Bonnes Pratiques et Patterns","anchor":"#bonnes-pratiques-et-patterns"},{"id":"conclusion","level":0,"title":"Conclusion","anchor":"#conclusion"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="La gestion des formulaires | Spring"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/020-00-la-gestion-des-formulaires.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="La gestion des formulaires | Spring"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/020-00-la-gestion-des-formulaires.html#webpage",
+    "url": "writerside-documentation/020-00-la-gestion-des-formulaires.html",
+    "name": "La gestion des formulaires | Spring",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring Help"
+}</script><!-- End Schema.org --></head><body data-id="020-00-La-gestion-des-formulaires" data-main-title="La gestion des formulaires" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="020-00-La-gestion-des-formulaires" id="020-00-La-gestion-des-formulaires.md">La gestion des formulaires</h1><section class="chapter"><h2 id="introduction-aux-formulaires-web-et-spring-mvc" data-toc="introduction-aux-formulaires-web-et-spring-mvc">Introduction aux Formulaires Web et Spring MVC</h2><p id="z9wt1py_11">Les formulaires HTML sont le principal moyen pour les utilisateurs d'envoyer des donn&eacute;es &agrave; une application web. Que ce soit pour une inscription, une connexion, la soumission d'un commentaire ou la configuration de param&egrave;tres, les formulaires sont omnipr&eacute;sents.</p><p id="z9wt1py_12">Spring MVC, un module cl&eacute; du framework Spring, fournit un support robuste et flexible pour g&eacute;rer le cycle de vie des formulaires :</p><ul class="list _bullet" id="z9wt1py_13"><li class="list__item" id="z9wt1py_15"><p id="z9wt1py_22">Afficher un formulaire (souvent pr&eacute;-rempli).</p></li><li class="list__item" id="z9wt1py_16"><p id="z9wt1py_23">Recevoir les donn&eacute;es soumises par l'utilisateur.</p></li><li class="list__item" id="z9wt1py_17"><p id="z9wt1py_24">Convertir et lier (&quot;binder&quot;) ces donn&eacute;es &agrave; des objets Java (POJOs ou DTOs).</p></li><li class="list__item" id="z9wt1py_18"><p id="z9wt1py_25">Valider les donn&eacute;es re&ccedil;ues.</p></li><li class="list__item" id="z9wt1py_19"><p id="z9wt1py_26">Traiter les donn&eacute;es (les sauvegarder, effectuer une action).</p></li><li class="list__item" id="z9wt1py_20"><p id="z9wt1py_27">G&eacute;rer les erreurs et r&eacute;-afficher le formulaire si n&eacute;cessaire.</p></li><li class="list__item" id="z9wt1py_21"><p id="z9wt1py_28">Rediriger l'utilisateur apr&egrave;s un traitement r&eacute;ussi.</p></li></ul></section><section class="chapter"><h2 id="le-flux-de-base-affichage-et-soumission" data-toc="le-flux-de-base-affichage-et-soumission">Le Flux de Base : Affichage et Soumission</h2><p id="z9wt1py_29">Le traitement d'un formulaire implique g&eacute;n&eacute;ralement deux interactions HTTP principales :</p><ol class="list _decimal" id="z9wt1py_30" type="1"><li class="list__item" id="z9wt1py_41"><p id="z9wt1py_43"><span class="control" id="z9wt1py_44">Requ&ecirc;te GET :</span> L'utilisateur demande la page contenant le formulaire. Le serveur renvoie le HTML du formulaire, &eacute;ventuellement pr&eacute;-rempli avec des donn&eacute;es existantes ou des valeurs par d&eacute;faut.</p></li><li class="list__item" id="z9wt1py_42"><p id="z9wt1py_45"><span class="control" id="z9wt1py_46">Requ&ecirc;te POST :</span> L'utilisateur remplit le formulaire et le soumet. Le navigateur envoie les donn&eacute;es au serveur dans le corps de la requ&ecirc;te POST. Le serveur traite ces donn&eacute;es.</p></li></ol><p id="z9wt1py_31"><span class="control" id="z9wt1py_47">Exemple Simple : Formulaire d'Inscription Utilisateur</span></p><p id="z9wt1py_32">Supposons une entit&eacute; <code class="code" id="z9wt1py_48">User</code> simple (nous introduirons les DTOs plus tard) :</p><div class="code-block" data-lang="java">
+// fr.formation.spring.entity.User
+package fr.formation.spring.entity;
+
+// Supposons des annotations JPA pour la persistance (non détaillé ici)
+public class User {
+    private Long id;
+    private String username;
+    private String email;
+    // Getters et Setters
+    // ...
+}
+</div><p id="z9wt1py_34">Un contr&ocirc;leur Spring MVC pour g&eacute;rer ce formulaire :</p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.UserController
+package fr.formation.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import fr.formation.spring.entity.User; // Sera remplacé par DTO plus tard
+
+@Controller
+@RequestMapping(&quot;/users&quot;)
+public class UserController {
+
+    // Affiche le formulaire vide
+    @GetMapping(&quot;/register&quot;)
+    public String showRegistrationForm(Model model) {
+        // Ajoute un nouvel objet User au modèle sous la clé &quot;user&quot;
+        // Cet objet sera utilisé par Thymeleaf pour lier les champs
+        model.addAttribute(&quot;user&quot;, new User());
+        // Retourne le nom de la vue (template Thymeleaf)
+        return &quot;user-registration&quot;; // Doit correspondre à src/main/resources/templates/user-registration.html
+    }
+
+    // Traite la soumission du formulaire
+    @PostMapping(&quot;/register&quot;)
+    public String processRegistration(
+            @ModelAttribute(&quot;user&quot;) User user // Spring lie les données du formulaire à cet objet
+    ) {
+        // Logique de traitement (ex: sauvegarde en base de données)
+        System.out.println(&quot;Nouvel utilisateur reçu:&quot;);
+        System.out.println(&quot;Username: &quot; + user.getUsername());
+        System.out.println(&quot;Email: &quot; + user.getEmail());
+
+        // Pour l'instant, redirection simple vers une page de succès
+        // Le pattern PRG sera abordé plus tard
+        return &quot;redirect:/users/registration-success&quot;;
+    }
+
+    @GetMapping(&quot;/registration-success&quot;)
+    public String showSuccessPage() {
+        return &quot;registration-success&quot;; // Template de succès
+    }
+}
+</div><p id="z9wt1py_36">Le template Thymeleaf (<code class="code" id="z9wt1py_49">src/main/resources/templates/user-registration.html</code>):</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Inscription&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Formulaire d'inscription&lt;/h1&gt;
+&lt;!-- th:object lie le formulaire à l'objet 'user' du modèle --&gt;
+&lt;form th:action=&quot;@{/users/register}&quot; th:object=&quot;${user}&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;username&quot;&gt;Nom d'utilisateur:&lt;/label&gt;
+        &lt;!-- th:field lie ce champ à la propriété 'username' de l'objet 'user' --&gt;
+        &lt;!-- Génère id, name et value automatiquement --&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; th:field=&quot;*{username}&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;email&quot; th:field=&quot;*{email}&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;button type=&quot;submit&quot;&gt;S'inscrire&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="z9wt1py_38"><span class="control" id="z9wt1py_50">Points Cl&eacute;s:</span></p><ul class="list _bullet" id="z9wt1py_39"><li class="list__item" id="z9wt1py_51"><p id="z9wt1py_61"><code class="code" id="z9wt1py_62">@Controller</code>: Marque la classe comme un contr&ocirc;leur Web MVC.</p></li><li class="list__item" id="z9wt1py_52"><p id="z9wt1py_63"><code class="code" id="z9wt1py_64">@RequestMapping(&quot;/users&quot;)</code>: D&eacute;finit un pr&eacute;fixe de chemin pour toutes les m&eacute;thodes du contr&ocirc;leur.</p></li><li class="list__item" id="z9wt1py_53"><p id="z9wt1py_65"><code class="code" id="z9wt1py_66">@GetMapping(&quot;/register&quot;)</code>: G&egrave;re les requ&ecirc;tes GET pour <code class="code" id="z9wt1py_67">/users/register</code>.</p></li><li class="list__item" id="z9wt1py_54"><p id="z9wt1py_68"><code class="code" id="z9wt1py_69">@PostMapping(&quot;/register&quot;)</code>: G&egrave;re les requ&ecirc;tes POST pour <code class="code" id="z9wt1py_70">/users/register</code>.</p></li><li class="list__item" id="z9wt1py_55"><p id="z9wt1py_71"><code class="code" id="z9wt1py_72">Model</code>: Interface pour passer des donn&eacute;es du contr&ocirc;leur &agrave; la vue.</p></li><li class="list__item" id="z9wt1py_56"><p id="z9wt1py_73"><code class="code" id="z9wt1py_74">model.addAttribute(&quot;user&quot;, new User())</code>: Met un objet <code class="code" id="z9wt1py_75">User</code> &agrave; disposition de la vue sous le nom <code class="code" id="z9wt1py_76">user</code>.</p></li><li class="list__item" id="z9wt1py_57"><p id="z9wt1py_77"><code class="code" id="z9wt1py_78">@ModelAttribute(&quot;user&quot;) User user</code>: Indique &agrave; Spring de cr&eacute;er une instance de <code class="code" id="z9wt1py_79">User</code>, de la peupler avec les donn&eacute;es du formulaire correspondant aux noms de champs, et de la rendre disponible comme argument de la m&eacute;thode. Le nom <code class="code" id="z9wt1py_80">&quot;user&quot;</code> doit correspondre &agrave; celui utilis&eacute; dans <code class="code" id="z9wt1py_81">addAttribute</code> et <code class="code" id="z9wt1py_82">th:object</code>.</p></li><li class="list__item" id="z9wt1py_58"><p id="z9wt1py_83"><code class="code" id="z9wt1py_84">th:action=&quot;@{/users/register}&quot;</code>: G&eacute;n&egrave;re l'URL de soumission du formulaire.</p></li><li class="list__item" id="z9wt1py_59"><p id="z9wt1py_85"><code class="code" id="z9wt1py_86">th:object=&quot;${user}&quot;</code>: Lie le formulaire &agrave; l'objet <code class="code" id="z9wt1py_87">user</code> pass&eacute; dans le mod&egrave;le.</p></li><li class="list__item" id="z9wt1py_60"><p id="z9wt1py_88"><code class="code" id="z9wt1py_89">th:field=&quot;*{username}&quot;</code>: Raccourci Thymeleaf pour lier un champ de formulaire &agrave; une propri&eacute;t&eacute; de l'objet d&eacute;fini par <code class="code" id="z9wt1py_90">th:object</code>. Il g&eacute;n&egrave;re les attributs <code class="code" id="z9wt1py_91">name</code>, <code class="code" id="z9wt1py_92">id</code> (si <code class="code" id="z9wt1py_93">id</code> n'est pas pr&eacute;sent), et <code class="code" id="z9wt1py_94">value</code>. La syntaxe <code class="code" id="z9wt1py_95">*{...}</code> est une s&eacute;lection relative &agrave; l'objet <code class="code" id="z9wt1py_96">th:object</code>.</p></li></ul></section><section class="chapter"><h2 id="data-transfer-objects-dto-pourquoi-et-comment" data-toc="data-transfer-objects-dto-pourquoi-et-comment">Data Transfer Objects (DTO) : Pourquoi et Comment</h2><section class="chapter"><h3 id="probl-matique" data-toc="probl-matique">Probl&eacute;matique</h3><p id="z9wt1py_102">Utiliser directement les entit&eacute;s JPA (ou autres objets du domaine persistants) dans les formulaires pose plusieurs probl&egrave;mes :</p><ol class="list _decimal" id="z9wt1py_103" type="1"><li class="list__item" id="z9wt1py_104"><p id="z9wt1py_109"><span class="control" id="z9wt1py_110">Couplage Fort :</span> La structure du formulaire devient directement li&eacute;e &agrave; la structure de la base de donn&eacute;es. Tout changement dans l'entit&eacute; peut casser le formulaire, et vice-versa.</p></li><li class="list__item" id="z9wt1py_105"><p id="z9wt1py_111"><span class="control" id="z9wt1py_112">Exposition de Donn&eacute;es Internes :</span> L'entit&eacute; peut contenir des champs non pertinents ou sensibles (ex: <code class="code" id="z9wt1py_113">id</code>, <code class="code" id="z9wt1py_114">dateCreation</code>, relations complexes) qui ne devraient pas &ecirc;tre expos&eacute;s ou modifiables via le formulaire.</p></li><li class="list__item" id="z9wt1py_106"><p id="z9wt1py_115"><span class="control" id="z9wt1py_116">Probl&egrave;mes de Validation :</span> Les contraintes de validation pour le formulaire peuvent diff&eacute;rer de celles de l'entit&eacute; persistante (ex: un champ &quot;confirmer mot de passe&quot; n'existe pas dans l'entit&eacute; <code class="code" id="z9wt1py_117">User</code>).</p></li><li class="list__item" id="z9wt1py_107"><p id="z9wt1py_118"><span class="control" id="z9wt1py_119">S&eacute;curit&eacute; (Mass Assignment) :</span> Un utilisateur malveillant pourrait injecter des valeurs pour des champs de l'entit&eacute; non pr&eacute;sents dans le formulaire HTML, mais qui existent dans l'objet <code class="code" id="z9wt1py_120">User</code> (ex: <code class="code" id="z9wt1py_121">isAdmin=true</code>). Voir la section S&eacute;curit&eacute;.</p></li><li class="list__item" id="z9wt1py_108"><p id="z9wt1py_122"><span class="control" id="z9wt1py_123">Optimisation :</span> Les DTOs peuvent &ecirc;tre con&ccedil;us pour ne transporter que les donn&eacute;es strictement n&eacute;cessaires, r&eacute;duisant la charge utile et am&eacute;liorant potentiellement les performances, notamment dans les API REST.</p></li></ol></section><section class="chapter"><h3 id="solution-le-dto" data-toc="solution-le-dto">Solution : Le DTO</h3><p id="z9wt1py_124">Un <span class="control" id="z9wt1py_128">Data Transfer Object (DTO)</span> est un objet simple (souvent un POJO) dont le seul but est de transporter des donn&eacute;es entre diff&eacute;rentes couches ou composants d'une application (ex: entre le contr&ocirc;leur et la vue, ou entre le frontend et le backend via une API).</p><p id="z9wt1py_125">Dans le contexte des formulaires Spring MVC, le DTO sert d'interm&eacute;diaire entre le formulaire HTML et la logique m&eacute;tier/persistance.</p><p id="z9wt1py_126"><span class="control" id="z9wt1py_129">Avantages :</span></p><ul class="list _bullet" id="z9wt1py_127"><li class="list__item" id="z9wt1py_130"><p id="z9wt1py_134"><span class="control" id="z9wt1py_135">D&eacute;couplage :</span> S&eacute;pare la repr&eacute;sentation des donn&eacute;es pour la vue/formulaire de la repr&eacute;sentation des donn&eacute;es pour la persistance.</p></li><li class="list__item" id="z9wt1py_131"><p id="z9wt1py_136"><span class="control" id="z9wt1py_137">S&eacute;curit&eacute; :</span> N'expose que les champs n&eacute;cessaires et attendus du formulaire. Pr&eacute;vient le &quot;Mass Assignment&quot;.</p></li><li class="list__item" id="z9wt1py_132"><p id="z9wt1py_138"><span class="control" id="z9wt1py_139">Flexibilit&eacute; :</span> Permet d'adapter la structure des donn&eacute;es aux besoins sp&eacute;cifiques du formulaire (ex: ajout de champs de confirmation, agr&eacute;gation de donn&eacute;es).</p></li><li class="list__item" id="z9wt1py_133"><p id="z9wt1py_140"><span class="control" id="z9wt1py_141">Validation Cibl&eacute;e :</span> Permet d'appliquer des r&egrave;gles de validation sp&eacute;cifiques au contexte du formulaire.</p></li></ul></section><section class="chapter"><h3 id="exemple-de-dto" data-toc="exemple-de-dto">Exemple de DTO</h3><p id="z9wt1py_142">Reprenons l'exemple de l'inscription. Nous cr&eacute;ons un DTO sp&eacute;cifique :</p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.UserRegistrationDto
+package fr.formation.spring.dto;
+
+// Pas d'annotations JPA ici. Validation sera ajoutée plus tard.
+public class UserRegistrationDto {
+
+    private String username;
+    private String email;
+    private String password;
+    private String confirmPassword; // Champ spécifique au formulaire
+
+    // Getters et Setters obligatoires pour le data binding
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+}
+</div><p id="z9wt1py_144">Le contr&ocirc;leur utilise maintenant ce DTO :</p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.UserController (modifié)
+package fr.formation.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import fr.formation.spring.dto.UserRegistrationDto;
+// Importer le service qui gère la logique métier (y compris le mapping)
+// import fr.formation.spring.service.UserService;
+
+@Controller
+@RequestMapping(&quot;/users&quot;)
+public class UserController {
+
+    // Injection du service (exemple)
+    // private final UserService userService;
+    // public UserController(UserService userService) { this.userService = userService; }
+
+    @GetMapping(&quot;/register&quot;)
+    public String showRegistrationForm(Model model) {
+        // On passe maintenant le DTO à la vue
+        model.addAttribute(&quot;userDto&quot;, new UserRegistrationDto());
+        return &quot;user-registration&quot;;
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public String processRegistration(
+            // Spring lie les données du formulaire au DTO
+            @ModelAttribute(&quot;userDto&quot;) UserRegistrationDto userDto
+    ) {
+        // Ici, on devrait appeler un service pour :
+        // 1. Mapper le DTO vers l'entité User
+        // 2. Effectuer la logique métier (ex: hasher le mot de passe)
+        // 3. Sauvegarder l'entité User
+        // Exemple simplifié :
+        System.out.println(&quot;DTO reçu:&quot;);
+        System.out.println(&quot;Username: &quot; + userDto.getUsername());
+        System.out.println(&quot;Email: &quot; + userDto.getEmail());
+        // !! Ne jamais logger les mots de passe en clair !!
+        // userService.registerNewUser(userDto); // Appel au service
+
+        return &quot;redirect:/users/registration-success&quot;;
+    }
+
+    // ... méthode showSuccessPage inchangée ...
+}
+
+</div><p id="z9wt1py_146">Le template Thymeleaf doit &ecirc;tre adapt&eacute; pour utiliser <code class="code" id="z9wt1py_148">userDto</code> et le champ <code class="code" id="z9wt1py_149">confirmPassword</code>:</p><div class="code-block" data-lang="markup">
+&lt;!-- src/main/resources/templates/user-registration.html (modifié) --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Inscription&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;style&gt;.error {
+        color: red;
+    }&lt;/style&gt; &lt;!-- Pour afficher les erreurs plus tard --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Formulaire d'inscription&lt;/h1&gt;
+&lt;!-- Utilise maintenant l'objet 'userDto' --&gt;
+&lt;form th:action=&quot;@{/users/register}&quot; th:object=&quot;${userDto}&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;username&quot;&gt;Nom d'utilisateur:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; th:field=&quot;*{username}&quot;/&gt;
+        &lt;!-- Espace pour afficher les erreurs de validation --&gt;
+        &lt;span class=&quot;error&quot;
+              th:if=&quot;${#fields.hasErrors('username')}&quot;
+              th:errors=&quot;*{username}&quot;&gt;Erreur Username&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;email&quot; th:field=&quot;*{email}&quot;/&gt;
+        &lt;span class=&quot;error&quot;
+              th:if=&quot;${#fields.hasErrors('email')}&quot;
+              th:errors=&quot;*{email}&quot;&gt;Erreur Email&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;password&quot;&gt;Mot de passe:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; th:field=&quot;*{password}&quot;/&gt;
+        &lt;span class=&quot;error&quot;
+              th:if=&quot;${#fields.hasErrors('password')}&quot;
+              th:errors=&quot;*{password}&quot;&gt;Erreur Password&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;confirmPassword&quot;&gt;Confirmer le mot de passe:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;confirmPassword&quot; th:field=&quot;*{confirmPassword}&quot;/&gt;
+        &lt;span class=&quot;error&quot;
+              th:if=&quot;${#fields.hasErrors('confirmPassword')}&quot;
+              th:errors=&quot;*{confirmPassword}&quot;&gt;Erreur Confirmation&lt;/span&gt;
+        &lt;!-- Erreur globale (ex: mots de passe différents) --&gt;
+        &lt;span class=&quot;error&quot;
+              th:if=&quot;${#fields.hasGlobalErrors()}&quot;
+              th:each=&quot;err : ${#fields.globalErrors()}&quot; th:text=&quot;${err}&quot;&gt;Erreur Globale&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;button type=&quot;submit&quot;&gt;S'inscrire&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h3 id="mapping-dto-entit" data-toc="mapping-dto-entit">Mapping DTO &lt;-&gt; Entit&eacute;</h3><p id="z9wt1py_150">Une fois le DTO re&ccedil;u dans le contr&ocirc;leur (ou dans une couche de service appel&eacute;e par le contr&ocirc;leur), il faut g&eacute;n&eacute;ralement le convertir en une ou plusieurs entit&eacute;s du domaine pour la persistance ou la logique m&eacute;tier. Inversement, pour afficher un formulaire de modification pr&eacute;-rempli, il faut convertir une entit&eacute; en DTO.</p><p id="z9wt1py_151">Plusieurs approches existent :</p><section class="chapter"><h4 id="mapping-manuel" data-toc="mapping-manuel">Mapping Manuel</h4><p id="z9wt1py_155">Le plus simple, mais peut devenir verbeux et source d'erreurs pour des objets complexes.</p><div class="code-block" data-lang="java">
+// Dans une classe de service, par exemple UserService
+package fr.formation.spring.service;
+
+import fr.formation.spring.dto.UserRegistrationDto;
+import fr.formation.spring.entity.User;
+// Importer PasswordEncoder, UserRepository etc.
+
+public class UserService {
+
+    // ... injections ...
+
+    public User convertDtoToEntity(UserRegistrationDto dto) {
+        User user = new User();
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        // Le mot de passe doit être hashé avant d'être stocké
+        // user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        // Ne pas mapper confirmPassword vers l'entité
+        return user;
+    }
+
+    public UserRegistrationDto convertEntityToDto(User user) {
+        UserRegistrationDto dto = new UserRegistrationDto();
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        // Ne pas mapper le mot de passe (hashé) vers le DTO du formulaire
+        // Les champs password et confirmPassword resteront nulls (ou vides)
+        return dto;
+    }
+
+    // Méthode métier utilisant le mapping
+    public void registerNewUser(UserRegistrationDto userDto) {
+        // Validation métier supplémentaire (ex: email unique) si nécessaire
+
+        User newUser = convertDtoToEntity(userDto);
+        // Hashage du mot de passe
+        // newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        // Sauvegarde via le repository
+        // userRepository.save(newUser);
+    }
+}
+
+</div><p id="z9wt1py_157"><span class="control" id="z9wt1py_158">Avantages :</span> Simple, pas de d&eacute;pendance externe. <span class="control" id="z9wt1py_159">Inconv&eacute;nients :</span> Boilerplate, risque d'oubli ou d'erreur si les objets &eacute;voluent.</p></section><section class="chapter"><h4 id="mapping-avec-modelmapper" data-toc="mapping-avec-modelmapper">Mapping avec ModelMapper</h4><p id="z9wt1py_160">Une librairie populaire qui utilise la r&eacute;flexion pour mapper automatiquement les champs ayant le m&ecirc;me nom.</p><p id="z9wt1py_161"><span class="control" id="z9wt1py_168">D&eacute;pendance (Maven) :</span></p><div class="code-block" data-lang="markup">
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.modelmapper&lt;/groupId&gt;
+    &lt;artifactId&gt;modelmapper&lt;/artifactId&gt;
+    &lt;version&gt;3.1.0&lt;/version&gt; &lt;!-- Vérifier la dernière version --&gt;
+&lt;/dependency&gt;
+</div><p id="z9wt1py_163"><span class="control" id="z9wt1py_169">Configuration (Bean Spring) :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.config.AppConfig
+package fr.formation.spring.config;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        // Stratégie stricte: ne mappe que si les noms ET types correspondent parfaitement
+        // Ou utiliser LOOSE si les noms suffisent (plus permissif)
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper;
+    }
+}
+</div><p id="z9wt1py_165"><span class="control" id="z9wt1py_170">Utilisation :</span></p><div class="code-block" data-lang="java">
+// Dans UserService, injecter ModelMapper
+// private final ModelMapper modelMapper;
+// public UserService(ModelMapper modelMapper /*, ... autres injections */) {
+//     this.modelMapper = modelMapper;
+//     // ...
+// }
+
+public User convertDtoToEntityWithModelMapper(UserRegistrationDto dto) {
+    // Mappe les champs correspondants (username, email)
+    User user = modelMapper.map(dto, User.class);
+    // Traitements spécifiques (hashage mdp) toujours nécessaires
+    return user;
+}
+
+public UserRegistrationDto convertEntityToDtoWithModelMapper(User user) {
+    // Mappe les champs correspondants (username, email)
+    UserRegistrationDto dto = modelMapper.map(user, UserRegistrationDto.class);
+    return dto;
+}
+</div><p id="z9wt1py_167"><span class="control" id="z9wt1py_171">Avantages :</span> R&eacute;duit le boilerplate, configuration flexible pour les cas complexes. <span class="control" id="z9wt1py_172">Inconv&eacute;nients :</span> Utilise la r&eacute;flexion (peut avoir un l&eacute;ger impact sur les performances au d&eacute;marrage et &agrave; l'ex&eacute;cution), peut &ecirc;tre moins &eacute;vident &agrave; d&eacute;boguer que le code manuel si les conventions ne suffisent pas.</p></section><section class="chapter"><h4 id="mapping-avec-mapstruct" data-toc="mapping-avec-mapstruct">Mapping avec MapStruct</h4><p id="z9wt1py_173">Une autre librairie populaire qui fonctionne diff&eacute;remment : elle g&eacute;n&egrave;re du code de mapping concret &agrave; la compilation via un processeur d'annotations.</p><p id="z9wt1py_174"><span class="control" id="z9wt1py_185">D&eacute;pendances (Maven) :</span></p><div class="code-block" data-lang="markup">
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+    &lt;artifactId&gt;mapstruct&lt;/artifactId&gt;
+    &lt;version&gt;1.5.5.Final&lt;/version&gt; &lt;!-- Vérifier la dernière version --&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+&lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+&lt;version&gt;1.5.5.Final&lt;/version&gt;
+&lt;scope&gt;provided&lt;/scope&gt; &lt;!-- Important : nécessaire seulement à la compilation --&gt;
+&lt;/dependency&gt;
+        &lt;!-- Si utilisation avec Lombok --&gt;
+&lt;dependency&gt;
+&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+&lt;artifactId&gt;lombok-mapstruct-binding&lt;/artifactId&gt;
+&lt;version&gt;0.2.0&lt;/version&gt;
+&lt;/dependency&gt;
+</div><p id="z9wt1py_176"><span class="control" id="z9wt1py_186">Configuration du plugin Maven pour le processeur d'annotations :</span></p><div class="code-block" data-lang="markup">
+
+&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.8.1&lt;/version&gt; &lt;!-- ou plus récent --&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;17&lt;/source&gt; &lt;!-- ou votre version de Java --&gt;
+        &lt;target&gt;17&lt;/target&gt;
+        &lt;annotationProcessorPaths&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.mapstruct&lt;/groupId&gt;
+                &lt;artifactId&gt;mapstruct-processor&lt;/artifactId&gt;
+                &lt;version&gt;1.5.5.Final&lt;/version&gt;
+            &lt;/path&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+                &lt;version&gt;${lombok.version}&lt;/version&gt; &lt;!-- si Lombok est utilisé --&gt;
+            &lt;/path&gt;
+            &lt;path&gt;
+                &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+                &lt;artifactId&gt;lombok-mapstruct-binding&lt;/artifactId&gt;
+                &lt;version&gt;0.2.0&lt;/version&gt;
+            &lt;/path&gt;
+            &lt;!-- autres processeurs d'annotations --&gt;
+        &lt;/annotationProcessorPaths&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</div><p id="z9wt1py_178"><span class="control" id="z9wt1py_187">Interface de Mapping :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.mapper.UserMapper
+package fr.formation.spring.mapper;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
+
+import fr.formation.spring.dto.UserRegistrationDto;
+import fr.formation.spring.entity.User;
+
+// componentModel = &quot;spring&quot; permet l'injection du mapper comme un bean Spring
+@Mapper(componentModel = &quot;spring&quot;)
+public interface UserMapper {
+
+    // Instance pour utilisation sans injection Spring (moins courant)
+    // UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+
+    // MapStruct ignore par défaut les champs qui n'existent pas dans la cible.
+    // Ici, password et confirmPassword du DTO n'ont pas de correspondance
+    // directe dans User (le password de User sera traité séparément).
+    // On peut être explicite si nécessaire :
+    @Mapping(target = &quot;id&quot;, ignore = true) // Ne pas mapper l'ID du DTO vers l'entité
+    @Mapping(target = &quot;password&quot;, ignore = true)
+    // Ne pas mapper le mdp DTO directement
+    User dtoToEntity(UserRegistrationDto dto);
+
+    // Pour la conversion inverse, on ignore aussi les champs password du DTO
+    @Mapping(target = &quot;password&quot;, ignore = true)
+    @Mapping(target = &quot;confirmPassword&quot;, ignore = true)
+    UserRegistrationDto entityToDto(User user);
+}
+</div><p id="z9wt1py_180"><span class="control" id="z9wt1py_188">Utilisation :</span></p><div class="code-block" data-lang="java">
+// Dans UserService, injecter le Mapper généré
+// private final UserMapper userMapper;
+// public UserService(UserMapper userMapper /*, ... autres */) {
+//     this.userMapper = userMapper;
+//     // ...
+// }
+
+public User convertDtoToEntityWithMapStruct(UserRegistrationDto dto) {
+    User user = userMapper.dtoToEntity(dto);
+    // Traitements spécifiques (hashage mdp) toujours nécessaires
+    return user;
+}
+
+public UserRegistrationDto convertEntityToDtoWithMapStruct(User user) {
+    UserRegistrationDto dto = userMapper.entityToDto(user);
+    return dto;
+}
+</div><p id="z9wt1py_182"><span class="control" id="z9wt1py_189">Avantages :</span> Tr&egrave;s performant (pas de r&eacute;flexion &agrave; l'ex&eacute;cution), type-safe (erreurs d&eacute;tect&eacute;es &agrave; la compilation), bonne int&eacute;gration avec Spring et Lombok. <span class="control" id="z9wt1py_190">Inconv&eacute;nients :</span> N&eacute;cessite une configuration du build (processeur d'annotations), la &quot;magie&quot; se passe &agrave; la compilation, ce qui peut &ecirc;tre moins intuitif au d&eacute;but.</p><p id="z9wt1py_183"><span class="control" id="z9wt1py_191">Conseil :</span> Choisir entre ModelMapper et MapStruct d&eacute;pend des pr&eacute;f&eacute;rences de l'&eacute;quipe et des contraintes du projet. MapStruct est souvent pr&eacute;f&eacute;r&eacute; pour les applications critiques en termes de performance et pour sa robustesse &agrave; la compilation. ModelMapper est parfois plus rapide &agrave; mettre en place pour des besoins simples. Le mapping manuel reste une option viable pour des cas tr&egrave;s simples ou tr&egrave;s sp&eacute;cifiques.</p></section></section><section class="chapter"><h3 id="exercice-1-cr-ation-et-mapping-d-un-dto" data-toc="exercice-1-cr-ation-et-mapping-d-un-dto">Exercice 1 : Cr&eacute;ation et Mapping d'un DTO</h3><p id="z9wt1py_192"><span class="control" id="z9wt1py_196">Objectif :</span> Cr&eacute;er un DTO pour un formulaire de cr&eacute;ation de produit et impl&eacute;menter le mapping manuel vers une entit&eacute; <code class="code" id="z9wt1py_197">Product</code>.</p><p id="z9wt1py_193"><span class="control" id="z9wt1py_198">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="z9wt1py_194" type="1"><li class="list__item" id="z9wt1py_199"><p id="z9wt1py_203">Cr&eacute;ez une classe d'entit&eacute; <code class="code" id="z9wt1py_204">fr.formation.spring.entity.Product</code> avec les champs : <code class="code" id="z9wt1py_205">id</code> (Long), <code class="code" id="z9wt1py_206">name</code> (String), <code class="code" id="z9wt1py_207">description</code> (String), <code class="code" id="z9wt1py_208">price</code> (double), <code class="code" id="z9wt1py_209">sku</code> (String, Stock Keeping Unit - un code interne).</p></li><li class="list__item" id="z9wt1py_200"><p id="z9wt1py_210">Cr&eacute;ez une classe DTO <code class="code" id="z9wt1py_211">fr.formation.spring.dto.ProductCreateDto</code> contenant uniquement les champs n&eacute;cessaires pour le formulaire de cr&eacute;ation : <code class="code" id="z9wt1py_212">name</code>, <code class="code" id="z9wt1py_213">description</code>, <code class="code" id="z9wt1py_214">price</code>.</p></li><li class="list__item" id="z9wt1py_201"><p id="z9wt1py_215">Cr&eacute;ez une classe <code class="code" id="z9wt1py_216">fr.formation.spring.service.ProductService</code>.</p></li><li class="list__item" id="z9wt1py_202"><p id="z9wt1py_217">Dans <code class="code" id="z9wt1py_218">ProductService</code>, &eacute;crivez une m&eacute;thode <code class="code" id="z9wt1py_219">Product convertDtoToEntity(ProductCreateDto dto)</code> qui r&eacute;alise le mapping manuel du DTO vers l'entit&eacute; <code class="code" id="z9wt1py_220">Product</code>. Le champ <code class="code" id="z9wt1py_221">sku</code> de l'entit&eacute; devra &ecirc;tre g&eacute;n&eacute;r&eacute; (par exemple, une cha&icirc;ne al&eacute;atoire ou bas&eacute;e sur le nom) et l' <code class="code" id="z9wt1py_222">id</code> sera <code class="code" id="z9wt1py_223">null</code> (g&eacute;n&eacute;r&eacute; par la persistance).</p></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-1" data-toc="correction-exercice-1">Correction Exercice 1</h4></div><div class="collapse__content"><div class="code-block" data-lang="java">
+// fr.formation.spring.entity.Product
+package fr.formation.spring.entity;
+
+// Supposons des annotations JPA
+public class Product {
+    private Long id;
+    private String name;
+    private String description;
+    private double price;
+    private String sku; // Code interne, non fourni par le formulaire
+
+    // Getters et Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+}
+</div><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.ProductCreateDto
+package fr.formation.spring.dto;
+
+public class ProductCreateDto {
+    private String name;
+    private String description;
+    private double price;
+
+    // Getters et Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}
+</div><div class="code-block" data-lang="java">
+// fr.formation.spring.service.ProductService
+package fr.formation.spring.service;
+
+import java.util.UUID; // Pour générer un SKU simple
+
+import fr.formation.spring.dto.ProductCreateDto;
+import fr.formation.spring.entity.Product;
+
+public class ProductService {
+
+    public Product convertDtoToEntity(ProductCreateDto dto) {
+        Product product = new Product();
+        product.setName(dto.getName());
+        product.setDescription(dto.getDescription());
+        product.setPrice(dto.getPrice());
+        // L'ID est laissé à null (sera généré par JPA)
+        // Génération simple d'un SKU (exemple)
+        product.setSku(&quot;SKU-&quot; + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        return product;
+    }
+
+    // Méthode pour simuler l'utilisation
+    public void createProduct(ProductCreateDto dto) {
+        Product newProduct = convertDtoToEntity(dto);
+        System.out.println(&quot;Produit à sauvegarder:&quot;);
+        System.out.println(&quot;  Nom: &quot; + newProduct.getName());
+        System.out.println(&quot;  Prix: &quot; + newProduct.getPrice());
+        System.out.println(&quot;  SKU: &quot; + newProduct.getSku());
+        // Ici, on appellerait productRepository.save(newProduct);
+    }
+}
+</div></div></div></section></section></section><section class="chapter"><h2 id="validation-des-donn-es" data-toc="validation-des-donn-es">Validation des Donn&eacute;es</h2><p id="z9wt1py_228">Il est crucial de valider les donn&eacute;es soumises par les utilisateurs avant de les traiter. La validation garantit l'int&eacute;grit&eacute; des donn&eacute;es, am&eacute;liore l'exp&eacute;rience utilisateur (en fournissant des retours clairs sur les erreurs) et renforce la s&eacute;curit&eacute; (en rejetant les entr&eacute;es malform&eacute;es ou malveillantes).</p><section class="chapter"><h3 id="introduction-bean-validation-jsr-380" data-toc="introduction-bean-validation-jsr-380">Introduction &agrave; Bean Validation (JSR 380)</h3><p id="z9wt1py_235">Java fournit une API standard pour la validation des JavaBeans : <span class="control" id="z9wt1py_237">Bean Validation</span> (sp&eacute;cifi&eacute;e par JSR 380, successeur de JSR 303/349). Hibernate Validator est l'impl&eacute;mentation de r&eacute;f&eacute;rence et est inclus par d&eacute;faut dans le <code class="code" id="z9wt1py_238">spring-boot-starter-validation</code> (qui est une d&eacute;pendance de <code class="code" id="z9wt1py_239">spring-boot-starter-web</code>).</p><p id="z9wt1py_236">Le principe est d'annoter les champs des objets (typiquement les DTOs) avec des <span class="control" id="z9wt1py_240">contraintes</span> de validation.</p></section><section class="chapter"><h3 id="contraintes-standards" data-toc="contraintes-standards">Contraintes Standards</h3><p id="z9wt1py_241">Bean Validation fournit un ensemble de contraintes pr&ecirc;tes &agrave; l'emploi :</p><ul class="list _bullet" id="z9wt1py_242"><li class="list__item" id="z9wt1py_243"><p id="z9wt1py_255"><code class="code" id="z9wt1py_256">@NotNull</code>: L'&eacute;l&eacute;ment ne doit pas &ecirc;tre nul.</p></li><li class="list__item" id="z9wt1py_244"><p id="z9wt1py_257"><code class="code" id="z9wt1py_258">@NotBlank</code>: L'&eacute;l&eacute;ment ne doit pas &ecirc;tre nul et doit contenir au moins un caract&egrave;re non blanc (diff&eacute;rent de <code class="code" id="z9wt1py_259">@NotEmpty</code> qui autorise les espaces). Applicable aux cha&icirc;nes.</p></li><li class="list__item" id="z9wt1py_245"><p id="z9wt1py_260"><code class="code" id="z9wt1py_261">@NotEmpty</code>: L'&eacute;l&eacute;ment ne doit pas &ecirc;tre nul et sa taille/longueur doit &ecirc;tre sup&eacute;rieure &agrave; 0. Applicable aux cha&icirc;nes, collections, maps, tableaux.</p></li><li class="list__item" id="z9wt1py_246"><p id="z9wt1py_262"><code class="code" id="z9wt1py_263">@Size(min=..., max=...)</code>: La taille/longueur de l'&eacute;l&eacute;ment doit &ecirc;tre dans l'intervalle sp&eacute;cifi&eacute;. Applicable aux cha&icirc;nes, collections, maps, tableaux.</p></li><li class="list__item" id="z9wt1py_247"><p id="z9wt1py_264"><code class="code" id="z9wt1py_265">@Min(value=...)</code>: La valeur num&eacute;rique doit &ecirc;tre sup&eacute;rieure ou &eacute;gale &agrave; la valeur sp&eacute;cifi&eacute;e.</p></li><li class="list__item" id="z9wt1py_248"><p id="z9wt1py_266"><code class="code" id="z9wt1py_267">@Max(value=...)</code>: La valeur num&eacute;rique doit &ecirc;tre inf&eacute;rieure ou &eacute;gale &agrave; la valeur sp&eacute;cifi&eacute;e.</p></li><li class="list__item" id="z9wt1py_249"><p id="z9wt1py_268"><code class="code" id="z9wt1py_269">@Email</code>: La cha&icirc;ne doit &ecirc;tre une adresse e-mail bien form&eacute;e.</p></li><li class="list__item" id="z9wt1py_250"><p id="z9wt1py_270"><code class="code" id="z9wt1py_271">@Pattern(regexp=...)</code>: La cha&icirc;ne doit correspondre &agrave; l'expression r&eacute;guli&egrave;re Java sp&eacute;cifi&eacute;e.</p></li><li class="list__item" id="z9wt1py_251"><p id="z9wt1py_272"><code class="code" id="z9wt1py_273">@Past</code>, <code class="code" id="z9wt1py_274">@PastOrPresent</code>: La date doit &ecirc;tre dans le pass&eacute; / pass&eacute; ou pr&eacute;sent.</p></li><li class="list__item" id="z9wt1py_252"><p id="z9wt1py_275"><code class="code" id="z9wt1py_276">@Future</code>, <code class="code" id="z9wt1py_277">@FutureOrPresent</code>: La date doit &ecirc;tre dans le futur / futur ou pr&eacute;sent.</p></li><li class="list__item" id="z9wt1py_253"><p id="z9wt1py_278"><code class="code" id="z9wt1py_279">@AssertTrue</code>, <code class="code" id="z9wt1py_280">@AssertFalse</code>: L'&eacute;l&eacute;ment bool&eacute;en doit &ecirc;tre vrai / faux.</p></li><li class="list__item" id="z9wt1py_254"><p id="z9wt1py_281"><code class="code" id="z9wt1py_282">@Valid</code>: D&eacute;clenche la validation r&eacute;cursive sur l'objet associ&eacute; (utile pour les objets imbriqu&eacute;s).</p></li></ul></section><section class="chapter"><h3 id="int-gration-avec-spring-mvc" data-toc="int-gration-avec-spring-mvc">Int&eacute;gration avec Spring MVC</h3><p id="z9wt1py_283">Spring MVC s'int&egrave;gre nativement avec Bean Validation. Pour activer la validation d'un objet li&eacute; &agrave; un formulaire :</p><ol class="list _decimal" id="z9wt1py_284" type="1"><li class="list__item" id="z9wt1py_289"><p id="z9wt1py_292">Annotez les champs du DTO avec les contraintes de validation.</p></li><li class="list__item" id="z9wt1py_290"><p id="z9wt1py_293">Dans la m&eacute;thode du contr&ocirc;leur qui re&ccedil;oit l'objet (<code class="code" id="z9wt1py_294">@PostMapping</code>), ajoutez l'annotation <code class="code" id="z9wt1py_295">@Valid</code> devant le param&egrave;tre <code class="code" id="z9wt1py_296">@ModelAttribute</code>.</p></li><li class="list__item" id="z9wt1py_291"><p id="z9wt1py_297">Ajoutez un param&egrave;tre de type <code class="code" id="z9wt1py_298">BindingResult</code> (ou <code class="code" id="z9wt1py_299">Errors</code>) <span class="emphasis" id="z9wt1py_300">imm&eacute;diatement apr&egrave;s</span> le param&egrave;tre annot&eacute; <code class="code" id="z9wt1py_301">@Valid</code>. Cet objet collectera les erreurs de validation.</p></li></ol><p id="z9wt1py_285"><span class="control" id="z9wt1py_302">Exemple (suite UserRegistrationDto):</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.UserRegistrationDto (avec validation)
+package fr.formation.spring.dto;
+
+import jakarta.validation.constraints.*; // Import depuis jakarta.validation
+
+public class UserRegistrationDto {
+
+    @NotBlank(message = &quot;Le nom d'utilisateur est obligatoire.&quot;)
+    @Size(min = 3, max = 20, message = &quot;Le nom d'utilisateur doit contenir entre 3 et 20 caractères.&quot;)
+    private String username;
+
+    @NotBlank(message = &quot;L'email est obligatoire.&quot;)
+    @Email(message = &quot;Le format de l'email est invalide.&quot;)
+    private String email;
+
+    @NotBlank(message = &quot;Le mot de passe est obligatoire.&quot;)
+    @Size(min = 8, message = &quot;Le mot de passe doit contenir au moins 8 caractères.&quot;)
+    // On pourrait ajouter @Pattern pour la complexité (ex: majuscule, chiffre...)
+    private String password;
+
+    @NotBlank(message = &quot;La confirmation du mot de passe est obligatoire.&quot;)
+    private String confirmPassword;
+
+    // Getters et Setters...
+    // ... (inchangés)
+}
+</div><p id="z9wt1py_287"><span class="control" id="z9wt1py_303">Contr&ocirc;leur (modifi&eacute; pour g&eacute;rer la validation):</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.UserController (modifié)
+package fr.formation.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult; // Important
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import fr.formation.spring.dto.UserRegistrationDto;
+import jakarta.validation.Valid; // Important
+
+@Controller
+@RequestMapping(&quot;/users&quot;)
+public class UserController {
+
+    // ... injection service ...
+
+    @GetMapping(&quot;/register&quot;)
+    public String showRegistrationForm(Model model) {
+        if (!model.containsAttribute(&quot;userDto&quot;)) { // Evite d'écraser en cas d'erreur
+            model.addAttribute(&quot;userDto&quot;, new UserRegistrationDto());
+        }
+        return &quot;user-registration&quot;;
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public String processRegistration(
+            // 1. @Valid active la validation sur userDto
+            @Valid
+            // 2. @ModelAttribute lie les données et ajoute le DTO au modèle
+            @ModelAttribute(&quot;userDto&quot;) UserRegistrationDto userDto,
+            // 3. BindingResult collecte les erreurs (DOIT suivre @Valid DTO)
+            BindingResult bindingResult
+            // Model model // Plus nécessaire si on utilise @ModelAttribute
+            // car il ajoute userDto au modèle automatiquement
+    ) {
+        // 4. Vérifier s'il y a des erreurs de validation
+        if (bindingResult.hasErrors()) {
+            // Si oui, retourner à la vue du formulaire
+            // Spring + Thymeleaf ré-afficheront le formulaire
+            // avec les données saisies et les messages d'erreur
+            // grâce à l'objet userDto (ajouté au modèle par @ModelAttribute)
+            // et à BindingResult (accessible par Thymeleaf via #fields)
+            return &quot;user-registration&quot;;
+        }
+
+        // S'il n'y a pas d'erreur de validation standard,
+        // on peut continuer le traitement (ex: validation métier, sauvegarde)
+        // userService.registerNewUser(userDto);
+        System.out.println(&quot;Validation réussie pour : &quot; + userDto.getUsername());
+
+        // Redirection vers la page de succès (Pattern PRG)
+        return &quot;redirect:/users/registration-success&quot;;
+    }
+
+    // ... méthode showSuccessPage ...
+}
+</div></section><section class="chapter"><h3 id="affichage-des-erreurs-thymeleaf" data-toc="affichage-des-erreurs-thymeleaf">Affichage des Erreurs (Thymeleaf)</h3><p id="z9wt1py_304">Thymeleaf fournit des utilitaires pour afficher facilement les erreurs de validation collect&eacute;es dans <code class="code" id="z9wt1py_309">BindingResult</code>. L'objet <code class="code" id="z9wt1py_310">fields</code> dans le contexte Thymeleaf permet d'acc&eacute;der &agrave; ces informations.</p><p id="z9wt1py_305">Reprenons le template <code class="code" id="z9wt1py_311">user-registration.html</code> et ajoutons l'affichage des erreurs (d&eacute;j&agrave; esquiss&eacute; pr&eacute;c&eacute;demment) :</p><div class="code-block" data-lang="markup">
+&lt;!-- src/main/resources/templates/user-registration.html (avec erreurs) --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Inscription&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;style&gt;
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            margin-bottom: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Formulaire d'inscription&lt;/h1&gt;
+&lt;form th:action=&quot;@{/users/register}&quot; th:object=&quot;${userDto}&quot; method=&quot;post&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;username&quot;&gt;Nom d'utilisateur:&lt;/label&gt;
+        &lt;input type=&quot;text&quot; id=&quot;username&quot; th:field=&quot;*{username}&quot;/&gt;
+        &lt;!-- Affiche les erreurs spécifiques au champ 'username' --&gt;
+        &lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasErrors('username')}&quot;&gt;
+            &lt;p th:each=&quot;err : ${#fields.errors('username')}&quot; th:text=&quot;${err}&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;email&quot;&gt;Email:&lt;/label&gt;
+        &lt;input type=&quot;email&quot; id=&quot;email&quot; th:field=&quot;*{email}&quot;/&gt;
+        &lt;!-- Affiche les erreurs spécifiques au champ 'email' --&gt;
+        &lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasErrors('email')}&quot;&gt;
+            &lt;p th:each=&quot;err : ${#fields.errors('email')}&quot; th:text=&quot;${err}&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;password&quot;&gt;Mot de passe:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;password&quot; th:field=&quot;*{password}&quot;/&gt;
+        &lt;!-- Affiche les erreurs spécifiques au champ 'password' --&gt;
+        &lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasErrors('password')}&quot;&gt;
+            &lt;p th:each=&quot;err : ${#fields.errors('password')}&quot; th:text=&quot;${err}&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;confirmPassword&quot;&gt;Confirmer le mot de passe:&lt;/label&gt;
+        &lt;input type=&quot;password&quot; id=&quot;confirmPassword&quot; th:field=&quot;*{confirmPassword}&quot;/&gt;
+        &lt;!-- Affiche les erreurs spécifiques au champ 'confirmPassword' --&gt;
+        &lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasErrors('confirmPassword')}&quot;&gt;
+            &lt;p th:each=&quot;err : ${#fields.errors('confirmPassword')}&quot; th:text=&quot;${err}&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Affiche les erreurs globales (non liées à un champ spécifique) --&gt;
+    &lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasGlobalErrors()}&quot;&gt;
+        &lt;p&gt;Erreurs générales :&lt;/p&gt;
+        &lt;ul&gt;
+            &lt;li th:each=&quot;err : ${#fields.globalErrors()}&quot; th:text=&quot;${err}&quot;&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+        &lt;button type=&quot;submit&quot;&gt;S'inscrire&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="z9wt1py_307"><span class="control" id="z9wt1py_312">Explication Thymeleaf:</span></p><ul class="list _bullet" id="z9wt1py_308"><li class="list__item" id="z9wt1py_313"><p id="z9wt1py_319"><code class="code" id="z9wt1py_320">#fields.hasErrors('fieldName')</code>: V&eacute;rifie s'il y a des erreurs pour le champ sp&eacute;cifi&eacute;.</p></li><li class="list__item" id="z9wt1py_314"><p id="z9wt1py_321"><code class="code" id="z9wt1py_322">#fields.errors('fieldName')</code>: R&eacute;cup&egrave;re la liste des messages d'erreur pour ce champ.</p></li><li class="list__item" id="z9wt1py_315"><p id="z9wt1py_323"><code class="code" id="z9wt1py_324">th:each=&quot;err : ...&quot;</code>: It&egrave;re sur la liste des erreurs.</p></li><li class="list__item" id="z9wt1py_316"><p id="z9wt1py_325"><code class="code" id="z9wt1py_326">th:text=&quot;${err}&quot;</code>: Affiche le message d'erreur. Le message provient de l'attribut <code class="code" id="z9wt1py_327">message</code> de l'annotation de validation.</p></li><li class="list__item" id="z9wt1py_317"><p id="z9wt1py_328"><code class="code" id="z9wt1py_329">#fields.hasGlobalErrors()</code>: V&eacute;rifie les erreurs non associ&eacute;es &agrave; un champ sp&eacute;cifique (nous verrons comment les ajouter avec la validation personnalis&eacute;e).</p></li><li class="list__item" id="z9wt1py_318"><p id="z9wt1py_330"><code class="code" id="z9wt1py_331">#fields.globalErrors()</code>: R&eacute;cup&egrave;re la liste des erreurs globales.</p></li></ul></section><section class="chapter"><h3 id="validation-personnalis-e-custom-validators" data-toc="validation-personnalis-e-custom-validators">Validation Personnalis&eacute;e (Custom Validators)</h3><p id="z9wt1py_332">Les contraintes standard ne couvrent pas tous les besoins. Bean Validation permet de cr&eacute;er ses propres contraintes. Cela implique trois &eacute;tapes :</p><ol class="list _decimal" id="z9wt1py_333" type="1"><li class="list__item" id="z9wt1py_336"><p id="z9wt1py_339"><span class="control" id="z9wt1py_340">Cr&eacute;er une annotation de contrainte :</span> D&eacute;finit le nom de l'annotation, le message d'erreur par d&eacute;faut, et lie l'annotation &agrave; son impl&eacute;mentation de validation.</p></li><li class="list__item" id="z9wt1py_337"><p id="z9wt1py_341"><span class="control" id="z9wt1py_342">Impl&eacute;menter l'interface <code class="code" id="z9wt1py_343">ConstraintValidator</code>:</span> Contient la logique de validation r&eacute;elle.</p></li><li class="list__item" id="z9wt1py_338"><p id="z9wt1py_344"><span class="control" id="z9wt1py_345">Appliquer l'annotation</span> sur le champ ou la classe &agrave; valider.</p></li></ol><section class="chapter"><h4 id="cas-1-validation-simple-format-sp-cifique" data-toc="cas-1-validation-simple-format-sp-cifique">Cas 1 : Validation Simple (Format sp&eacute;cifique)</h4><p id="z9wt1py_346"><span class="control" id="z9wt1py_354">Objectif :</span> Cr&eacute;er une contrainte <code class="code" id="z9wt1py_355">@ValidPostalCode</code> pour valider qu'une cha&icirc;ne repr&eacute;sente un code postal fran&ccedil;ais (5 chiffres).</p><p id="z9wt1py_347"><span class="control" id="z9wt1py_356">1. Annotation <code class="code" id="z9wt1py_357">@ValidPostalCode</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.annotation.ValidPostalCode
+package fr.formation.spring.validation.annotation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import fr.formation.spring.validation.validator.PostalCodeValidator;
+
+// @Target: Où peut-on appliquer l'annotation (champs, méthodes...)
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
+// @Retention: Quand l'annotation est-elle disponible (RUNTIME pour Bean Validation)
+@Retention(RetentionPolicy.RUNTIME)
+// @Constraint: Lie l'annotation à sa classe de validation
+@Constraint(validatedBy = PostalCodeValidator.class)
+@Documented // Inclure dans la Javadoc
+public @interface ValidPostalCode {
+
+    // Message d'erreur par défaut si la validation échoue
+    String message() default &quot;Le code postal doit contenir 5 chiffres.&quot;;
+
+    // Groupes de validation (avancé, permet d'activer/désactiver des validations)
+    Class&lt;?&gt;[] groups() default {};
+
+    // Payload (avancé, permet d'attacher des métadonnées à la contrainte)
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}
+</div><p id="z9wt1py_349"><span class="control" id="z9wt1py_358">2. Impl&eacute;mentation <code class="code" id="z9wt1py_359">PostalCodeValidator</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.validator.PostalCodeValidator
+package fr.formation.spring.validation.validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import fr.formation.spring.validation.annotation.ValidPostalCode;
+
+// Implémente ConstraintValidator&lt;Annotation, TypeDuChampValide&gt;
+public class PostalCodeValidator
+        implements ConstraintValidator&lt;ValidPostalCode, String&gt; {
+
+    private static final String POSTAL_CODE_PATTERN = &quot;^[0-9]{5}$&quot;;
+
+    @Override
+    public void initialize(ValidPostalCode constraintAnnotation) {
+        // Peut être utilisé pour initialiser le validateur
+        // avec des paramètres de l'annotation (non nécessaire ici)
+    }
+
+    @Override
+    public boolean isValid(String postalCode,
+                           ConstraintValidatorContext context) {
+        // La logique de validation :
+        // null est considéré valide (utiliser @NotNull en plus si besoin)
+        if (postalCode == null) {
+            return true;
+        }
+        // Vérifie si la chaîne correspond au pattern (5 chiffres)
+        return postalCode.matches(POSTAL_CODE_PATTERN);
+    }
+}
+</div><p id="z9wt1py_351"><span class="control" id="z9wt1py_360">3. Application sur un DTO :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.AddressDto (exemple)
+package fr.formation.spring.dto;
+
+import fr.formation.spring.validation.annotation.ValidPostalCode;
+import jakarta.validation.constraints.NotBlank;
+
+public class AddressDto {
+
+    @NotBlank(message = &quot;La rue est obligatoire.&quot;)
+    private String street;
+
+    @NotBlank(message = &quot;La ville est obligatoire.&quot;)
+    private String city;
+
+    @NotBlank(message = &quot;Le code postal est obligatoire.&quot;)
+    @ValidPostalCode // Application de la contrainte personnalisée
+    private String postalCode;
+
+    // Getters et Setters...
+}
+</div><p id="z9wt1py_353">D&eacute;sormais, si le champ <code class="code" id="z9wt1py_361">postalCode</code> d'un <code class="code" id="z9wt1py_362">AddressDto</code> valid&eacute; (<code class="code" id="z9wt1py_363">@Valid AddressDto</code>) ne contient pas exactement 5 chiffres, une erreur de validation sera g&eacute;n&eacute;r&eacute;e avec le message d&eacute;fini dans <code class="code" id="z9wt1py_364">@ValidPostalCode</code>.</p></section><section class="chapter"><h4 id="cas-2-validation-inter-champs-comparaison-de-mots-de-passe" data-toc="cas-2-validation-inter-champs-comparaison-de-mots-de-passe">Cas 2 : Validation Inter-champs (Comparaison de mots de passe)</h4><p id="z9wt1py_365"><span class="control" id="z9wt1py_374">Objectif :</span> Valider que les champs <code class="code" id="z9wt1py_375">password</code> et <code class="code" id="z9wt1py_376">confirmPassword</code> du <code class="code" id="z9wt1py_377">UserRegistrationDto</code> sont identiques. Ce type de validation doit s'appliquer au niveau de la classe, car elle n&eacute;cessite l'acc&egrave;s &agrave; plusieurs champs.</p><p id="z9wt1py_366"><span class="control" id="z9wt1py_378">1. Annotation <code class="code" id="z9wt1py_379">@PasswordsMatch</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.annotation.PasswordsMatch
+package fr.formation.spring.validation.annotation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import fr.formation.spring.validation.validator.PasswordsMatchValidator;
+
+// @Target(ElementType.TYPE) : L'annotation s'applique à une classe
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PasswordsMatchValidator.class)
+@Documented
+public @interface PasswordsMatch {
+
+    String message() default &quot;Les mots de passe ne correspondent pas.&quot;;
+
+    Class&lt;?&gt;[] groups() default {};
+
+    Class&lt;? extends Payload&gt;[] payload() default {};
+
+    // On peut ajouter des paramètres pour spécifier les noms des champs à comparer
+    // String passwordFieldName() default &quot;password&quot;;
+    // String confirmPasswordFieldName() default &quot;confirmPassword&quot;;
+    // Mais pour simplifier, on va les coder en dur dans le validateur pour cet exemple.
+}
+</div><p id="z9wt1py_368"><span class="control" id="z9wt1py_380">2. Impl&eacute;mentation <code class="code" id="z9wt1py_381">PasswordsMatchValidator</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.validator.PasswordsMatchValidator
+package fr.formation.spring.validation.validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
+import fr.formation.spring.dto.UserRegistrationDto; // Type spécifique ici
+import fr.formation.spring.validation.annotation.PasswordsMatch;
+
+// Valide un objet de type UserRegistrationDto
+public class PasswordsMatchValidator
+        implements ConstraintValidator&lt;PasswordsMatch, UserRegistrationDto&gt; {
+
+    @Override
+    public void initialize(PasswordsMatch constraintAnnotation) {
+        // Initialisation si nécessaire
+    }
+
+    @Override
+    public boolean isValid(UserRegistrationDto userDto,
+                           ConstraintValidatorContext context) {
+        String password = userDto.getPassword();
+        String confirmPassword = userDto.getConfirmPassword();
+
+        // Si les deux sont null ou vides, on considère que c'est ok
+        // (la validation @NotBlank sur les champs gérera l'obligation)
+        // Ou on pourrait décider que c'est invalide ici aussi.
+        if (password == null || password.isEmpty() ||
+                confirmPassword == null || confirmPassword.isEmpty()) {
+            return true; // Laisser @NotBlank faire son travail sur les champs
+        }
+
+        boolean passwordsMatch = password.equals(confirmPassword);
+
+        if (!passwordsMatch) {
+            // Si on veut que l'erreur soit associée à un champ spécifique (ex: confirmPassword)
+            // Désactive le message global par défaut
+            // context.disableDefaultConstraintViolation();
+            // context.buildConstraintViolationWithTemplate(
+            //      context.getDefaultConstraintMessageTemplate()
+            // )
+                       // Associe à ce champ
+            //        .addPropertyNode(&quot;confirmPassword&quot;) 
+            //        .addConstraintViolation();
+
+            // Par défaut (sans le code ci-dessus), 
+            // l'erreur sera globale (class-level)
+        }
+
+        return passwordsMatch;
+    }
+}
+</div><p id="z9wt1py_370"><span class="control" id="z9wt1py_382">3. Application sur le DTO :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.UserRegistrationDto (modifié)
+package fr.formation.spring.dto;
+
+import jakarta.validation.constraints.*;
+import fr.formation.spring.validation.annotation.PasswordsMatch; // Importer
+
+// Appliquer l'annotation au niveau de la classe
+@PasswordsMatch(message = &quot;La confirmation doit être identique au mot de passe.&quot;)
+public class UserRegistrationDto {
+
+    @NotBlank(message = &quot;Le nom d'utilisateur est obligatoire.&quot;)
+    @Size(min = 3, max = 20, message = &quot;...&quot;)
+    private String username;
+
+    @NotBlank(message = &quot;L'email est obligatoire.&quot;)
+    @Email(message = &quot;Format email invalide.&quot;)
+    private String email;
+
+    @NotBlank(message = &quot;Le mot de passe est obligatoire.&quot;)
+    @Size(min = 8, message = &quot;Le mot de passe doit faire 8 caractères min.&quot;)
+    private String password;
+
+    @NotBlank(message = &quot;La confirmation du mot de passe est obligatoire.&quot;)
+    private String confirmPassword;
+
+    // Getters et Setters...
+}
+</div><p id="z9wt1py_372">Maintenant, lors de la validation (<code class="code" id="z9wt1py_383">@Valid UserRegistrationDto</code>), apr&egrave;s la validation des champs individuels, le <code class="code" id="z9wt1py_384">PasswordsMatchValidator</code> sera ex&eacute;cut&eacute;. S'il retourne <code class="code" id="z9wt1py_385">false</code>, une erreur sera ajout&eacute;e &agrave; <code class="code" id="z9wt1py_386">BindingResult</code>. Par d&eacute;faut, ce sera une erreur globale, affichable dans Thymeleaf avec <code class="code" id="z9wt1py_387">#fields.globalErrors()</code>. Si on utilise <code class="code" id="z9wt1py_388">addPropertyNode</code> dans le validateur, l'erreur sera li&eacute;e au champ sp&eacute;cifi&eacute; (ici, <code class="code" id="z9wt1py_389">confirmPassword</code>).</p></section></section><section class="chapter"><h3 id="exercice-2-ajout-de-validation-standard-et-personnalis-e" data-toc="exercice-2-ajout-de-validation-standard-et-personnalis-e">Exercice 2 : Ajout de Validation Standard et Personnalis&eacute;e</h3><p id="z9wt1py_390"><span class="control" id="z9wt1py_394">Objectif :</span> Ajouter des contraintes de validation standard et une contrainte personnalis&eacute;e &agrave; <code class="code" id="z9wt1py_395">ProductCreateDto</code>.</p><p id="z9wt1py_391"><span class="control" id="z9wt1py_396">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="z9wt1py_392" type="1"><li class="list__item" id="z9wt1py_397"><p id="z9wt1py_400">Modifiez <code class="code" id="z9wt1py_402">ProductCreateDto</code> (de l'exercice 1) pour ajouter les contraintes suivantes :</p><ul class="list _bullet" id="z9wt1py_401"><li class="list__item" id="z9wt1py_403"><p id="z9wt1py_406"><code class="code" id="z9wt1py_407">name</code>: obligatoire (<code class="code" id="z9wt1py_408">@NotBlank</code>), longueur entre 3 et 50 caract&egrave;res (<code class="code" id="z9wt1py_409">@Size</code>).</p></li><li class="list__item" id="z9wt1py_404"><p id="z9wt1py_410"><code class="code" id="z9wt1py_411">description</code>: longueur maximale de 200 caract&egrave;res (<code class="code" id="z9wt1py_412">@Size</code>). Peut &ecirc;tre vide.</p></li><li class="list__item" id="z9wt1py_405"><p id="z9wt1py_413"><code class="code" id="z9wt1py_414">price</code>: doit &ecirc;tre une valeur positive (<code class="code" id="z9wt1py_415">@Positive</code> ou <code class="code" id="z9wt1py_416">@DecimalMin(&quot;0.01&quot;)</code>).</p></li></ul></li><li class="list__item" id="z9wt1py_398"><p id="z9wt1py_417">Cr&eacute;ez une annotation de validation personnalis&eacute;e <code class="code" id="z9wt1py_418">@ValidSkuFormat</code> et son validateur <code class="code" id="z9wt1py_419">SkuFormatValidator</code>. Cette contrainte doit v&eacute;rifier qu'une cha&icirc;ne (le <code class="code" id="z9wt1py_420">sku</code>) commence par &quot;SKU-&quot; suivi de 8 caract&egrave;res alphanum&eacute;riques majuscules (ex: &quot;SKU-A1B2C3D4&quot;).</p></li><li class="list__item" id="z9wt1py_399"><p id="z9wt1py_421"><span class="emphasis" id="z9wt1py_422">Bonus :</span> Modifiez le <code class="code" id="z9wt1py_423">ProductCreateDto</code> et le contr&ocirc;leur (hypoth&eacute;tique) pour inclure un champ <code class="code" id="z9wt1py_424">sku</code> et appliquez la validation <code class="code" id="z9wt1py_425">@ValidSkuFormat</code>. Note : Dans l'exercice 1, le SKU &eacute;tait g&eacute;n&eacute;r&eacute; c&ocirc;t&eacute; serveur, ce qui est souvent pr&eacute;f&eacute;rable. Cet ajout est pour l'exercice de validation.</p></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-2" data-toc="correction-exercice-2"><span class="control" id="z9wt1py_438">Correction Exercice 2</span></h4></div><div class="collapse__content"><p id="z9wt1py_427"><span class="control" id="z9wt1py_439">1. <code class="code" id="z9wt1py_440">ProductCreateDto</code> avec validation standard :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.ProductCreateDto (modifié)
+package fr.formation.spring.dto;
+
+import jakarta.validation.constraints.*;
+
+public class ProductCreateDto {
+
+    @NotBlank(message = &quot;Le nom du produit est obligatoire.&quot;)
+    @Size(min = 3, max = 50, message = &quot;Le nom doit faire entre 3 et 50 caractères.&quot;)
+    private String name;
+
+    @Size(max = 200, message = &quot;La description ne doit pas dépasser 200 caractères.&quot;)
+    private String description; // Pas @NotBlank, peut être vide/null
+
+    // @Positive inclut 0. Si on veut strictement positif &gt; 0.00 :
+    @NotNull(message = &quot;Le prix est obligatoire.&quot;) // Nécessaire car double (primitif) ne peut être null
+    // Si Double (wrapper), @NotNull utile aussi.
+    @DecimalMin(value = &quot;0.01&quot;, message = &quot;Le prix doit être positif.&quot;)
+    private double price;
+
+    // Getters et Setters...
+}
+</div><p id="z9wt1py_429"><span class="control" id="z9wt1py_441">2. Annotation <code class="code" id="z9wt1py_442">@ValidSkuFormat</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.annotation.ValidSkuFormat
+package fr.formation.spring.validation.annotation;
+
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
+import java.lang.annotation.*;
+
+import fr.formation.spring.validation.validator.SkuFormatValidator;
+
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = SkuFormatValidator.class)
+@Documented
+public @interface ValidSkuFormat {
+    String message() default &quot;Format SKU invalide (doit être SKU-XXXXXXXX).&quot;;
+
+    Class&lt;?&gt;[] groups() default {};
+
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}
+</div><p id="z9wt1py_431"><span class="control" id="z9wt1py_443">3. Validateur <code class="code" id="z9wt1py_444">SkuFormatValidator</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.validation.validator.SkuFormatValidator
+package fr.formation.spring.validation.validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import fr.formation.spring.validation.annotation.ValidSkuFormat;
+
+public class SkuFormatValidator
+        implements ConstraintValidator&lt;ValidSkuFormat, String&gt; {
+
+    // Pattern: Commence par &quot;SKU-&quot;, suivi de 8 caractères alphanumériques majuscules
+    private static final String SKU_PATTERN = &quot;^SKU-[A-Z0-9]{8}$&quot;;
+
+    @Override
+    public void initialize(ValidSkuFormat constraintAnnotation) {
+    }
+
+    @Override
+    public boolean isValid(String sku, ConstraintValidatorContext context) {
+        if (sku == null) {
+            // Considéré valide ici, utiliser @NotBlank si obligatoire
+            return true;
+        }
+        return sku.matches(SKU_PATTERN);
+    }
+}
+</div><p id="z9wt1py_433"><span class="control" id="z9wt1py_445">4. <span class="emphasis" id="z9wt1py_446">Bonus</span>: Modification de <code class="code" id="z9wt1py_447">ProductCreateDto</code> et application :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.dto.ProductCreateDto (avec SKU)
+package fr.formation.spring.dto;
+
+import jakarta.validation.constraints.*;
+import fr.formation.spring.validation.annotation.ValidSkuFormat; // Importer
+
+public class ProductCreateDto {
+
+    @NotBlank(message = &quot;Le nom du produit est obligatoire.&quot;)
+    @Size(min = 3, max = 50, message = &quot;Le nom doit faire entre 3 et 50 caractères.&quot;)
+    private String name;
+
+    @Size(max = 200, message = &quot;La description ne doit pas dépasser 200 caractères.&quot;)
+    private String description;
+
+    @NotNull(message = &quot;Le prix est obligatoire.&quot;)
+    @DecimalMin(value = &quot;0.01&quot;, message = &quot;Le prix doit être positif.&quot;)
+    private double price;
+
+    @NotBlank(message = &quot;Le SKU est obligatoire.&quot;) // Rend le SKU obligatoire pour la validation
+    @ValidSkuFormat // Applique la validation de format personnalisée
+    private String sku; // Champ ajouté pour le formulaire
+
+    // Getters et Setters (y compris pour sku)...
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+    // ... autres getters/setters
+}
+</div><p id="z9wt1py_435"><span class="control" id="z9wt1py_448">Contr&ocirc;leur (hypoth&eacute;tique) utilisant la validation :</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.ProductController (extrait)
+package fr.formation.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import fr.formation.spring.dto.ProductCreateDto;
+import jakarta.validation.Valid;
+
+@Controller
+@RequestMapping(&quot;/products&quot;)
+public class ProductController {
+
+    // ... injection service ...
+
+    @GetMapping(&quot;/new&quot;)
+    public String showCreateForm(Model model) {
+        model.addAttribute(&quot;productDto&quot;, new ProductCreateDto());
+        return &quot;product-create&quot;; // Nom du template Thymeleaf
+    }
+
+    @PostMapping(&quot;/create&quot;)
+    public String processCreation(
+            @Valid @ModelAttribute(&quot;productDto&quot;) ProductCreateDto productDto,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            // Les erreurs incluront maintenant celles de @NotBlank, @Size,
+            // @DecimalMin et @ValidSkuFormat
+            return &quot;product-create&quot;; // Retour au formulaire
+        }
+
+        // Logique de création si validation OK
+        // productService.createProductFromDto(productDto); // Adapter le service
+        System.out.println(&quot;Produit valide reçu: &quot; + productDto.getName()
+                + &quot;, SKU: &quot; + productDto.getSku());
+
+        return &quot;redirect:/products/success&quot;; // Redirection PRG
+    }
+
+    // ... autres méthodes ...
+}
+</div></div></div></section></section></section><section class="chapter"><h2 id="gestion-de-l-upload-de-fichiers" data-toc="gestion-de-l-upload-de-fichiers">Gestion de l'Upload de Fichiers</h2><p id="z9wt1py_449">Les formulaires permettent souvent aux utilisateurs d'uploader des fichiers (images, documents, etc.). Spring MVC facilite la gestion de ces uploads.</p><section class="chapter"><h3 id="configuration" data-toc="configuration">Configuration</h3><p id="z9wt1py_455">Spring Boot n&eacute;cessite une configuration minimale pour g&eacute;rer les uploads multipart. Elle se fait g&eacute;n&eacute;ralement dans <code class="code" id="z9wt1py_459">application.properties</code> ou <code class="code" id="z9wt1py_460">application.yml</code>.</p><p id="z9wt1py_456"><span class="control" id="z9wt1py_461"><code class="code" id="z9wt1py_462">application.properties</code>:</span></p><div class="code-block" data-lang="properties">
+# Activer la gestion multipart (généralement activé par défaut avec spring-web)
+spring.servlet.multipart.enabled=true
+# Taille maximale d'un fichier individuel (par défaut 1MB)
+spring.servlet.multipart.max-file-size=10MB
+# Taille maximale de la requête multipart complète (tous les fichiers + autres champs) (par défaut 10MB)
+spring.servlet.multipart.max-request-size=10MB
+# Emplacement temporaire pour stocker les fichiers pendant l'upload
+# spring.servlet.multipart.location=/path/to/temp/dir
+# Seuil à partir duquel les fichiers sont écrits sur disque (plutôt qu'en mémoire)
+# spring.servlet.multipart.file-size-threshold=2KB
+</div><p id="z9wt1py_458"><span class="control" id="z9wt1py_463">Important :</span> Ajustez <code class="code" id="z9wt1py_464">max-file-size</code> et <code class="code" id="z9wt1py_465">max-request-size</code> selon les besoins de votre application. Des valeurs trop &eacute;lev&eacute;es peuvent exposer le serveur &agrave; des attaques par d&eacute;ni de service (upload de fichiers tr&egrave;s volumineux).</p></section><section class="chapter"><h3 id="le-formulaire-html" data-toc="le-formulaire-html">Le Formulaire HTML</h3><p id="z9wt1py_466">Le formulaire HTML doit &ecirc;tre configur&eacute; sp&eacute;cifiquement pour l'upload :</p><ol class="list _decimal" id="z9wt1py_467" type="1"><li class="list__item" id="z9wt1py_470"><p id="z9wt1py_473">L'attribut <code class="code" id="z9wt1py_474">method</code> doit &ecirc;tre <code class="code" id="z9wt1py_475">post</code>.</p></li><li class="list__item" id="z9wt1py_471"><p id="z9wt1py_476">L'attribut <code class="code" id="z9wt1py_477">enctype</code> <span class="control" id="z9wt1py_478">doit</span> &ecirc;tre <code class="code" id="z9wt1py_479">multipart/form-data</code>.</p></li><li class="list__item" id="z9wt1py_472"><p id="z9wt1py_480">Utiliser un champ <code class="code" id="z9wt1py_481">&lt;input type=&quot;file&quot;&gt;</code>.</p></li></ol><p id="z9wt1py_468"><span class="control" id="z9wt1py_482">Exemple : Formulaire d'upload d'avatar</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Upload Avatar&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;style&gt;.error {
+        color: red;
+    }&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Changer l'avatar&lt;/h1&gt;
+&lt;!-- method=&quot;post&quot; et enctype=&quot;multipart/form-data&quot; sont cruciaux --&gt;
+&lt;form method=&quot;post&quot; th:action=&quot;@{/profile/avatar/upload}&quot; enctype=&quot;multipart/form-data&quot;&gt;
+    &lt;div&gt;
+        &lt;label for=&quot;avatarFile&quot;&gt;Sélectionner un fichier image (max 10MB):&lt;/label&gt;
+        &lt;!-- Le nom &quot;avatarFile&quot; sera utilisé dans le contrôleur --&gt;
+        &lt;input type=&quot;file&quot; id=&quot;avatarFile&quot; name=&quot;avatarFile&quot; accept=&quot;image/*&quot;/&gt;
+        &lt;!-- accept=&quot;image/*&quot; est une indication pour le navigateur, PAS une sécurité --&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Affichage d'éventuelles erreurs (ex: fichier trop gros, type invalide) --&gt;
+    &lt;div th:if=&quot;${errorMessage}&quot; class=&quot;error&quot;&gt;
+        &lt;p th:text=&quot;${errorMessage}&quot;&gt;&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+        &lt;button type=&quot;submit&quot;&gt;Uploader&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h3 id="le-contr-leur" data-toc="le-contr-leur">Le Contr&ocirc;leur</h3><p id="z9wt1py_483">Dans le contr&ocirc;leur Spring, pour recevoir le fichier upload&eacute;, on utilise un param&egrave;tre de type <code class="code" id="z9wt1py_487">org.springframework.web.multipart.MultipartFile</code>. Le nom du param&egrave;tre doit correspondre &agrave; l'attribut <code class="code" id="z9wt1py_488">name</code> de l' <code class="code" id="z9wt1py_489">&lt;input type=&quot;file&quot;&gt;</code>.</p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.ProfileController (extrait)
+package fr.formation.spring.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes; // Pour les messages flash
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
+@Controller
+@RequestMapping(&quot;/profile/avatar&quot;)
+public class ProfileController {
+
+    // !! IMPORTANT !! Définir un répertoire de stockage sécurisé
+    // NE PAS stocker dans le classpath ou le répertoire web directement accessible
+    // Idéalement, configurable via application.properties
+    private final Path uploadStorageLocation = Paths.get(&quot;./uploads/avatars&quot;).toAbsolutePath().normalize();
+
+    public ProfileController() {
+        // Créer le répertoire de stockage s'il n'existe pas
+        try {
+            Files.createDirectories(this.uploadStorageLocation);
+        } catch (Exception ex) {
+            throw new RuntimeException(
+                    &quot;Impossible de créer le répertoire de stockage des uploads.&quot;, ex);
+        }
+    }
+
+    @PostMapping(&quot;/upload&quot;)
+    public String handleAvatarUpload(
+            // @RequestParam lie le paramètre au champ &quot;avatarFile&quot; du formulaire
+            @RequestParam(&quot;avatarFile&quot;) MultipartFile file,
+            RedirectAttributes redirectAttributes // Pour passer des messages après redirection
+    ) {
+
+        // 1. Vérifications de base
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Veuillez sélectionner un fichier à uploader.&quot;);
+            return &quot;redirect:/profile/avatar/change&quot;; // Retour au formulaire (via redirection)
+        }
+
+        // !! SÉCURITÉ !! Nettoyer le nom du fichier
+        // Ne jamais faire confiance au nom de fichier fourni par le client
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.contains(&quot;..&quot;)) {
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Nom de fichier invalide.&quot;);
+            return &quot;redirect:/profile/avatar/change&quot;;
+        }
+
+        // Générer un nom de fichier unique pour éviter les écrasements et les conflits
+        String fileExtension = &quot;&quot;;
+        int dotIndex = originalFilename.lastIndexOf('.');
+        if (dotIndex &gt; 0) {
+            fileExtension = originalFilename.substring(dotIndex);
+        }
+        // Exemple : utilise un UUID pour garantir l'unicité
+        String storedFilename = UUID.randomUUID().toString() + fileExtension;
+
+        try {
+            // Validation supplémentaire (taille, type) - voir section suivante
+
+            // Construire le chemin de destination complet
+            Path targetLocation = this.uploadStorageLocation.resolve(storedFilename);
+
+            // Copier le fichier vers l'emplacement cible
+            // StandardCopyOption.REPLACE_EXISTING est utile si, malgré l'UUID,
+            // une collision rarissime arrivait, ou si on réutilise un nom existant.
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            // Enregistrer le chemin `storedFilename` ou `targetLocation` dans la BD
+            // associé à l'utilisateur, etc.
+            // userService.updateAvatar(userId, storedFilename);
+
+            redirectAttributes.addFlashAttribute(&quot;successMessage&quot;,
+                    &quot;Avatar uploadé avec succès : &quot; + storedFilename);
+            return &quot;redirect:/profile&quot;; // Rediriger vers le profil
+
+        } catch (IOException ex) {
+            ex.printStackTrace(); // Logguer l'erreur
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Erreur lors de l'upload du fichier '&quot; + originalFilename + &quot;'.&quot;);
+            return &quot;redirect:/profile/avatar/change&quot;;
+        }
+        // Gestion des erreurs de taille max (MaxUploadSizeExceededException)
+        // peut être faite avec un @ControllerAdvice, voir Bonnes Pratiques.
+    }
+
+    // Méthode pour afficher le formulaire (non montrée)
+    // @GetMapping(&quot;/change&quot;) public String showUploadForm(...) { ... }
+}
+</div><p id="z9wt1py_485"><span class="control" id="z9wt1py_490">Points Cl&eacute;s et S&eacute;curit&eacute; :</span></p><ul class="list _bullet" id="z9wt1py_486"><li class="list__item" id="z9wt1py_491"><p id="z9wt1py_495"><code class="code" id="z9wt1py_497">MultipartFile</code>: Interface de Spring pour repr&eacute;senter un fichier upload&eacute;. M&eacute;thodes utiles :</p><ul class="list _bullet" id="z9wt1py_496"><li class="list__item" id="z9wt1py_498"><p id="z9wt1py_505"><code class="code" id="z9wt1py_506">isEmpty()</code>: V&eacute;rifie si un fichier a &eacute;t&eacute; s&eacute;lectionn&eacute;.</p></li><li class="list__item" id="z9wt1py_499"><p id="z9wt1py_507"><code class="code" id="z9wt1py_508">getOriginalFilename()</code>: Retourne le nom original du fichier <span class="control" id="z9wt1py_509">tel qu'envoy&eacute; par le client (non fiable !)</span>.</p></li><li class="list__item" id="z9wt1py_500"><p id="z9wt1py_510"><code class="code" id="z9wt1py_511">getContentType()</code>: Retourne le type MIME d&eacute;clar&eacute; par le client <span class="control" id="z9wt1py_512">(non fiable !)</span>.</p></li><li class="list__item" id="z9wt1py_501"><p id="z9wt1py_513"><code class="code" id="z9wt1py_514">getSize()</code>: Retourne la taille en octets.</p></li><li class="list__item" id="z9wt1py_502"><p id="z9wt1py_515"><code class="code" id="z9wt1py_516">getBytes()</code>: Retourne le contenu du fichier en tableau d'octets (attention &agrave; la m&eacute;moire pour les gros fichiers).</p></li><li class="list__item" id="z9wt1py_503"><p id="z9wt1py_517"><code class="code" id="z9wt1py_518">getInputStream()</code>: Retourne un flux pour lire le contenu (pr&eacute;f&eacute;rable pour les gros fichiers).</p></li><li class="list__item" id="z9wt1py_504"><p id="z9wt1py_519"><code class="code" id="z9wt1py_520">transferTo(File dest)</code> ou <code class="code" id="z9wt1py_521">transferTo(Path dest)</code>: M&eacute;thode pratique pour sauvegarder le fichier directement sur disque.</p></li></ul></li><li class="list__item" id="z9wt1py_492"><p id="z9wt1py_522"><span class="control" id="z9wt1py_523">Nettoyage du Nom de Fichier :</span> Ne <span class="control" id="z9wt1py_524">jamais</span> utiliser <code class="code" id="z9wt1py_525">getOriginalFilename()</code> directement pour enregistrer le fichier. Il peut contenir des caract&egrave;res invalides, des chemins relatifs (<code class="code" id="z9wt1py_526">../../..</code>) pour tenter d'&eacute;crire en dehors du r&eacute;pertoire pr&eacute;vu (Path Traversal), ou &eacute;craser des fichiers existants. <span class="control" id="z9wt1py_527">G&eacute;n&eacute;rez toujours un nom de fichier unique et s&ucirc;r c&ocirc;t&eacute; serveur</span> (UUID, timestamp + nom al&eacute;atoire, hash du contenu...).</p></li><li class="list__item" id="z9wt1py_493"><p id="z9wt1py_528"><span class="control" id="z9wt1py_529">Stockage S&eacute;curis&eacute; :</span> Ne stockez <span class="control" id="z9wt1py_530">jamais</span> les fichiers upload&eacute;s dans un r&eacute;pertoire directement accessible par le serveur web (comme <code class="code" id="z9wt1py_531">src/main/webapp</code> ou sous <code class="code" id="z9wt1py_532">static</code>). Stockez-les dans un r&eacute;pertoire d&eacute;di&eacute;, en dehors de la racine web, et servez-les via un contr&ocirc;leur sp&eacute;cifique si n&eacute;cessaire (qui v&eacute;rifiera les permissions).</p></li><li class="list__item" id="z9wt1py_494"><p id="z9wt1py_533"><code class="code" id="z9wt1py_534">RedirectAttributes</code>: Utilis&eacute; pour passer des messages (succ&egrave;s ou erreur) &agrave; la page vers laquelle on redirige apr&egrave;s le traitement POST (pattern PRG). Ces attributs &quot;flash&quot; ne survivent qu'&agrave; une seule redirection.</p></li></ul></section><section class="chapter"><h3 id="validation-des-fichiers-upload-s" data-toc="validation-des-fichiers-upload-s">Validation des Fichiers Upload&eacute;s</h3><p id="z9wt1py_535">Il est essentiel de valider les fichiers upload&eacute;s non seulement pour la taille, mais aussi pour leur type r&eacute;el, afin d'&eacute;viter que des fichiers malveillants (ex&eacute;cutables, scripts) ne soient stock&eacute;s et potentiellement ex&eacute;cut&eacute;s ou servis.</p><section class="chapter"><h4 id="validation-de-la-taille" data-toc="validation-de-la-taille">Validation de la Taille</h4><ul class="list _bullet" id="z9wt1py_539"><li class="list__item" id="z9wt1py_540"><p id="z9wt1py_542"><span class="control" id="z9wt1py_543">C&ocirc;t&eacute; Serveur (Obligatoire) :</span> La configuration <code class="code" id="z9wt1py_544">spring.servlet.multipart.max-file-size</code> dans <code class="code" id="z9wt1py_545">application.properties</code> est la premi&egrave;re ligne de d&eacute;fense. Si un fichier d&eacute;passe cette taille, Spring l&egrave;vera une <code class="code" id="z9wt1py_546">MaxUploadSizeExceededException</code> (ou <code class="code" id="z9wt1py_547">MultipartException</code>). Cette exception peut &ecirc;tre g&eacute;r&eacute;e globalement avec un <code class="code" id="z9wt1py_548">@ControllerAdvice</code>.</p></li><li class="list__item" id="z9wt1py_541"><p id="z9wt1py_549"><span class="control" id="z9wt1py_550">C&ocirc;t&eacute; Contr&ocirc;leur (Optionnel) :</span> On peut v&eacute;rifier <code class="code" id="z9wt1py_551">file.getSize()</code> pour des logiques plus fines si n&eacute;cessaire, mais la limite globale est g&eacute;n&eacute;ralement suffisante.</p></li></ul></section><section class="chapter"><h4 id="validation-du-type-de-contenu-mime-type" data-toc="validation-du-type-de-contenu-mime-type">Validation du Type de Contenu (MIME Type)</h4><p id="z9wt1py_552">La m&eacute;thode <code class="code" id="z9wt1py_555">file.getContentType()</code> retourne le type MIME tel qu'envoy&eacute; par le navigateur (bas&eacute; sur l'extension du fichier ou les informations du syst&egrave;me d'exploitation client). **Cette information n'est absolument pas fiable et peut &ecirc;tre facilement falsifi&eacute;e.</p><p id="z9wt1py_553">On peut l'utiliser comme une premi&egrave;re v&eacute;rification rapide, mais elle ne doit <span class="control" id="z9wt1py_556">jamais</span> &ecirc;tre la seule m&eacute;thode de validation de type.</p><div class="code-block" data-lang="java">
+// Dans handleAvatarUpload, après la vérification isEmpty()
+String contentType = file.getContentType();
+if(contentType ==null||!contentType.
+
+startsWith(&quot;image/&quot;)){
+        // ATTENTION : Ceci est une vérification faible !
+        redirectAttributes.
+
+addFlashAttribute(&quot;errorMessage&quot;,
+                          &quot;Type de fichier non autorisé (basé sur l'info navigateur).&quot;);
+// return &quot;redirect:/profile/avatar/change&quot;; // Commenté car non fiable
+}
+</div></section><section class="chapter"><h4 id="validation-par-magic-number" data-toc="validation-par-magic-number">Validation par &quot;Magic Number&quot;</h4><p id="z9wt1py_557">Une m&eacute;thode beaucoup plus fiable consiste &agrave; lire les premiers octets du fichier (le &quot;magic number&quot; ou la &quot;signature&quot;) pour d&eacute;terminer son type r&eacute;el, ind&eacute;pendamment de son extension ou du type MIME d&eacute;clar&eacute;.</p><p id="z9wt1py_558">Chaque format de fichier (JPEG, PNG, PDF, ZIP...) commence g&eacute;n&eacute;ralement par une s&eacute;quence d'octets sp&eacute;cifique.</p><p id="z9wt1py_559"><span class="control" id="z9wt1py_570">Exemple Simplifi&eacute; (Validation pour JPEG et PNG) :</span></p><div class="code-block" data-lang="java">
+// Dans handleAvatarUpload, après la vérification isEmpty() et nom de fichier
+
+private boolean isValidImageType(MultipartFile file) throws IOException {
+    byte[] signature = new byte[4]; // Lire les 4 premiers octets
+    try (InputStream inputStream = file.getInputStream()) {
+        int bytesRead = inputStream.read(signature);
+        if (bytesRead &lt; 4) {
+            return false; // Fichier trop petit pour avoir une signature valide
+        }
+    }
+
+    // Signatures connues (Hexadécimal)
+    // JPEG: FF D8 FF E0 ou FF D8 FF E1 ou FF D8 FF DB
+    // PNG:  89 50 4E 47 (soit .PNG en ASCII)
+
+    // Conversion des octets lus en format comparable
+    String magicNumberHex = bytesToHex(signature);
+
+    System.out.println(&quot;Magic number lu: &quot; + magicNumberHex); // Pour débogage
+
+    // Vérification pour PNG
+    if (magicNumberHex.startsWith(&quot;89504E47&quot;)) { // Comparaison Hex
+        System.out.println(&quot;Type détecté : PNG&quot;);
+        return true;
+    }
+    // Vérification pour JPEG
+    if (magicNumberHex.startsWith(&quot;FFD8FFE0&quot;) ||
+            magicNumberHex.startsWith(&quot;FFD8FFE1&quot;) ||
+            magicNumberHex.startsWith(&quot;FFD8FFDB&quot;)) {
+        System.out.println(&quot;Type détecté : JPEG&quot;);
+        return true;
+    }
+
+    // Autres types d'images pourraient être ajoutés (GIF: 47494638, etc.)
+
+    return false; // Type non reconnu ou non autorisé
+}
+
+// Helper pour convertir byte[] en chaîne Hexadécimale
+private static final char[] HEX_ARRAY = &quot;0123456789ABCDEF&quot;.toCharArray();
+
+public static String bytesToHex(byte[] bytes) {
+    char[] hexChars = new char[bytes.length * 2];
+    for (int j = 0; j &lt; bytes.length; j++) {
+        int v = bytes[j] &amp; 0xFF; // Masque pour obtenir la valeur non signée
+        hexChars[j * 2] = HEX_ARRAY[v &gt;&gt;&gt; 4];  // Premier quartet (4 bits de poids fort)
+        hexChars[j * 2 + 1] = HEX_ARRAY[v &amp; 0x0F]; // Second quartet (4 bits de poids faible)
+    }
+    return new String(hexChars);
+}
+</div><div class="code-block" data-lang="java">
+// Utilisation dans le contrôleur :
+
+@PostMapping(&quot;/profile/avatar/upload&quot;)
+public String handleAvatarUpload(
+        @RequestParam(&quot;file&quot;) MultipartFile file,
+        RedirectAttributes redirectAttributes
+) {
+    try {
+        // Vérifie le type de l'image par contenu (MIME)
+        if (!isValidImageType(file)) {
+            redirectAttributes.addFlashAttribute(
+                    &quot;errorMessage&quot;,
+                    &quot;Type de fichier image invalide ou non supporté (vérifié par contenu).&quot;
+            );
+            return &quot;redirect:/profile/avatar/change&quot;;
+        }
+
+        // TODO : logique de sauvegarde du fichier
+        // saveImage(file);
+
+        redirectAttributes.addFlashAttribute(
+                &quot;successMessage&quot;,
+                &quot;Image enregistrée avec succès.&quot;
+        );
+        return &quot;redirect:/profile/avatar&quot;;
+
+    } catch (IOException ex) {
+        // Gestion de l'erreur liée à la lecture/sauvegarde du fichier
+        redirectAttributes.addFlashAttribute(
+                &quot;errorMessage&quot;,
+                &quot;Erreur lors de l'enregistrement de l'image.&quot;
+        );
+        return &quot;redirect:/profile/avatar/change&quot;;
+    }
+}
+
+
+</div><p id="z9wt1py_562"><span class="control" id="z9wt1py_571">Conseil / Bonne Pratique : Utiliser une Librairie D&eacute;di&eacute;e</span></p><p id="z9wt1py_563">Plut&ocirc;t que de r&eacute;impl&eacute;menter la d&eacute;tection de type par magic number, il est fortement recommand&eacute; d'utiliser des librairies robustes et maintenues pour cela, comme <span class="control" id="z9wt1py_572">Apache Tika</span>.</p><p id="z9wt1py_564"><span class="control" id="z9wt1py_573">D&eacute;pendance Apache Tika (Maven) :</span></p><div class="code-block" data-lang="markup">
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tika&lt;/groupId&gt;
+    &lt;artifactId&gt;tika-core&lt;/artifactId&gt;
+    &lt;version&gt;2.9.1&lt;/version&gt; &lt;!-- Vérifier la dernière version --&gt;
+&lt;/dependency&gt;
+</div><p id="z9wt1py_566"><span class="control" id="z9wt1py_574">Utilisation avec Tika :</span></p><div class="code-block" data-lang="java">
+package fr.formation.spring.controller;
+
+import org.apache.tika.Tika;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+@Controller
+public class AvatarController {
+
+    @PostMapping(&quot;/profile/avatar/upload&quot;)
+    public String uploadAvatar(
+            @RequestParam(&quot;file&quot;) MultipartFile file,
+            RedirectAttributes redirectAttributes
+    ) {
+        try {
+            Tika tika = new Tika();
+            String detectedType = tika.detect(file.getInputStream());
+
+            System.out.println(&quot;Tika a détecté le type: &quot; + detectedType);
+
+            List&lt;String&gt; allowedMimeTypes = Arrays.asList(
+                    &quot;image/jpeg&quot;, &quot;image/png&quot;, &quot;image/gif&quot;,
+                    &quot;image/bmp&quot;, &quot;image/webp&quot;
+            );
+
+            if (!allowedMimeTypes.contains(detectedType)) {
+                redirectAttributes.addFlashAttribute(
+                        &quot;errorMessage&quot;,
+                        &quot;Type de fichier non autorisé : &quot; + detectedType +
+                                &quot;. Types permis : JPEG, PNG, GIF, BMP, WEBP.&quot;
+                );
+                return &quot;redirect:/profile/avatar/change&quot;;
+            }
+
+            // TODO : sauvegarde du fichier ici (nom unique + copy)
+
+            redirectAttributes.addFlashAttribute(
+                    &quot;successMessage&quot;,
+                    &quot;Avatar enregistré avec succès.&quot;
+            );
+            return &quot;redirect:/profile/avatar&quot;;
+
+        } catch (IOException ex) {
+            redirectAttributes.addFlashAttribute(
+                    &quot;errorMessage&quot;,
+                    &quot;Erreur lors de la lecture du fichier : &quot; + ex.getMessage()
+            );
+            return &quot;redirect:/profile/avatar/change&quot;;
+        }
+    }
+}
+
+</div><p id="z9wt1py_568">Apache Tika est beaucoup plus fiable et couvre un &eacute;ventail bien plus large de formats de fichiers que l'impl&eacute;mentation manuelle. <span class="control" id="z9wt1py_575">C'est l'approche recommand&eacute;e pour la validation de type de fichier.</span></p></section></section><section class="chapter"><h3 id="exercice-3-gestion-et-validation-d-upload-de-fichier" data-toc="exercice-3-gestion-et-validation-d-upload-de-fichier">Exercice 3 : Gestion et Validation d'Upload de Fichier</h3><p id="z9wt1py_576"><span class="control" id="z9wt1py_580">Objectif :</span> Impl&eacute;menter un endpoint de contr&ocirc;leur pour uploader un document PDF, avec validation de la taille et du type (en utilisant Apache Tika).</p><p id="z9wt1py_577"><span class="control" id="z9wt1py_581">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="z9wt1py_578" type="1"><li class="list__item" id="z9wt1py_582"><p id="z9wt1py_590">Configurez la taille maximale de fichier &agrave; 5MB dans <code class="code" id="z9wt1py_591">application.properties</code>.</p></li><li class="list__item" id="z9wt1py_583"><p id="z9wt1py_592">Cr&eacute;ez une m&eacute;thode de contr&ocirc;leur <code class="code" id="z9wt1py_593">@PostMapping(&quot;/documents/upload&quot;)</code> dans une classe <code class="code" id="z9wt1py_594">DocumentController</code>.</p></li><li class="list__item" id="z9wt1py_584"><p id="z9wt1py_595">Cette m&eacute;thode doit accepter un <code class="code" id="z9wt1py_596">MultipartFile</code> nomm&eacute; <code class="code" id="z9wt1py_597">documentFile</code>.</p></li><li class="list__item" id="z9wt1py_585"><p id="z9wt1py_598">Elle doit v&eacute;rifier que le fichier n'est pas vide.</p></li><li class="list__item" id="z9wt1py_586"><p id="z9wt1py_599">Elle doit utiliser Apache Tika pour v&eacute;rifier que le type MIME d&eacute;tect&eacute; est bien <code class="code" id="z9wt1py_600">application/pdf</code>.</p></li><li class="list__item" id="z9wt1py_587"><p id="z9wt1py_601">Si les validations passent, elle doit g&eacute;n&eacute;rer un nom de fichier unique (UUID + &quot;.pdf&quot;), simuler la sauvegarde (en affichant un message en console avec le nom original et le nom de stockage), et rediriger vers une page de succ&egrave;s avec un message flash.</p></li><li class="list__item" id="z9wt1py_588"><p id="z9wt1py_602">Si une validation &eacute;choue (vide ou mauvais type), elle doit rediriger vers la page du formulaire (suppos&eacute;e <code class="code" id="z9wt1py_603">/documents/new</code>) avec un message d'erreur flash appropri&eacute;.</p></li><li class="list__item" id="z9wt1py_589"><p id="z9wt1py_604"><span class="emphasis" id="z9wt1py_605">Ne pas impl&eacute;menter la sauvegarde r&eacute;elle sur disque pour cet exercice, juste l'affichage en console.</span></p></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-3" data-toc="correction-exercice-3">Correction Exercice 3</h4></div><div class="collapse__content"><p id="z9wt1py_606"><span class="control" id="z9wt1py_613">1. <code class="code" id="z9wt1py_614">application.properties</code>:</span></p><div class="code-block" data-lang="properties">
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=5MB
+spring.servlet.multipart.max-request-size=5MB
+</div><p id="z9wt1py_608"><span class="control" id="z9wt1py_615">2. D&eacute;pendance Tika (si pas d&eacute;j&agrave; ajout&eacute;e) :</span></p><div class="code-block" data-lang="markup">
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.tika&lt;/groupId&gt;
+    &lt;artifactId&gt;tika-core&lt;/artifactId&gt;
+    &lt;version&gt;2.9.1&lt;/version&gt;
+&lt;/dependency&gt;
+</div><p id="z9wt1py_610"><span class="control" id="z9wt1py_616">3. <code class="code" id="z9wt1py_617">DocumentController</code>:</span></p><div class="code-block" data-lang="java">
+// fr.formation.spring.controller.DocumentController
+package fr.formation.spring.controller;
+
+import org.apache.tika.Tika;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.UUID;
+
+@Controller
+@RequestMapping(&quot;/documents&quot;)
+public class DocumentController {
+
+    // Supposons une méthode GET pour afficher le formulaire à /documents/new
+    // @GetMapping(&quot;/new&quot;) public String showUploadForm() { return &quot;document-upload&quot;; }
+
+    @PostMapping(&quot;/upload&quot;)
+    public String handleDocumentUpload(
+            @RequestParam(&quot;documentFile&quot;) MultipartFile file,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        // 1. Vérification fichier vide
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Veuillez sélectionner un fichier PDF.&quot;);
+            return &quot;redirect:/documents/new&quot;; // Retour au formulaire
+        }
+
+        // 2. Validation du type avec Tika
+        Tika tika = new Tika();
+        String detectedType;
+        try (InputStream inputStream = file.getInputStream()) {
+            // On lit via le flux pour que Tika puisse analyser
+            detectedType = tika.detect(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace(); // Logguer l'erreur
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Erreur lors de la lecture du fichier.&quot;);
+            return &quot;redirect:/documents/new&quot;;
+        }
+
+        System.out.println(&quot;Type détecté par Tika : &quot; + detectedType); // Debug
+
+        if (!&quot;application/pdf&quot;.equals(detectedType)) {
+            redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+                    &quot;Fichier invalide. Seuls les documents PDF sont autorisés. Type détecté: &quot; + detectedType);
+            return &quot;redirect:/documents/new&quot;;
+        }
+
+        // 3. Génération nom unique et &quot;sauvegarde&quot; simulée
+        String originalFilename = file.getOriginalFilename();
+        // Nettoyage basique pour l'affichage (pas pour le nom de stockage)
+        originalFilename = (originalFilename != null) ?
+                originalFilename.replaceAll(&quot;[^a-zA-Z0-9.\\-_]&quot;, &quot;_&quot;) : &quot;unknown&quot;;
+
+        String storedFilename = UUID.randomUUID().toString() + &quot;.pdf&quot;;
+
+        System.out.println(&quot;Sauvegarde simulée :&quot;);
+        System.out.println(&quot;  Nom original : &quot; + originalFilename);
+        System.out.println(&quot;  Nom de stockage : &quot; + storedFilename);
+        System.out.println(&quot;  Taille : &quot; + file.getSize() + &quot; octets&quot;);
+        System.out.println(&quot;  Type validé : &quot; + detectedType);
+        // Ici, on copierait le fichier vers son emplacement de stockage final
+        // try { Files.copy(...) } catch ...
+
+        redirectAttributes.addFlashAttribute(&quot;successMessage&quot;,
+                &quot;Document PDF '&quot; + originalFilename + &quot;' uploadé avec succès sous le nom &quot; + storedFilename);
+        return &quot;redirect:/documents/upload-success&quot;; // Vers une page de succès
+    }
+
+    // Supposons une méthode GET pour la page de succès
+    // @GetMapping(&quot;/upload-success&quot;) public String showSuccess() { return &quot;document-success&quot;; }
+
+}
+</div></div></div></section></section></section><section class="chapter"><h2 id="s-curit-des-formulaires" data-toc="s-curit-des-formulaires">S&eacute;curit&eacute; des Formulaires</h2><p id="z9wt1py_618">Les formulaires web sont une cible privil&eacute;gi&eacute;e pour les attaquants. Il est imp&eacute;ratif de comprendre les menaces courantes et d'impl&eacute;menter les mesures de s&eacute;curit&eacute; appropri&eacute;es.</p><section class="chapter"><h3 id="attaques-courantes" data-toc="attaques-courantes">Attaques Courantes</h3><section class="chapter"><h4 id="cross-site-scripting-xss" data-toc="cross-site-scripting-xss">Cross-Site Scripting (XSS)</h4><ul class="list _bullet" id="z9wt1py_625"><li class="list__item" id="z9wt1py_626"><p id="z9wt1py_630"><span class="control" id="z9wt1py_631">Description :</span> L'attaquant injecte du code malveillant (g&eacute;n&eacute;ralement du JavaScript) dans une page web via un formulaire (ou un autre vecteur d'entr&eacute;e comme les param&egrave;tres d'URL). Ce script est ensuite ex&eacute;cut&eacute; par le navigateur d'un utilisateur l&eacute;gitime qui visite la page compromise.</p></li><li class="list__item" id="z9wt1py_627"><p id="z9wt1py_632"><span class="control" id="z9wt1py_634">Types :</span></p><ul class="list _bullet" id="z9wt1py_633"><li class="list__item" id="z9wt1py_635"><p id="z9wt1py_638"><span class="control" id="z9wt1py_639">Reflected XSS :</span> Le script est inject&eacute; via une requ&ecirc;te (ex: param&egrave;tre d'URL) et est imm&eacute;diatement renvoy&eacute; et ex&eacute;cut&eacute; dans la r&eacute;ponse du serveur. <code class="code" id="z9wt1py_640">http://example.com/search?query=&lt;script&gt;alert('XSS')&lt;/script&gt;</code></p></li><li class="list__item" id="z9wt1py_636"><p id="z9wt1py_641"><span class="control" id="z9wt1py_642">Stored XSS :</span> Le script malveillant est stock&eacute; de mani&egrave;re permanente sur le serveur (ex: dans un commentaire de blog, un profil utilisateur) et est ex&eacute;cut&eacute; chaque fois qu'un utilisateur affiche les donn&eacute;es compromises. C'est le type le plus dangereux.</p></li><li class="list__item" id="z9wt1py_637"><p id="z9wt1py_643"><span class="control" id="z9wt1py_644">DOM-based XSS :</span> La vuln&eacute;rabilit&eacute; se situe dans le code JavaScript c&ocirc;t&eacute; client qui manipule le DOM de mani&egrave;re non s&eacute;curis&eacute;e en utilisant des donn&eacute;es contr&ocirc;l&eacute;es par l'utilisateur.</p></li></ul></li><li class="list__item" id="z9wt1py_628"><p id="z9wt1py_645"><span class="control" id="z9wt1py_646">Impact :</span> Vol de sessions (cookies), redirection vers des sites malveillants, modification du contenu de la page, enregistrement des frappes clavier (keylogging).</p></li><li class="list__item" id="z9wt1py_629"><p id="z9wt1py_647"><span class="control" id="z9wt1py_648">Mitigation :</span> Voir ci-dessous (Encodage des sorties, Nettoyage des entr&eacute;es, Content Security Policy).</p></li></ul></section><section class="chapter"><h4 id="cross-site-request-forgery-csrf" data-toc="cross-site-request-forgery-csrf">Cross-Site Request Forgery (CSRF)</h4><ul class="list _bullet" id="z9wt1py_649"><li class="list__item" id="z9wt1py_650"><p id="z9wt1py_654"><span class="control" id="z9wt1py_655">Description :</span> L'attaquant force le navigateur d'un utilisateur authentifi&eacute; &agrave; envoyer une requ&ecirc;te HTTP non d&eacute;sir&eacute;e vers une application web sur laquelle l'utilisateur est d&eacute;j&agrave; connect&eacute;. L'application ne peut pas distinguer une requ&ecirc;te l&eacute;gitime d'une requ&ecirc;te forg&eacute;e si elle se base uniquement sur les cookies de session.</p></li><li class="list__item" id="z9wt1py_651"><p id="z9wt1py_656"><span class="control" id="z9wt1py_657">Exemple :</span> L'utilisateur est connect&eacute; &agrave; sa banque <code class="code" id="z9wt1py_658">mybank.com</code>. Il visite ensuite un site malveillant <code class="code" id="z9wt1py_659">evil.com</code>. Ce site contient une image ou un formulaire cach&eacute; qui d&eacute;clenche une requ&ecirc;te POST vers <code class="code" id="z9wt1py_660">mybank.com/transfer?to=attacker&amp;amount=1000</code>. Comme l'utilisateur est authentifi&eacute; sur <code class="code" id="z9wt1py_661">mybank.com</code>, son navigateur envoie automatiquement les cookies de session, et la banque ex&eacute;cute le transfert.</p></li><li class="list__item" id="z9wt1py_652"><p id="z9wt1py_662"><span class="control" id="z9wt1py_663">Impact :</span> Actions non autoris&eacute;es au nom de l'utilisateur (transferts d'argent, modification d'email/mot de passe, suppression de donn&eacute;es).</p></li><li class="list__item" id="z9wt1py_653"><p id="z9wt1py_664"><span class="control" id="z9wt1py_665">Mitigation :</span> Voir ci-dessous (Tokens CSRF).</p></li></ul></section><section class="chapter"><h4 id="mass-assignment-over-posting" data-toc="mass-assignment-over-posting">Mass Assignment / Over-Posting</h4><ul class="list _bullet" id="z9wt1py_666"><li class="list__item" id="z9wt1py_667"><p id="z9wt1py_670"><span class="control" id="z9wt1py_671">Description :</span> Concerne le m&eacute;canisme de data binding qui mappe automatiquement les donn&eacute;es d'une requ&ecirc;te HTTP ( formulaire, JSON) vers les propri&eacute;t&eacute;s d'un objet c&ocirc;t&eacute; serveur. Si l'application utilise directement une entit&eacute; du domaine (ex: Entit&eacute; JPA <code class="code" id="z9wt1py_672">User</code> avec un champ <code class="code" id="z9wt1py_673">isAdmin</code>) et ne contr&ocirc;le pas quels champs peuvent &ecirc;tre li&eacute;s, un attaquant peut ajouter des champs malveillants &agrave; la requ&ecirc;te (ex: <code class="code" id="z9wt1py_674">isAdmin=true</code>) m&ecirc;me s'ils ne sont pas pr&eacute;sents dans le formulaire HTML. Le binder peut alors initialiser ou modifier des propri&eacute;t&eacute;s sensibles de l'objet.</p></li><li class="list__item" id="z9wt1py_668"><p id="z9wt1py_675"><span class="control" id="z9wt1py_676">Impact :</span> &Eacute;l&eacute;vation de privil&egrave;ges, modification de donn&eacute;es non autoris&eacute;es.</p></li><li class="list__item" id="z9wt1py_669"><p id="z9wt1py_677"><span class="control" id="z9wt1py_678">Mitigation :</span> Utilisation de DTOs (Data Transfer Objects) qui n'exposent que les champs attendus du formulaire. Ne jamais binder directement sur des entit&eacute;s JPA ou des objets domaine complexes contenant des champs sensibles.</p></li></ul></section><section class="chapter"><h4 id="parameter-tampering" data-toc="parameter-tampering">Parameter Tampering</h4><ul class="list _bullet" id="z9wt1py_679"><li class="list__item" id="z9wt1py_680"><p id="z9wt1py_683"><span class="control" id="z9wt1py_685">Description :</span> L'attaquant modifie les param&egrave;tres envoy&eacute;s au serveur qui ne sont pas cens&eacute;s &ecirc;tre modifi&eacute;s par l' utilisateur normal. Cela inclut :</p><ul class="list _bullet" id="z9wt1py_684"><li class="list__item" id="z9wt1py_686"><p id="z9wt1py_689">Les valeurs des champs cach&eacute;s (<code class="code" id="z9wt1py_690">&lt;input type=&quot;hidden&quot;&gt;</code>).</p></li><li class="list__item" id="z9wt1py_687"><p id="z9wt1py_691">Les valeurs s&eacute;lectionn&eacute;es dans des listes d&eacute;roulantes ou des boutons radio (ex: changer l'ID d'un produit &agrave; un produit auquel l'utilisateur n'a pas acc&egrave;s).</p></li><li class="list__item" id="z9wt1py_688"><p id="z9wt1py_692">Les param&egrave;tres dans l'URL (query parameters).</p></li></ul></li><li class="list__item" id="z9wt1py_681"><p id="z9wt1py_693"><span class="control" id="z9wt1py_694">Impact :</span> Acc&egrave;s non autoris&eacute; &agrave; des donn&eacute;es, contournement de la logique m&eacute;tier, modification de prix, etc.</p></li><li class="list__item" id="z9wt1py_682"><p id="z9wt1py_695"><span class="control" id="z9wt1py_697">Mitigation :</span> Ne jamais faire confiance aux donn&eacute;es venant du client. Toujours re-valider c&ocirc;t&eacute; serveur :</p><ul class="list _bullet" id="z9wt1py_696"><li class="list__item" id="z9wt1py_698"><p id="z9wt1py_701">V&eacute;rifier que l'utilisateur a le droit d'acc&eacute;der/modifier l'objet identifi&eacute; par un ID re&ccedil;u.</p></li><li class="list__item" id="z9wt1py_699"><p id="z9wt1py_702">Re-v&eacute;rifier le prix d'un produit c&ocirc;t&eacute; serveur, ne pas se fier au prix envoy&eacute; par le formulaire.</p></li><li class="list__item" id="z9wt1py_700"><p id="z9wt1py_703">Valider que les valeurs s&eacute;lectionn&eacute;es dans les listes/radios sont bien parmi les options autoris&eacute;es pour cet utilisateur.</p></li></ul></li></ul></section></section><section class="chapter"><h3 id="strat-gies-de-mitigations" data-toc="strat-gies-de-mitigations">Strat&eacute;gies de Mitigations</h3><section class="chapter"><h4 id="protection-csrf-spring-security" data-toc="protection-csrf-spring-security">Protection CSRF (Spring Security)</h4><ul class="list _bullet" id="z9wt1py_710"><li class="list__item" id="z9wt1py_711"><p id="z9wt1py_714"><span class="control" id="z9wt1py_716">Principe :</span> Utiliser le <span class="control" id="z9wt1py_717">Synchronizer Token Pattern</span>.</p><ol class="list _decimal" id="z9wt1py_715" type="1"><li class="list__item" id="z9wt1py_718"><p id="z9wt1py_721">Lorsqu'un formulaire est affich&eacute; (GET), le serveur g&eacute;n&egrave;re un token CSRF unique et impr&eacute;visible, le stocke c&ocirc;t&eacute; serveur (souvent dans la session HTTP), et l'inclut dans le formulaire sous forme de champ cach&eacute;.</p></li><li class="list__item" id="z9wt1py_719"><p id="z9wt1py_722">Lorsque le formulaire est soumis (POST), le client renvoie ce token.</p></li><li class="list__item" id="z9wt1py_720"><p id="z9wt1py_723">Le serveur compare le token re&ccedil;u avec celui stock&eacute; en session. S'ils correspondent, la requ&ecirc;te est consid&eacute;r&eacute;e comme l&eacute;gitime. Sinon, elle est rejet&eacute;e.</p></li></ol></li><li class="list__item" id="z9wt1py_712"><p id="z9wt1py_724"><span class="control" id="z9wt1py_726">Impl&eacute;mentation avec Spring Security :</span></p><ul class="list _bullet" id="z9wt1py_725"><li class="list__item" id="z9wt1py_727"><p id="z9wt1py_731">Spring Security active la protection CSRF par d&eacute;faut pour les m&eacute;thodes modifiant l'&eacute;tat (<code class="code" id="z9wt1py_732">POST</code>, <code class="code" id="z9wt1py_733">PUT</code>, <code class="code" id="z9wt1py_734">DELETE</code>).</p></li><li class="list__item" id="z9wt1py_728"><p id="z9wt1py_735">Il s'attend &agrave; ce que le token soit pr&eacute;sent dans la requ&ecirc;te (soit comme param&egrave;tre <code class="code" id="z9wt1py_736">_csrf</code>, soit comme en-t&ecirc;te <code class="code" id="z9wt1py_737">X-CSRF-TOKEN</code>).</p></li><li class="list__item" id="z9wt1py_729"><p id="z9wt1py_738"><span class="control" id="z9wt1py_740">Int&eacute;gration Thymeleaf :</span> Si Spring Security et Thymeleaf sont utilis&eacute;s, Thymeleaf ajoute automatiquement le champ cach&eacute; <code class="code" id="z9wt1py_741">_csrf</code> aux formulaires en <code class="code" id="z9wt1py_742">POST</code> si l'attribut <code class="code" id="z9wt1py_743">th:action</code> est utilis&eacute;.</p><div class="code-block" data-lang="markup">
+&lt;!-- Si Spring Security CSRF est actif, Thymeleaf ajoutera ceci : --&gt;
+&lt;!-- &lt;input type=&quot;hidden&quot; name=&quot;_csrf&quot; value=&quot;token-généré-par-le-serveur&quot;/&gt; --&gt;
+&lt;form th:action=&quot;@{/users/register}&quot; th:object=&quot;${userDto}&quot; method=&quot;post&quot;&gt;
+   &lt;!-- ... champs du formulaire ... --&gt;
+&lt;/form&gt;
+</div></li><li class="list__item" id="z9wt1py_730"><p id="z9wt1py_744"><span class="control" id="z9wt1py_746">D&eacute;sactivation (NON RECOMMAND&Eacute; pour les applications stateful) :</span> Si n&eacute;cessaire (ex: API REST stateless), la protection peut &ecirc;tre d&eacute;sactiv&eacute;e dans la configuration de s&eacute;curit&eacute;, mais cela ouvre la porte aux attaques CSRF si d'autres m&eacute;canismes (ex: v&eacute;rification de l'en-t&ecirc;te <code class="code" id="z9wt1py_747">Origin</code>) ne sont pas mis en place.</p><div class="code-block" data-lang="java">
+// @Configuration @EnableWebSecurity class SecurityConfig {
+//    @Bean SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.csrf(csrf -&gt; csrf.disable()); // Désactive CSRF
+//        // ... reste de la configuration ...
+//        return http.build();
+//    }
+// }
+</div></li></ul></li><li class="list__item" id="z9wt1py_713"><p id="z9wt1py_748"><span class="control" id="z9wt1py_749">Conseil :</span> Laisser la protection CSRF activ&eacute;e par d&eacute;faut pour les applications web traditionnelles avec sessions. S'assurer que tous les formulaires POST utilisent <code class="code" id="z9wt1py_750">th:action</code> ou incluent manuellement le token si n&eacute;cessaire.</p></li></ul></section><section class="chapter"><h4 id="validation-robuste-c-t-serveur" data-toc="validation-robuste-c-t-serveur">Validation Robuste (C&ocirc;t&eacute; Serveur)</h4><ul class="list _bullet" id="z9wt1py_751"><li class="list__item" id="z9wt1py_752"><p id="z9wt1py_754"><span class="control" id="z9wt1py_755">Principe :</span> La validation c&ocirc;t&eacute; client (JavaScript) est utile pour l'exp&eacute;rience utilisateur mais ne fournit <span class="control" id="z9wt1py_756">aucune s&eacute;curit&eacute;</span>. Elle peut &ecirc;tre facilement contourn&eacute;e. <span class="control" id="z9wt1py_757">Toute validation doit &ecirc;tre imp&eacute;rativement dupliqu&eacute;e et renforc&eacute;e c&ocirc;t&eacute; serveur.</span></p></li><li class="list__item" id="z9wt1py_753"><p id="z9wt1py_758"><span class="control" id="z9wt1py_760">Impl&eacute;mentation :</span></p><ul class="list _bullet" id="z9wt1py_759"><li class="list__item" id="z9wt1py_761"><p id="z9wt1py_766">Utiliser Bean Validation (<code class="code" id="z9wt1py_767">@Valid</code>, contraintes standard et personnalis&eacute;es) sur les DTOs re&ccedil;us par le contr&ocirc;leur.</p></li><li class="list__item" id="z9wt1py_762"><p id="z9wt1py_768">V&eacute;rifier les types de donn&eacute;es, les longueurs, les formats, les plages de valeurs.</p></li><li class="list__item" id="z9wt1py_763"><p id="z9wt1py_769">Valider les relations entre les champs (ex: date de fin apr&egrave;s date de d&eacute;but).</p></li><li class="list__item" id="z9wt1py_764"><p id="z9wt1py_770">Valider la logique m&eacute;tier (ex: l'email existe-t-il d&eacute;j&agrave; ? Le stock est-il suffisant ?).</p></li><li class="list__item" id="z9wt1py_765"><p id="z9wt1py_771">Valider les autorisations (ex: l'utilisateur a-t-il le droit de modifier cet objet sp&eacute;cifique ?). Cf. Parameter Tampering.</p></li></ul></li></ul></section><section class="chapter"><h4 id="utilisation-de-dtos" data-toc="utilisation-de-dtos">Utilisation de DTOs</h4><ul class="list _bullet" id="z9wt1py_772"><li class="list__item" id="z9wt1py_773"><p id="z9wt1py_776"><span class="control" id="z9wt1py_777">Principe :</span> Comme mentionn&eacute; pr&eacute;c&eacute;demment, les DTOs agissent comme une couche interm&eacute;diaire qui n'expose que les champs strictement n&eacute;cessaires au formulaire.</p></li><li class="list__item" id="z9wt1py_774"><p id="z9wt1py_778"><span class="control" id="z9wt1py_779">Impl&eacute;mentation :</span> D&eacute;finir des DTOs sp&eacute;cifiques pour chaque formulaire (ou groupe de formulaires similaires). Mapper manuellement ou avec des outils (MapStruct, ModelMapper) entre le DTO et l'entit&eacute; du domaine dans la couche service, en ne transf&eacute;rant que les champs pertinents et en appliquant la logique n&eacute;cessaire (ex: hashage de mot de passe).</p></li><li class="list__item" id="z9wt1py_775"><p id="z9wt1py_780"><span class="control" id="z9wt1py_781">Avantage S&eacute;curit&eacute; :</span> Emp&ecirc;che les attaques de type Mass Assignment car seuls les champs d&eacute;finis dans le DTO peuvent &ecirc;tre li&eacute;s &agrave; partir de la requ&ecirc;te.</p></li></ul></section><section class="chapter"><h4 id="encodage-des-sorties-nettoyage-des-entr-es" data-toc="encodage-des-sorties-nettoyage-des-entr-es">Encodage des Sorties / Nettoyage des Entr&eacute;es</h4><ul class="list _bullet" id="z9wt1py_782"><li class="list__item" id="z9wt1py_783"><p id="z9wt1py_786"><span class="control" id="z9wt1py_788">Principe (Contre XSS) :</span></p><ul class="list _bullet" id="z9wt1py_787"><li class="list__item" id="z9wt1py_789"><p id="z9wt1py_791"><span class="control" id="z9wt1py_792">Encodage des Sorties (Output Encoding - Le plus important) :</span> Lorsque des donn&eacute;es fournies par l'utilisateur sont affich&eacute;es dans une page HTML, elles doivent &ecirc;tre encod&eacute;es pour que le navigateur les interpr&egrave;te comme du texte litt&eacute;ral et non comme du code HTML ou JavaScript. Par exemple, <code class="code" id="z9wt1py_793">&lt;</code> devient <code class="code" id="z9wt1py_794">&amp;lt;</code>, <code class="code" id="z9wt1py_795">&gt;</code> devient <code class="code" id="z9wt1py_796">&amp;gt;</code>, <code class="code" id="z9wt1py_797">&quot;</code> devient <code class="code" id="z9wt1py_798">&amp;quot;</code>.</p></li><li class="list__item" id="z9wt1py_790"><p id="z9wt1py_799"><span class="control" id="z9wt1py_800">Nettoyage des Entr&eacute;es (Input Sanitization) :</span> Si l'application doit accepter et stocker du HTML format&eacute; par l' utilisateur (ex: &eacute;diteur de texte riche), l'encodage seul ne suffit pas. Il faut nettoyer (filtrer) le HTML entrant pour n'autoriser qu'un sous-ensemble s&ucirc;r de balises et d'attributs, en supprimant tout code potentiellement dangereux (scripts, gestionnaires d'&eacute;v&eacute;nements <code class="code" id="z9wt1py_801">onerror</code>, etc.).</p></li></ul></li><li class="list__item" id="z9wt1py_784"><p id="z9wt1py_802"><span class="control" id="z9wt1py_804">Impl&eacute;mentation :</span></p><ul class="list _bullet" id="z9wt1py_803"><li class="list__item" id="z9wt1py_805"><p id="z9wt1py_807"><span class="control" id="z9wt1py_808">Thymeleaf :</span> Par d&eacute;faut, Thymeleaf effectue automatiquement l'encodage HTML des expressions <code class="code" id="z9wt1py_809">th:text</code> et des valeurs de champ <code class="code" id="z9wt1py_810">th:field</code>, <code class="code" id="z9wt1py_811">th:value</code>, etc. C'est une protection XSS majeure int&eacute;gr&eacute;e. Utiliser <code class="code" id="z9wt1py_812">th:utext</code> ( unescaped text) avec une extr&ecirc;me prudence et uniquement pour du HTML dont la s&eacute;curit&eacute; a &eacute;t&eacute; v&eacute;rifi&eacute;e en amont.</p></li><li class="list__item" id="z9wt1py_806"><p id="z9wt1py_813"><span class="control" id="z9wt1py_815">Nettoyage :</span> Utiliser des biblioth&egrave;ques d&eacute;di&eacute;es comme <span class="control" id="z9wt1py_816">OWASP Java HTML Sanitizer</span>. Configurer une politique de nettoyage stricte (whitelisting des &eacute;l&eacute;ments autoris&eacute;s).</p><div class="code-block" data-lang="java">
+// Exemple avec OWASP Java HTML Sanitizer
+// PolicyFactory policy = new HtmlPolicyBuilder()
+//     .allowElements(&quot;p&quot;, &quot;b&quot;, &quot;i&quot;, &quot;em&quot;, &quot;strong&quot;, &quot;a&quot;)
+//     .allowAttributes(&quot;href&quot;).onElements(&quot;a&quot;)
+//     .requireRelNofollowOnLinks()
+//     .toFactory();
+// String unsafeHtmlInput = &quot;&lt;p onclick='alert(\&quot;XSS\&quot;)'&gt;Hello &lt;script&gt;...&lt;/script&gt;&lt;/p&gt;&lt;a href='javascript:bad()'&gt;link&lt;/a&gt;&quot;;
+// String safeHtmlOutput = policy.sanitize(unsafeHtmlInput);
+// // safeHtmlOutput contiendrait : &quot;&lt;p&gt;Hello &lt;/p&gt;&lt;a&gt;link&lt;/a&gt;&quot; (selon la policy exacte)
+</div></li></ul></li><li class="list__item" id="z9wt1py_785"><p id="z9wt1py_817"><span class="control" id="z9wt1py_818">Content Security Policy (CSP) :</span> Un en-t&ecirc;te HTTP (<code class="code" id="z9wt1py_819">Content-Security-Policy</code>) qui permet de d&eacute;finir des r&egrave;gles tr&egrave;s pr&eacute;cises sur les ressources (scripts, styles, images, etc.) que le navigateur est autoris&eacute; &agrave; charger et ex&eacute;cuter pour une page. C'est une d&eacute;fense en profondeur tr&egrave;s efficace contre XSS et d'autres attaques par injection. Sa configuration peut &ecirc;tre complexe mais est fortement recommand&eacute;e.</p></li></ul></section><section class="chapter"><h4 id="https" data-toc="https">HTTPS</h4><ul class="list _bullet" id="z9wt1py_820"><li class="list__item" id="z9wt1py_821"><p id="z9wt1py_824"><span class="control" id="z9wt1py_825">Principe :</span> Chiffrer toute communication entre le navigateur de l'utilisateur et le serveur web en utilisant TLS/SSL.</p></li><li class="list__item" id="z9wt1py_822"><p id="z9wt1py_826"><span class="control" id="z9wt1py_827">Impl&eacute;mentation :</span> Configurer le serveur web (Tomcat, Nginx, Apache) pour utiliser un certificat TLS/SSL valide. Forcer la redirection de HTTP vers HTTPS.</p></li><li class="list__item" id="z9wt1py_823"><p id="z9wt1py_828"><span class="control" id="z9wt1py_829">Avantage S&eacute;curit&eacute; :</span> Prot&egrave;ge les donn&eacute;es des formulaires (identifiants, informations personnelles, tokens CSRF) contre l'&eacute;coute (eavesdropping) sur le r&eacute;seau. Emp&ecirc;che certaines attaques de type &quot;man-in-the-middle&quot;. C'est un pr&eacute;requis fondamental pour toute application manipulant des donn&eacute;es sensibles.</p></li></ul></section><section class="chapter"><h4 id="mise-jour-des-d-pendances" data-toc="mise-jour-des-d-pendances">Mise &agrave; jour des D&eacute;pendances</h4><ul class="list _bullet" id="z9wt1py_830"><li class="list__item" id="z9wt1py_832"><p id="z9wt1py_834"><span class="control" id="z9wt1py_835">Principe :</span> Les frameworks (Spring, Hibernate), les biblioth&egrave;ques (Tika, ModelMapper), le serveur d'application et le JRE lui-m&ecirc;me peuvent contenir des vuln&eacute;rabilit&eacute;s de s&eacute;curit&eacute; connues.</p></li><li class="list__item" id="z9wt1py_833"><p id="z9wt1py_836"><span class="control" id="z9wt1py_837">Impl&eacute;mentation :</span> Utiliser des outils d'analyse de d&eacute;pendances (comme OWASP Dependency-Check, Snyk, Dependabot de GitHub) pour identifier les biblioth&egrave;ques avec des vuln&eacute;rabilit&eacute;s connues. Mettre r&eacute;guli&egrave;rement &agrave; jour les d&eacute;pendances vers des versions corrig&eacute;es. Suivre les annonces de s&eacute;curit&eacute; des projets utilis&eacute;s.</p></li></ul></section></section></section><section class="chapter"><h2 id="bonnes-pratiques-et-patterns" data-toc="bonnes-pratiques-et-patterns">Bonnes Pratiques et Patterns</h2><p id="z9wt1py_838">Au-del&agrave; de la s&eacute;curit&eacute; et des bases fonctionnelles, plusieurs bonnes pratiques et patterns am&eacute;liorent la qualit&eacute;, la maintenabilit&eacute; et la robustesse du code de gestion des formulaires.</p><section class="chapter"><h3 id="utiliser-les-dtos" data-toc="utiliser-les-dtos">Utiliser les DTOs</h3><ul class="list _bullet" id="z9wt1py_845"><li class="list__item" id="z9wt1py_846"><p id="z9wt1py_849"><span class="control" id="z9wt1py_850">Rappel :</span> S&eacute;parer les donn&eacute;es de la vue/formulaire des donn&eacute;es du domaine/persistance.</p></li><li class="list__item" id="z9wt1py_847"><p id="z9wt1py_851"><span class="control" id="z9wt1py_852">Avantages :</span> D&eacute;couplage, s&eacute;curit&eacute; (Mass Assignment), flexibilit&eacute;, validation cibl&eacute;e.</p></li><li class="list__item" id="z9wt1py_848"><p id="z9wt1py_853"><span class="control" id="z9wt1py_854">Conseil :</span> Cr&eacute;er des DTOs sp&eacute;cifiques pour chaque cas d'usage (cr&eacute;ation, modification, affichage) si leurs structures de donn&eacute;es diff&egrave;rent significativement.</p></li></ul></section><section class="chapter"><h3 id="valider-syst-matiquement-c-t-serveur" data-toc="valider-syst-matiquement-c-t-serveur">Valider Syst&eacute;matiquement C&ocirc;t&eacute; Serveur</h3><ul class="list _bullet" id="z9wt1py_855"><li class="list__item" id="z9wt1py_856"><p id="z9wt1py_859"><span class="control" id="z9wt1py_860">Rappel :</span> La validation c&ocirc;t&eacute; client est cosm&eacute;tique. La vraie validation se fait c&ocirc;t&eacute; serveur.</p></li><li class="list__item" id="z9wt1py_857"><p id="z9wt1py_861"><span class="control" id="z9wt1py_862">Avantages :</span> Int&eacute;grit&eacute; des donn&eacute;es, s&eacute;curit&eacute;.</p></li><li class="list__item" id="z9wt1py_858"><p id="z9wt1py_863"><span class="control" id="z9wt1py_864">Conseil :</span> Utiliser Bean Validation pour les validations structurelles et de format. Ajouter des validations m&eacute;tier dans la couche service (unicit&eacute;, r&egrave;gles complexes, autorisations).</p></li></ul></section><section class="chapter"><h3 id="pattern-post-redirect-get-prg" data-toc="pattern-post-redirect-get-prg">Pattern Post-Redirect-Get (PRG)</h3><ul class="list _bullet" id="z9wt1py_865"><li class="list__item" id="z9wt1py_866"><p id="z9wt1py_870"><span class="control" id="z9wt1py_871">Probl&egrave;me :</span> Apr&egrave;s une soumission de formulaire r&eacute;ussie via POST, si l'utilisateur rafra&icirc;chit la page (F5), le navigateur peut proposer de renvoyer les m&ecirc;mes donn&eacute;es POST, conduisant &agrave; une double soumission (ex: cr&eacute;er deux fois le m&ecirc;me objet).</p></li><li class="list__item" id="z9wt1py_867"><p id="z9wt1py_872"><span class="control" id="z9wt1py_874">Solution (PRG) :</span></p><ol class="list _decimal" id="z9wt1py_873" type="1"><li class="list__item" id="z9wt1py_875"><p id="z9wt1py_880">Le client envoie la requ&ecirc;te <span class="control" id="z9wt1py_881">POST</span> avec les donn&eacute;es du formulaire.</p></li><li class="list__item" id="z9wt1py_876"><p id="z9wt1py_882">Le serveur traite la requ&ecirc;te.</p></li><li class="list__item" id="z9wt1py_877"><p id="z9wt1py_883">Si le traitement r&eacute;ussit, au lieu de renvoyer directement une page HTML, le serveur renvoie une r&eacute;ponse de * <span class="emphasis" id="z9wt1py_884">REDIRECT</span>* (code 302 ou 303) vers une nouvelle URL (souvent une page de succ&egrave;s ou la vue de l'objet cr&eacute;&eacute;/modifi&eacute;).</p></li><li class="list__item" id="z9wt1py_878"><p id="z9wt1py_885">Le navigateur suit cette redirection en effectuant une requ&ecirc;te <span class="control" id="z9wt1py_886">GET</span> vers la nouvelle URL.</p></li><li class="list__item" id="z9wt1py_879"><p id="z9wt1py_887">Le serveur r&eacute;pond &agrave; cette requ&ecirc;te GET avec la page de succ&egrave;s ou d'affichage.</p></li></ol></li><li class="list__item" id="z9wt1py_868"><p id="z9wt1py_888"><span class="control" id="z9wt1py_889">Avantages :</span> Emp&ecirc;che la double soumission au rafra&icirc;chissement, s&eacute;pare l'action de modification (POST) de l'action d'affichage (GET), URL plus propre dans le navigateur apr&egrave;s l'action.</p></li><li class="list__item" id="z9wt1py_869"><p id="z9wt1py_890"><span class="control" id="z9wt1py_892">Impl&eacute;mentation :</span> Dans le contr&ocirc;leur, apr&egrave;s un traitement POST r&eacute;ussi, retourner une cha&icirc;ne commen&ccedil;ant par <code class="code" id="z9wt1py_893">redirect:</code>.</p><div class="code-block" data-lang="java">
+@PostMapping(&quot;/register&quot;)
+public String processRegistration(
+    @Valid @ModelAttribute(&quot;userDto&quot;) UserRegistrationDto userDto,
+    BindingResult bindingResult,
+    RedirectAttributes redirectAttributes // Pour les messages flash
+) {
+    if (bindingResult.hasErrors()) {
+        return &quot;user-registration&quot;; // Pas de redirect si erreur
+    }
+
+    try {
+        // userService.registerNewUser(userDto);
+        // Ajouter un message de succès pour la page redirigée
+        redirectAttributes.addFlashAttribute(&quot;globalSuccessMessage&quot;,
+            &quot;Inscription réussie pour &quot; + userDto.getUsername());
+        // Rediriger vers une page de confirmation/succès (via GET)
+        return &quot;redirect:/users/registration-success&quot;; // PRG en action!
+    } catch (Exception e) {
+        // Gérer l'erreur, potentiellement rediriger vers le formulaire avec erreur
+        redirectAttributes.addFlashAttribute(&quot;globalErrorMessage&quot;,
+            &quot;Erreur lors de l'inscription.&quot;);
+        return &quot;redirect:/users/register&quot;; // Ou retourner la vue directement
+    }
+}
+
+@GetMapping(&quot;/registration-success&quot;)
+public String showSuccessPage(Model model) {
+    // Le message flash ajouté via redirectAttributes est automatiquement
+    // disponible dans le modèle de la requête GET suivant la redirection
+    return &quot;registration-success&quot;; // Template qui affiche le message de succès
+}
+</div></li></ul></section><section class="chapter"><h3 id="garder-les-contr-leurs-l-gers" data-toc="garder-les-contr-leurs-l-gers">Garder les Contr&ocirc;leurs L&eacute;gers</h3><ul class="list _bullet" id="z9wt1py_894"><li class="list__item" id="z9wt1py_895"><p id="z9wt1py_899"><span class="control" id="z9wt1py_900">Principe :</span> Le contr&ocirc;leur doit agir comme un chef d'orchestre : recevoir la requ&ecirc;te, extraire les donn&eacute;es pertinentes (DTO), appeler les services m&eacute;tier appropri&eacute;s pour la logique et la validation m&eacute;tier, puis s&eacute;lectionner la vue ou la redirection.</p></li><li class="list__item" id="z9wt1py_896"><p id="z9wt1py_901"><span class="control" id="z9wt1py_902">&Agrave; &eacute;viter dans les contr&ocirc;leurs :</span> Logique m&eacute;tier complexe, acc&egrave;s direct aux repositories JPA, manipulation de bas niveau des requ&ecirc;tes/r&eacute;ponses (sauf cas sp&eacute;cifiques), construction manuelle de HTML/JSON.</p></li><li class="list__item" id="z9wt1py_897"><p id="z9wt1py_903"><span class="control" id="z9wt1py_904">Avantages :</span> Meilleure s&eacute;paration des pr&eacute;occupations, code plus testable (les services peuvent &ecirc;tre test&eacute;s unitairement sans le contexte web), code plus lisible et maintenable.</p></li><li class="list__item" id="z9wt1py_898"><p id="z9wt1py_905"><span class="control" id="z9wt1py_906">Impl&eacute;mentation :</span> Cr&eacute;er des classes de service (<code class="code" id="z9wt1py_907">@Service</code>) inject&eacute;es dans les contr&ocirc;leurs. Les services contiennent la logique m&eacute;tier, la coordination des repositories, le mapping DTO/Entit&eacute;, etc.</p></li></ul></section><section class="chapter"><h3 id="gestion-centralis-e-des-erreurs" data-toc="gestion-centralis-e-des-erreurs">Gestion Centralis&eacute;e des Erreurs</h3><ul class="list _bullet" id="z9wt1py_908"><li class="list__item" id="z9wt1py_909"><p id="z9wt1py_913"><span class="control" id="z9wt1py_914">Probl&egrave;me :</span> G&eacute;rer toutes les exceptions possibles (validation, acc&egrave;s aux donn&eacute;es, erreurs m&eacute;tier, upload trop volumineux) dans chaque m&eacute;thode de contr&ocirc;leur peut &ecirc;tre r&eacute;p&eacute;titif et encombrant.</p></li><li class="list__item" id="z9wt1py_910"><p id="z9wt1py_915"><span class="control" id="z9wt1py_916">Solution :</span> Utiliser <code class="code" id="z9wt1py_917">@ControllerAdvice</code> et <code class="code" id="z9wt1py_918">@ExceptionHandler</code>. Une classe annot&eacute;e <code class="code" id="z9wt1py_919">@ControllerAdvice</code> peut contenir des m&eacute;thodes <code class="code" id="z9wt1py_920">@ExceptionHandler</code> qui capturent des exceptions sp&eacute;cifiques lev&eacute;es par n'importe quel contr&ocirc;leur de l'application.</p></li><li class="list__item" id="z9wt1py_911"><p id="z9wt1py_921"><span class="control" id="z9wt1py_923">Exemple : Gestion de <code class="code" id="z9wt1py_924">MaxUploadSizeExceededException</code></span></p><div class="code-block" data-lang="java">
+// fr.formation.spring. MvcExceptionHandler
+package fr.formation.spring.exception;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.ModelAndView; // Alternative à Redirect
+import jakarta.servlet.http.HttpServletRequest;
+
+@ControllerAdvice
+public class MvcExceptionHandler {
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeException(
+        MaxUploadSizeExceededException exc,
+        RedirectAttributes redirectAttributes,
+        HttpServletRequest request // Pour obtenir l'URL d'origine
+    ) {
+        System.err.println(&quot;Erreur: Fichier trop volumineux ! Limite: &quot; + exc.getMaxUploadSize());
+        redirectAttributes.addFlashAttribute(&quot;errorMessage&quot;,
+            &quot;Le fichier dépasse la taille maximale autorisée.&quot;);
+
+        // Essayer de rediriger vers la page d'où venait l'upload
+        // Note: L'URL exacte peut être complexe à déterminer dans tous les cas
+        String referer = request.getHeader(&quot;Referer&quot;);
+        if (referer != null &amp;&amp; !referer.isEmpty()) {
+             return &quot;redirect:&quot; + referer;
+        } else {
+            // Fallback vers une page d'erreur générique ou l'accueil
+            return &quot;redirect:/error-upload&quot;;
+        }
+
+        // Alternative: retourner un ModelAndView vers une page d'erreur spécifique
+        // ModelAndView mav = new ModelAndView(&quot;error-upload-size&quot;);
+        // mav.addObject(&quot;maxSize&quot;, exc.getMaxUploadSize());
+        // mav.setStatus(HttpStatus.PAYLOAD_TOO_LARGE);
+        // return mav;
+    }
+
+    // Ajouter d'autres @ExceptionHandler pour d'autres types d'exceptions...
+    // @ExceptionHandler(DataAccessException.class) public String handleDatabaseError(...)
+    // @ExceptionHandler(Exception.class) public String handleGenericError(...)
+}
+</div></li><li class="list__item" id="z9wt1py_912"><p id="z9wt1py_925"><span class="control" id="z9wt1py_926">Avantages :</span> Centralise la logique de gestion des erreurs, nettoie le code des contr&ocirc;leurs, permet de fournir des r&eacute;ponses d'erreur coh&eacute;rentes (pages d'erreur sp&eacute;cifiques, redirections).</p></li></ul></section><section class="chapter"><h3 id="internationalisation-i18n-des-messages" data-toc="internationalisation-i18n-des-messages">Internationalisation (i18n) des Messages</h3><ul class="list _bullet" id="z9wt1py_927"><li class="list__item" id="z9wt1py_929"><p id="z9wt1py_932"><span class="control" id="z9wt1py_933">Principe :</span> Rendre les messages affich&eacute;s &agrave; l'utilisateur (labels de formulaire, messages d'erreur de validation, messages de succ&egrave;s/&eacute;chec) traduisibles dans diff&eacute;rentes langues.</p></li><li class="list__item" id="z9wt1py_930"><p id="z9wt1py_934"><span class="control" id="z9wt1py_936">Impl&eacute;mentation avec Spring Boot :</span></p><ol class="list _decimal" id="z9wt1py_935" type="1"><li class="list__item" id="z9wt1py_937"><p id="z9wt1py_942">Cr&eacute;er des fichiers de propri&eacute;t&eacute;s pour chaque langue dans <code class="code" id="z9wt1py_943">src/main/resources</code>, en suivant la convention <code class="code" id="z9wt1py_944">messages_XX.properties</code> (o&ugrave; <code class="code" id="z9wt1py_945">XX</code> est le code langue, ex: <code class="code" id="z9wt1py_946">messages_fr.properties</code>, <code class="code" id="z9wt1py_947">messages_en.properties</code>) et un fichier par d&eacute;faut <code class="code" id="z9wt1py_948">messages.properties</code>.</p></li><li class="list__item" id="z9wt1py_938"><p id="z9wt1py_949">D&eacute;finir des cl&eacute;s et leurs traductions dans ces fichiers.</p><div class="code-block" data-lang="properties">
+# messages.properties (Défaut, ex: Anglais)
+label.username=Username
+label.password=Password
+error.required=This field is required.
+error.email.invalid=Invalid email format.
+validation.passwords.mismatch=Passwords do not match.
+</div><div class="code-block" data-lang="properties">
+# messages_fr.properties (Français)
+label.username=Nom d'utilisateur
+label.password=Mot de passe
+error.required=Ce champ est obligatoire.
+error.email.invalid=Format d'email invalide.
+validation.passwords.mismatch=Les mots de passe ne correspondent pas.
+</div></li><li class="list__item" id="z9wt1py_939"><p id="z9wt1py_952">Configurer <code class="code" id="z9wt1py_953">MessageSource</code> (Spring Boot le fait souvent automatiquement s'il trouve les fichiers <code class="code" id="z9wt1py_954">messages*.properties</code>).</p></li><li class="list__item" id="z9wt1py_940"><p id="z9wt1py_955"><span class="control" id="z9wt1py_957">Pour les messages de validation Bean Validation :</span> Les messages d&eacute;finis dans les annotations (<code class="code" id="z9wt1py_958">message = &quot;...&quot;</code>) peuvent &ecirc;tre des cl&eacute;s de messages. Placez <code class="code" id="z9wt1py_959">{key}</code> dans l'attribut <code class="code" id="z9wt1py_960">message</code>. Bean Validation utilisera le <code class="code" id="z9wt1py_961">MessageSource</code> de Spring pour r&eacute;soudre ces cl&eacute;s.</p><div class="code-block" data-lang="java">
+// Dans UserRegistrationDto
+@NotBlank(message = &quot;{error.required}&quot;) // Utilise la clé du fichier properties
+private String username;
+
+@Email(message = &quot;{error.email.invalid}&quot;)
+private String email;
+
+// Dans l'annotation @PasswordsMatch
+// String message() default &quot;{validation.passwords.mismatch}&quot;;
+</div></li><li class="list__item" id="z9wt1py_941"><p id="z9wt1py_962"><span class="control" id="z9wt1py_964">Dans Thymeleaf :</span> Utiliser la syntaxe <code class="code" id="z9wt1py_965">#{key}</code> pour afficher des messages internationalis&eacute;s.</p><div class="code-block" data-lang="markup">
+&lt;label for=&quot;username&quot; th:text=&quot;#{label.username}&quot;&gt;Username&lt;/label&gt;
+&lt;input type=&quot;text&quot; id=&quot;username&quot; th:field=&quot;*{username}&quot; /&gt;
+&lt;!-- Les erreurs de validation résolues via les clés s'affichent directement --&gt;
+&lt;div class=&quot;error&quot; th:if=&quot;${#fields.hasErrors('username')}&quot;&gt;
+     &lt;p th:each=&quot;err : ${#fields.errors('username')}&quot; th:text=&quot;${err}&quot;&gt;&lt;/p&gt;
+&lt;/div&gt;
+</div></li></ol></li><li class="list__item" id="z9wt1py_931"><p id="z9wt1py_966"><span class="control" id="z9wt1py_967">Avantages :</span> Application adaptable &agrave; diff&eacute;rents publics, gestion centralis&eacute;e des textes.</p></li></ul></section></section><section class="chapter"><h2 id="conclusion" data-toc="conclusion">Conclusion</h2><p id="z9wt1py_968">La gestion des formulaires est une partie essentielle du d&eacute;veloppement web. Spring Boot et Spring MVC, combin&eacute;s &agrave; des outils comme Thymeleaf, Bean Validation, et des biblioth&egrave;ques de mapping (ModelMapper, MapStruct), fournissent un &eacute;cosyst&egrave;me puissant et coh&eacute;rent pour g&eacute;rer l'ensemble du cycle de vie des formulaires, de l'affichage &agrave; la validation, en passant par la s&eacute;curit&eacute; et le traitement des donn&eacute;es.</p><p id="z9wt1py_969">Ma&icirc;triser l'utilisation des DTOs, impl&eacute;menter une validation robuste c&ocirc;t&eacute; serveur, comprendre et mitiger les risques de s&eacute;curit&eacute; (XSS, CSRF, Mass Assignment), g&eacute;rer correctement les uploads de fichiers et appliquer les bonnes pratiques comme le pattern PRG sont des comp&eacute;tences cl&eacute;s pour d&eacute;velopper des applications web fiables et s&eacute;curis&eacute;es avec Spring.</p></section><div class="last-modified">Last modified: 11 mai 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="010-00-spring-data-jpa.html" class="navigation-links__prev">Spring Data JPA</a><a href="030-00-la-gestion-evenementielle.html" class="navigation-links__next">La gestion &eacute;v&eacute;nementielle</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

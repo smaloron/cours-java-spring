@@ -1,0 +1,399 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-05-11T08:51:19.838789"><title>CommandLine Runner | Spring</title><script type="application/json" id="virtual-toc-data">[{"id":"impl-mentation-basique-d-un-commandlinerunner","level":0,"title":"Implémentation Basique d\u0027un CommandLineRunner","anchor":"#impl-mentation-basique-d-un-commandlinerunner"},{"id":"gestion-de-plusieurs-commandlinerunner-et-leur-ordre","level":0,"title":"Gestion de Plusieurs CommandLineRunner et leur Ordre","anchor":"#gestion-de-plusieurs-commandlinerunner-et-leur-ordre"},{"id":"acc-s-aux-arguments-de-la-ligne-de-commande","level":0,"title":"Accès aux Arguments de la Ligne de Commande","anchor":"#acc-s-aux-arguments-de-la-ligne-de-commande"},{"id":"injection-de-d-pendances-dans-un-commandlinerunner","level":0,"title":"Injection de Dépendances dans un CommandLineRunner","anchor":"#injection-de-d-pendances-dans-un-commandlinerunner"},{"id":"cas-d-utilisation-sp-cifiques-au-contexte-web","level":0,"title":"Cas d\u0027Utilisation Spécifiques au Contexte Web","anchor":"#cas-d-utilisation-sp-cifiques-au-contexte-web"},{"id":"exercices-pratiques","level":0,"title":"Exercices Pratiques","anchor":"#exercices-pratiques"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="CommandLine Runner | Spring"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/003-01-commandline-runner.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="CommandLine Runner | Spring"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/003-01-commandline-runner.html#webpage",
+    "url": "writerside-documentation/003-01-commandline-runner.html",
+    "name": "CommandLine Runner | Spring",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring Help"
+}</script><!-- End Schema.org --></head><body data-id="003-01-CommandLine-Runner" data-main-title="CommandLine Runner" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="003-00-DI-IoC.md|Inversion de contrôle et injection de dépendance"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="003-01-CommandLine-Runner" id="003-01-CommandLine-Runner.md">CommandLine Runner</h1><p id="-npfk9y_3">Dans l'&eacute;cosyst&egrave;me Spring Boot, <code class="code" id="-npfk9y_16">CommandLineRunner</code> est une interface fonctionnelle simple mais puissante. Elle permet d'ex&eacute;cuter du code une fois que le <code class="code" id="-npfk9y_17">ApplicationContext</code> de Spring est compl&egrave;tement charg&eacute;, mais juste avant que la m&eacute;thode <code class="code" id="-npfk9y_18">run()</code> de <code class="code" id="-npfk9y_19">SpringApplication</code> ne se termine. Ceci est particuli&egrave;rement utile pour des t&acirc;ches d'initialisation, de configuration ou de v&eacute;rification au d&eacute;marrage de l'application.</p><p id="-npfk9y_4"><span class="control" id="-npfk9y_20">Cas d'usage typiques dans un contexte web :</span></p><ul class="list _bullet" id="-npfk9y_5"><li class="list__item" id="-npfk9y_21"><p id="-npfk9y_26">Initialisation de donn&eacute;es en base (ex: cr&eacute;ation d'un utilisateur admin par d&eacute;faut, chargement de donn&eacute;es de r&eacute;f&eacute;rence).</p></li><li class="list__item" id="-npfk9y_22"><p id="-npfk9y_27">Pr&eacute;chauffage de caches applicatifs (remplissage avec des valeurs par d&eacute;faut).</p></li><li class="list__item" id="-npfk9y_23"><p id="-npfk9y_28">V&eacute;rification de la disponibilit&eacute; de services externes critiques.</p></li><li class="list__item" id="-npfk9y_24"><p id="-npfk9y_29">Affichage d'informations de configuration ou d'&eacute;tat au d&eacute;marrage dans les logs.</p></li><li class="list__item" id="-npfk9y_25"><p id="-npfk9y_30">Lancement de t&acirc;ches de maintenance l&eacute;g&egrave;res.</p></li></ul><p id="-npfk9y_6">Il est important de noter que les <code class="code" id="-npfk9y_31">CommandLineRunner</code> s'ex&eacute;cutent <span class="emphasis" id="-npfk9y_32">avant</span> que le serveur web embarqu&eacute; (Tomcat, Jetty, Undertow) ne soit pr&ecirc;t &agrave; accepter des requ&ecirc;tes.</p><p id="-npfk9y_7">L'interface <code class="code" id="-npfk9y_33">CommandLineRunner</code> poss&egrave;de une seule m&eacute;thode &agrave; impl&eacute;menter :</p><div class="code-block" data-lang="java">
+public interface CommandLineRunner {
+    void run(String... args) throws Exception;
+}
+</div><p id="-npfk9y_9">Le param&egrave;tre <code class="code" id="-npfk9y_34">args</code> contient les arguments pass&eacute;s &agrave; l'application en ligne de commande.</p><section class="chapter"><h2 id="impl-mentation-basique-d-un-commandlinerunner" data-toc="impl-mentation-basique-d-un-commandlinerunner">Impl&eacute;mentation Basique d'un CommandLineRunner</h2><p id="-npfk9y_35">Pour cr&eacute;er un <code class="code" id="-npfk9y_46">CommandLineRunner</code>, il suffit de :</p><ol class="list _decimal" id="-npfk9y_36" type="1"><li class="list__item" id="-npfk9y_47"><p id="-npfk9y_49">Cr&eacute;er une classe qui impl&eacute;mente l'interface <code class="code" id="-npfk9y_50">CommandLineRunner</code>.</p></li><li class="list__item" id="-npfk9y_48"><p id="-npfk9y_51">Annoter cette classe avec <code class="code" id="-npfk9y_52">@Component</code> (ou une de ses sp&eacute;cialisations comme <code class="code" id="-npfk9y_53">@Service</code>, <code class="code" id="-npfk9y_54">@Repository</code>) pour qu'elle soit d&eacute;tect&eacute;e et g&eacute;r&eacute;e par Spring.</p></li></ol><p id="-npfk9y_37"><span class="control" id="-npfk9y_55">Exemple : Un simple message au d&eacute;marrage</span></p><p id="-npfk9y_38">Structure du projet :</p><div class="code-block" data-lang="none">
+fr/
+└── formation/
+    └── spring/
+        ├── SpringWebApplication.java
+        └── runner/
+            └── FirstStartupRunner.java
+</div><p id="-npfk9y_40"><code class="code" id="-npfk9y_56">SpringWebApplication.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringWebApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringWebApplication.class, args);
+        // À ce point, tous les CommandLineRunner auront été exécutés.
+        System.out.println(
+                &quot;Application démarrée et prête (après les CommandLineRunner).&quot;
+        );
+    }
+}
+</div><p id="-npfk9y_42"><code class="code" id="-npfk9y_57">FirstStartupRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component // Indique à Spring de gérer ce bean
+public class FirstStartupRunner implements CommandLineRunner {
+
+    // Utilisation de SLF4J pour le logging
+    private static final Logger logger =
+            LoggerFactory.getLogger(FirstStartupRunner.class);
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;===== FirstStartupRunner en cours d'exécution... =====&quot;);
+        // Simuler une tâche d'initialisation
+        Thread.sleep(1000); // Pause d'1 seconde
+        logger.info(&quot;Tâche de FirstStartupRunner terminée.&quot;);
+    }
+}
+</div><p id="-npfk9y_44">Lors du lancement de <code class="code" id="-npfk9y_58">SpringWebApplication</code>, vous verrez dans la console (avant le message &quot;Application d&eacute;marr&eacute;e et pr&ecirc;te...&quot;) :</p><div class="code-block" data-lang="none">
+===== FirstStartupRunner en cours d'exécution... =====
+Tâche de FirstStartupRunner terminée.
+</div></section><section class="chapter"><h2 id="gestion-de-plusieurs-commandlinerunner-et-leur-ordre" data-toc="gestion-de-plusieurs-commandlinerunner-et-leur-ordre">Gestion de Plusieurs CommandLineRunner et leur Ordre</h2><p id="-npfk9y_59">Il est possible d'avoir plusieurs <code class="code" id="-npfk9y_67">CommandLineRunner</code> dans une application. Par d&eacute;faut, Spring ne garantit pas l'ordre d'ex&eacute;cution de ces beans. Si l'ordre est important, on peut utiliser :</p><ol class="list _decimal" id="-npfk9y_60" type="1"><li class="list__item" id="-npfk9y_68"><p id="-npfk9y_70">L'annotation <code class="code" id="-npfk9y_71">@Order(valeur)</code> o&ugrave; <code class="code" id="-npfk9y_72">valeur</code> est un entier (plus la valeur est petite, plus la priorit&eacute; est haute).</p></li><li class="list__item" id="-npfk9y_69"><p id="-npfk9y_73">Impl&eacute;menter l'interface <code class="code" id="-npfk9y_74">org.springframework.core.Ordered</code>.</p></li></ol><p id="-npfk9y_61"><span class="control" id="-npfk9y_75">Exemple : Deux runners avec un ordre d&eacute;fini</span></p><p id="-npfk9y_62"><code class="code" id="-npfk9y_76">OrderedRunnerOne.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(1) // S'exécutera en premier (valeur la plus basse)
+public class OrderedRunnerOne implements CommandLineRunner {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(OrderedRunnerOne.class);
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;&gt;&gt;&gt; OrderedRunnerOne (Priorité 1) en cours...&quot;);
+        // Logique spécifique
+        logger.info(&quot;&gt;&gt;&gt; OrderedRunnerOne terminé.&quot;);
+    }
+}
+</div><p id="-npfk9y_64"><code class="code" id="-npfk9y_77">OrderedRunnerTwo.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(2) // S'exécutera après OrderedRunnerOne
+public class OrderedRunnerTwo implements CommandLineRunner {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(OrderedRunnerTwo.class);
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;&gt;&gt;&gt; OrderedRunnerTwo (Priorité 2) en cours...&quot;);
+        // Logique spécifique
+        logger.info(&quot;&gt;&gt;&gt; OrderedRunnerTwo terminé.&quot;);
+    }
+}
+</div><p id="-npfk9y_66">En ex&eacute;cutant l'application, la sortie montrera <code class="code" id="-npfk9y_78">OrderedRunnerOne</code> avant <code class="code" id="-npfk9y_79">OrderedRunnerTwo</code>.</p></section><section class="chapter"><h2 id="acc-s-aux-arguments-de-la-ligne-de-commande" data-toc="acc-s-aux-arguments-de-la-ligne-de-commande">Acc&egrave;s aux Arguments de la Ligne de Commande</h2><p id="-npfk9y_80">Les arguments pass&eacute;s &agrave; l'application lors de son lancement (ex: <code class="code" id="-npfk9y_86">java -jar myapp.jar arg1 --option=valeur</code>) sont accessibles via le param&egrave;tre <code class="code" id="-npfk9y_87">String... args</code> de la m&eacute;thode <code class="code" id="-npfk9y_88">run()</code>.</p><p id="-npfk9y_81"><span class="control" id="-npfk9y_89">Exemple : Runner affichant les arguments</span></p><p id="-npfk9y_82"><code class="code" id="-npfk9y_90">ArgumentDisplayRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+@Component
+@Order(10) // Pour qu'il s'exécute après les autres si présents
+public class ArgumentDisplayRunner implements CommandLineRunner {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(ArgumentDisplayRunner.class);
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;### ArgumentDisplayRunner Démarré ###&quot;);
+        if (args.length &gt; 0) {
+            logger.info(&quot;Arguments reçus de la ligne de commande :&quot;);
+            Arrays.stream(args).forEach(arg -&gt; logger.info(&quot;- &quot; + arg));
+        } else {
+            logger.info(&quot;Aucun argument reçu de la ligne de commande.&quot;);
+        }
+        logger.info(&quot;### ArgumentDisplayRunner Terminé ###&quot;);
+    }
+}
+</div><p id="-npfk9y_84">Pour tester, compilez votre application en JAR (<code class="code" id="-npfk9y_91">mvn package</code>) puis ex&eacute;cutez : <code class="code" id="-npfk9y_92">java -jar target/votre-application.jar premierArg --mode=test &quot;un autre argument&quot;</code></p><p id="-npfk9y_85">Vous verrez ces arguments logg&eacute;s.</p></section><section class="chapter"><h2 id="injection-de-d-pendances-dans-un-commandlinerunner" data-toc="injection-de-d-pendances-dans-un-commandlinerunner">Injection de D&eacute;pendances dans un CommandLineRunner</h2><p id="-npfk9y_93">Un <code class="code" id="-npfk9y_101">CommandLineRunner</code> est un bean Spring comme un autre. Il peut donc b&eacute;n&eacute;ficier de l'injection de d&eacute;pendances (<code class="code" id="-npfk9y_102">@Autowired</code>) pour utiliser d'autres services ou composants de l'application. C'est ici que r&eacute;side une grande partie de sa puissance pour les t&acirc;ches d'initialisation.</p><p id="-npfk9y_94"><span class="control" id="-npfk9y_103">Exemple : Initialisation de donn&eacute;es avec un service</span></p><p id="-npfk9y_95">Supposons un service simple <code class="code" id="-npfk9y_104">DataInitializationService</code>.</p><p id="-npfk9y_96"><code class="code" id="-npfk9y_105">DataInitializationService.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+@Service // Un bean de service Spring
+public class DataInitializationService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(DataInitializationService.class);
+
+    public void initializeDefaultUser() {
+        // Simule la création d'un utilisateur admin en base
+        logger.info(&quot;Vérification/création de l'utilisateur admin par défaut...&quot;);
+        // Logique de connexion à la base, vérification, création...
+        // Par exemple: userRepository.findByUsername(&quot;admin&quot;).orElseGet(() -&gt; {
+        //    User admin = new User(&quot;admin&quot;, passwordEncoder.encode(&quot;password&quot;));
+        //    return userRepository.save(admin);
+        // });
+        logger.info(&quot;Utilisateur admin initialisé.&quot;);
+    }
+
+    public void loadReferenceData() {
+        // Simule le chargement de données de référence
+        logger.info(&quot;Chargement des données de référence (ex: pays, devises)...&quot;);
+        // Logique de chargement...
+        logger.info(&quot;Données de référence chargées.&quot;);
+    }
+}
+</div><p id="-npfk9y_98"><code class="code" id="-npfk9y_106">DatabaseInitializerRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import fr.formation.spring.service.DataInitializationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(5) // Ordre intermédiaire
+public class DatabaseInitializerRunner implements CommandLineRunner {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(DatabaseInitializerRunner.class);
+
+    // Injection du service
+    private final DataInitializationService dataInitService;
+
+    @Autowired // L'injection peut se faire via constructeur (recommandé)
+    public DatabaseInitializerRunner(
+            DataInitializationService dataInitService
+    ) {
+        this.dataInitService = dataInitService;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;--- DatabaseInitializerRunner Démarré ---&quot;);
+
+        dataInitService.initializeDefaultUser();
+        dataInitService.loadReferenceData();
+
+        logger.info(&quot;--- DatabaseInitializerRunner Terminé ---&quot;);
+    }
+}
+</div><p id="-npfk9y_100">Ce runner utilisera le <code class="code" id="-npfk9y_107">DataInitializationService</code> pour effectuer ses t&acirc;ches. C'est une pratique courante pour s&eacute;parer les pr&eacute;occupations : le runner orchestre, le service ex&eacute;cute la logique m&eacute;tier.</p></section><section class="chapter"><h2 id="cas-d-utilisation-sp-cifiques-au-contexte-web" data-toc="cas-d-utilisation-sp-cifiques-au-contexte-web">Cas d'Utilisation Sp&eacute;cifiques au Contexte Web</h2><p id="-npfk9y_108">M&ecirc;me si une application est &quot;web&quot; (destin&eacute;e &agrave; servir des pages HTML, par exemple avec Thymeleaf), certaines t&acirc;ches au d&eacute;marrage sont cruciales.</p><ul class="list _bullet" id="-npfk9y_109"><li class="list__item" id="-npfk9y_111"><p id="-npfk9y_116"><span class="control" id="-npfk9y_117">Initialisation de base de donn&eacute;es :</span> S'assurer que les tables minimales existent, que des donn&eacute;es de lookup (listes de pays, types de produits) sont pr&eacute;sentes, qu'un utilisateur administrateur par d&eacute;faut est cr&eacute;&eacute;.</p></li><li class="list__item" id="-npfk9y_112"><p id="-npfk9y_118"><span class="control" id="-npfk9y_120">Pr&eacute;chauffage de cache :</span> Si l'application utilise un cache (EhCache, Caffeine, Redis), le <code class="code" id="-npfk9y_121">CommandLineRunner</code> peut charger les donn&eacute;es les plus fr&eacute;quemment acc&eacute;d&eacute;es pour &eacute;viter un premier acc&egrave;s lent pour les premiers utilisateurs.</p><div class="code-block" data-lang="java">
+// Dans un CacheWarmerRunner.java
+// @Autowired MyCacheService cacheService;
+// cacheService.loadFrequentlyAccessedProducts();
+// cacheService.loadRegionalSettings();
+</div></li><li class="list__item" id="-npfk9y_113"><p id="-npfk9y_122"><span class="control" id="-npfk9y_124">V&eacute;rification de configuration et de connectivit&eacute; :</span> Avant de d&eacute;marrer le serveur web, v&eacute;rifier que les bases de donn&eacute;es sont accessibles, que les services externes r&eacute;pondent, ou que des fichiers de configuration essentiels sont pr&eacute;sents.</p><div class="code-block" data-lang="java">
+// Dans un ConfigCheckerRunner.java
+// try {
+//    dataSource.getConnection().close();
+//    logger.info(&quot;Connexion à la base de données réussie.&quot;);
+// } catch (SQLException e) {
+//    logger.error(&quot;Échec de la connexion à la base de données!&quot;, e);
+//    // On pourrait vouloir arrêter l'application ici
+//    // System.exit(1); ou lancer une exception qui arrête le boot
+// }
+</div></li><li class="list__item" id="-npfk9y_114"><p id="-npfk9y_125"><span class="control" id="-npfk9y_126">Nettoyage de ressources temporaires :</span> Supprimer des fichiers temporaires d'une ex&eacute;cution pr&eacute;c&eacute;dente.</p></li><li class="list__item" id="-npfk9y_115"><p id="-npfk9y_127"><span class="control" id="-npfk9y_128">Enregistrement d'informations au d&eacute;marrage :</span> Logger des informations importantes sur l'environnement, les profils actifs, les versions des composants cl&eacute;s.</p></li></ul><section class="chapter"><h3 id="bonnes-pratiques-et-conseils" data-toc="bonnes-pratiques-et-conseils">Bonnes Pratiques et Conseils</h3><ol class="list _decimal" id="-npfk9y_129" type="1"><li class="list__item" id="-npfk9y_130"><p id="-npfk9y_138"><span class="control" id="-npfk9y_139">Responsabilit&eacute; Unique :</span> Chaque <code class="code" id="-npfk9y_140">CommandLineRunner</code> devrait avoir une responsabilit&eacute; claire et unique. Pr&eacute;f&eacute;rez plusieurs petits runners bien ordonn&eacute;s &agrave; un seul runner monolithique.</p></li><li class="list__item" id="-npfk9y_131"><p id="-npfk9y_141"><span class="control" id="-npfk9y_142">Utiliser <code class="code" id="-npfk9y_144">@Order</code>:</span> Si l'ordre d'ex&eacute;cution compte, utilisez syst&eacute;matiquement <code class="code" id="-npfk9y_143">@Order</code>. Donnez des valeurs espac&eacute;es (ex: 10, 20, 30) pour faciliter l'insertion de nouveaux runners entre les existants.</p></li><li class="list__item" id="-npfk9y_132"><p id="-npfk9y_145"><span class="control" id="-npfk9y_146">Gestion des Exceptions :</span> La m&eacute;thode <code class="code" id="-npfk9y_147">run</code> peut lever une <code class="code" id="-npfk9y_148">Exception</code>. Si une exception non intercept&eacute;e est lev&eacute;e, elle emp&ecirc;chera le d&eacute;marrage complet de l'application. G&eacute;rez les exceptions de mani&egrave;re appropri&eacute;e : loggez-les, et d&eacute;cidez si l'application peut continuer ou doit s'arr&ecirc;ter.</p></li><li class="list__item" id="-npfk9y_133"><p id="-npfk9y_149"><span class="control" id="-npfk9y_150">Idempotence :</span> Si un runner effectue des modifications (ex: insertion en base), essayez de le rendre idempotent. C'est-&agrave;-dire que s'il est ex&eacute;cut&eacute; plusieurs fois, le r&eacute;sultat final reste le m&ecirc;me (ex: v&eacute;rifier si l'admin existe avant de le cr&eacute;er).</p></li><li class="list__item" id="-npfk9y_134"><p id="-npfk9y_151"><span class="control" id="-npfk9y_152">Injection par Constructeur :</span> Pr&eacute;f&eacute;rez l'injection de d&eacute;pendances par constructeur pour les runners. Cela rend les d&eacute;pendances explicites et facilite les tests.</p></li><li class="list__item" id="-npfk9y_135"><p id="-npfk9y_153"><span class="control" id="-npfk9y_154">Logging :</span> Utilisez abondamment le logging (<code class="code" id="-npfk9y_155">SLF4J</code> est un bon choix) pour tracer ce que font vos runners. C'est crucial pour le d&eacute;bogage et la compr&eacute;hension du processus de d&eacute;marrage.</p></li><li class="list__item" id="-npfk9y_136"><p id="-npfk9y_156"><span class="control" id="-npfk9y_158">Profils Spring (<code class="code" id="-npfk9y_160">@Profile</code>) :</span> Vous pouvez conditionner l'ex&eacute;cution d'un <code class="code" id="-npfk9y_159">CommandLineRunner</code> &agrave; un profil Spring actif. Par exemple, un runner d'initialisation de donn&eacute;es de test ne s'ex&eacute;cutera que si le profil &quot;dev&quot; ou &quot;test&quot; est actif.</p><div class="code-block" data-lang="java">
+// @Component
+// @Profile(&quot;dev&quot;)
+// public class DevDataInitializerRunner implements CommandLineRunner { ... }
+</div></li><li class="list__item" id="-npfk9y_137"><p id="-npfk9y_161"><span class="control" id="-npfk9y_162">Alternative <code class="code" id="-npfk9y_167">ApplicationRunner</code>:</span> Spring Boot offre aussi <code class="code" id="-npfk9y_163">ApplicationRunner</code>. La diff&eacute;rence principale est que sa m&eacute;thode <code class="code" id="-npfk9y_164">run</code> prend un <code class="code" id="-npfk9y_165">ApplicationArguments</code> en param&egrave;tre, offrant un acc&egrave;s plus structur&eacute; aux arguments de la ligne de commande (options, non-options). Pour la plupart des cas d'usage d'initialisation, <code class="code" id="-npfk9y_166">CommandLineRunner</code> est suffisant.</p></li></ol></section></section><section class="chapter"><h2 id="exercices-pratiques" data-toc="exercices-pratiques">Exercices Pratiques</h2><section class="chapter"><h3 id="exercice-1-runner-de-bienvenue-personnalis" data-toc="exercice-1-runner-de-bienvenue-personnalis">Exercice 1 : Runner de Bienvenue Personnalis&eacute;</h3><p id="-npfk9y_172"><span class="control" id="-npfk9y_174">&Eacute;nonc&eacute; :</span> Cr&eacute;ez un <code class="code" id="-npfk9y_175">CommandLineRunner</code> nomm&eacute; <code class="code" id="-npfk9y_176">WelcomeMessageRunner</code> qui affiche le message suivant dans les logs au d&eacute;marrage de l'application : &quot;Bienvenue dans l'application [NomDeLApplication] ! D&eacute;marrage en cours...&quot;. Le nom de l'application doit &ecirc;tre r&eacute;cup&eacute;r&eacute; depuis les propri&eacute;t&eacute;s de l'application (<code class="code" id="-npfk9y_177">application.properties</code> ou <code class="code" id="-npfk9y_178">application.yml</code>) via la cl&eacute; <code class="code" id="-npfk9y_179">spring.application.name</code>.</p><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-1" data-toc="correction-exercice-1"><span class="control" id="-npfk9y_182">Correction Exercice 1</span></h4></div><div class="collapse__content"><ol class="list _decimal" id="-npfk9y_181" type="1"><li class="list__item" id="-npfk9y_183"><p id="-npfk9y_185">Ajoutez dans <code class="code" id="-npfk9y_187">src/main/resources/application.properties</code>:</p><div class="code-block" data-lang="properties">
+spring.application.name=MonAppWebSuperCool
+</div></li><li class="list__item" id="-npfk9y_184"><p id="-npfk9y_188">Cr&eacute;ez <code class="code" id="-npfk9y_190">WelcomeMessageRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class WelcomeMessageRunner implements CommandLineRunner {
+
+    private static final Logger logger = 
+        LoggerFactory.getLogger(WelcomeMessageRunner.class);
+
+    // Injection de la valeur depuis application.properties
+    @Value(&quot;${spring.application.name}&quot;)
+    private String applicationName;
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(
+            &quot;Bienvenue dans l'application {} ! Démarrage en cours...&quot;, 
+            applicationName
+        );
+    }
+}
+</div></li></ol></div></div></section></section><section class="chapter"><h3 id="exercice-2-v-rificateur-de-version-java" data-toc="exercice-2-v-rificateur-de-version-java">Exercice 2 : V&eacute;rificateur de Version Java</h3><p id="-npfk9y_191"><span class="control" id="-npfk9y_194">&Eacute;nonc&eacute; :</span> Cr&eacute;ez un <code class="code" id="-npfk9y_195">CommandLineRunner</code> nomm&eacute; <code class="code" id="-npfk9y_196">JavaVersionCheckerRunner</code> qui v&eacute;rifie la version de Java utilis&eacute;e pour ex&eacute;cuter l'application.</p><ul class="list _bullet" id="-npfk9y_192"><li class="list__item" id="-npfk9y_197"><p id="-npfk9y_199">Si la version est Java 17 ou sup&eacute;rieure, il logue un message d'information : &quot;Version Java compatible (Java X.Y.Z)&quot;.</p></li><li class="list__item" id="-npfk9y_198"><p id="-npfk9y_200">Si la version est inf&eacute;rieure &agrave; Java 17, il logue un message d'avertissement : &quot;ATTENTION : Version Java X.Y.Z obsol&egrave;te. Java 17+ recommand&eacute;.&quot; et fait &eacute;chouer le d&eacute;marrage de l'application en lan&ccedil;ant une <code class="code" id="-npfk9y_201">IllegalStateException</code>. Utilisez <code class="code" id="-npfk9y_202">@Order</code> pour que ce runner s'ex&eacute;cute en tout premier.</p></li></ul><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-2" data-toc="correction-exercice-2"><span class="control" id="-npfk9y_207">Correction Exercice 2</span></h4></div><div class="collapse__content"><p id="-npfk9y_204">Cr&eacute;ez <code class="code" id="-npfk9y_208">JavaVersionCheckerRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+@Component
+@Order(Integer.MIN_VALUE) // Priorité la plus haute
+public class JavaVersionCheckerRunner implements CommandLineRunner {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(JavaVersionCheckerRunner.class);
+
+    // Version minimale requise (ex: 17)
+    private static final int MINIMUM_JAVA_VERSION = 17;
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;--- Vérification de la version Java ---&quot;);
+        String javaVersion = System.getProperty(&quot;java.version&quot;);
+        logger.info(&quot;Version Java détectée : {}&quot;, javaVersion);
+
+        // Analyse simple de la version (pour l'exercice)
+        // Une analyse plus robuste utiliserait Runtime.version() pour Java 9+
+        int majorVersion;
+        try {
+            String[] parts = javaVersion.split(&quot;\\.&quot;);
+            if (parts[0].equals(&quot;1&quot;)) { // Format 1.x.y (Java 8 et moins)
+                majorVersion = Integer.parseInt(parts[1]);
+            } else { // Format X.Y.Z (Java 9 et plus)
+                majorVersion = Integer.parseInt(parts[0]);
+            }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            logger.error(&quot;Impossible de parser la version de Java : {}&quot;,
+                    javaVersion);
+            throw new IllegalStateException(
+                    &quot;Format de version Java non reconnu.&quot;
+            );
+        }
+
+        if (majorVersion &gt;= MINIMUM_JAVA_VERSION) {
+            logger.info(
+                    &quot;Version Java compatible (Java {}).&quot;,
+                    javaVersion
+            );
+        } else {
+            String errorMessage = String.format(
+                    &quot;ATTENTION : Version Java %s obsolète. Java %d+ requis.&quot;,
+                    javaVersion,
+                    MINIMUM_JAVA_VERSION
+            );
+            logger.warn(errorMessage);
+            // Fait échouer le démarrage de l'application
+            throw new IllegalStateException(errorMessage);
+        }
+        logger.info(&quot;--- Vérification de la version Java terminée ---&quot;);
+    }
+}
+</div><p id="-npfk9y_206"><span class="control" id="-npfk9y_209">Note pour l'exercice 2 :</span> Pour tester la condition d'&eacute;chec, vous devriez compiler et ex&eacute;cuter le JAR avec une JVM plus ancienne (ex: Java 11). Dans un IDE, la JVM du projet est g&eacute;n&eacute;ralement celle configur&eacute;e pour le projet.</p></div></div></section></section><section class="chapter"><h3 id="exercice-3-initialisation-de-donn-es-de-r-f-rence-simul" data-toc="exercice-3-initialisation-de-donn-es-de-r-f-rence-simul">Exercice 3 : Initialisation de Donn&eacute;es de R&eacute;f&eacute;rence (Simul&eacute;)</h3><p id="-npfk9y_210"><span class="control" id="-npfk9y_213">&Eacute;nonc&eacute; :</span></p><ol class="list _decimal" id="-npfk9y_211" type="1"><li class="list__item" id="-npfk9y_214"><p id="-npfk9y_216">Cr&eacute;ez une classe de service <code class="code" id="-npfk9y_217">ReferenceDataService</code> avec une m&eacute;thode <code class="code" id="-npfk9y_218">loadCountries()</code> qui simule le chargement d'une liste de pays (loge simplement &quot;Chargement de la liste des pays...&quot; et &quot;Liste des pays charg&eacute;e.&quot;).</p></li><li class="list__item" id="-npfk9y_215"><p id="-npfk9y_219">Cr&eacute;ez un <code class="code" id="-npfk9y_221">CommandLineRunner</code> nomm&eacute; <code class="code" id="-npfk9y_222">ReferenceDataLoaderRunner</code> qui :</p><ul class="list _bullet" id="-npfk9y_220"><li class="list__item" id="-npfk9y_223"><p id="-npfk9y_228">Injecte <code class="code" id="-npfk9y_229">ReferenceDataService</code>.</p></li><li class="list__item" id="-npfk9y_224"><p id="-npfk9y_230">Appelle la m&eacute;thode <code class="code" id="-npfk9y_231">loadCountries()</code> du service.</p></li><li class="list__item" id="-npfk9y_225"><p id="-npfk9y_232">Prend un argument optionnel en ligne de commande <code class="code" id="-npfk9y_233">--force-reload</code>.</p></li><li class="list__item" id="-npfk9y_226"><p id="-npfk9y_234">Si <code class="code" id="-npfk9y_235">--force-reload</code> est pr&eacute;sent, logue &quot;For&ccedil;age du rechargement des donn&eacute;es de r&eacute;f&eacute;rence.&quot; avant d'appeler <code class="code" id="-npfk9y_236">loadCountries()</code>.</p></li><li class="list__item" id="-npfk9y_227"><p id="-npfk9y_237">Donnez-lui un <code class="code" id="-npfk9y_238">@Order</code> pour qu'il s'ex&eacute;cute apr&egrave;s le <code class="code" id="-npfk9y_239">JavaVersionCheckerRunner</code> (si pr&eacute;sent) mais avant d'autres runners potentiels (ex: <code class="code" id="-npfk9y_240">@Order(-2147483647 + 10)</code> ou une valeur positive si les autres ont des valeurs plus grandes).</p></li></ul></li></ol><section class="chapter"><div class="collapse"><div class="collapse__title"><h4 id="correction-exercice-3" data-toc="correction-exercice-3"><span class="control" id="-npfk9y_244">Correction Exercice 3</span></h4></div><div class="collapse__content"><ol class="list _decimal" id="-npfk9y_242" type="1"><li class="list__item" id="-npfk9y_245"><p id="-npfk9y_247"><code class="code" id="-npfk9y_249">ReferenceDataService.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ReferenceDataService {
+
+    private static final Logger logger = 
+        LoggerFactory.getLogger(ReferenceDataService.class);
+
+    public void loadCountries() {
+        logger.info(&quot;Chargement de la liste des pays...&quot;);
+        // Simuler une opération qui prend du temps
+        try {
+            Thread.sleep(500); // 0.5 seconde
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        logger.info(&quot;Liste des pays chargée.&quot;);
+    }
+}
+</div></li><li class="list__item" id="-npfk9y_246"><p id="-npfk9y_250"><code class="code" id="-npfk9y_252">ReferenceDataLoaderRunner.java</code>:</p><div class="code-block" data-lang="java">
+package fr.formation.spring.runner;
+
+import fr.formation.spring.service.ReferenceDataService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import java.util.Arrays;
+
+@Component
+@Order(10) // S'assure qu'il s'exécute après les vérifs critiques
+public class ReferenceDataLoaderRunner implements CommandLineRunner {
+
+    private static final Logger logger = 
+        LoggerFactory.getLogger(ReferenceDataLoaderRunner.class);
+
+    private final ReferenceDataService referenceDataService;
+
+    @Autowired
+    public ReferenceDataLoaderRunner(
+        ReferenceDataService referenceDataService
+    ) {
+        this.referenceDataService = referenceDataService;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        logger.info(&quot;--- ReferenceDataLoaderRunner Démarré ---&quot;);
+
+        boolean forceReload = Arrays.stream(args)
+                                    .anyMatch(&quot;--force-reload&quot;::equals);
+
+        if (forceReload) {
+            logger.info(
+                &quot;Forçage du rechargement des données de référence.&quot;
+            );
+        } else {
+            logger.info(
+                &quot;Vérification des données de référence (pas de forçage).&quot;
+            );
+        }
+
+        // Ici, on pourrait ajouter une logique pour ne charger
+        // que si nécessaire, sauf si forceReload est vrai.
+        referenceDataService.loadCountries();
+
+        logger.info(&quot;--- ReferenceDataLoaderRunner Terminé ---&quot;);
+    }
+}
+</div></li></ol><p id="-npfk9y_243">Pour tester avec l'argument : <code class="code" id="-npfk9y_253">java -jar target/votre-application.jar --force-reload</code></p></div></div></section></section><section class="chapter"><h3 id="conclusion" data-toc="conclusion">Conclusion</h3><p id="-npfk9y_254"><code class="code" id="-npfk9y_255">CommandLineRunner</code> est un outil pr&eacute;cieux dans Spring Boot pour ex&eacute;cuter des logiques d'initialisation ou de configuration au d&eacute;marrage d'une application web. En l'utilisant judicieusement, en respectant le principe de responsabilit&eacute; unique et en g&eacute;rant l'ordre d'ex&eacute;cution, les d&eacute;veloppeurs peuvent s'assurer que leur application d&eacute;marre dans un &eacute;tat coh&eacute;rent et pr&ecirc;t &agrave; l'emploi. Son int&eacute;gration avec le syst&egrave;me d'injection de d&eacute;pendances de Spring le rend particuli&egrave;rement flexible et puissant.</p></section></section><div class="last-modified">Last modified: 11 mai 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="003-00-di-ioc.html" class="navigation-links__prev">Inversion de contr&ocirc;le et injection de d&eacute;pendance</a><a href="004-00-la-configuration.html" class="navigation-links__next">La configuration</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

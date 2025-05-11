@@ -1,0 +1,739 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-05-11T08:51:19.815057"><title>Thymeleaf | Spring</title><script type="application/json" id="virtual-toc-data">[{"id":"utilisation-de-thymeleaf","level":0,"title":"Utilisation de Thymeleaf","anchor":"#utilisation-de-thymeleaf"},{"id":"les-expressions","level":0,"title":"Les expressions","anchor":"#les-expressions"},{"id":"les-attributs-html-de-thymeleaf","level":0,"title":"Les attributs HTML de Thymeleaf","anchor":"#les-attributs-html-de-thymeleaf"},{"id":"les-objets-utilitaires-de-thymeleaf","level":0,"title":"Les objets utilitaires de Thymeleaf","anchor":"#les-objets-utilitaires-de-thymeleaf"},{"id":"la-factorisation-des-templates","level":0,"title":"La factorisation des templates","anchor":"#la-factorisation-des-templates"},{"id":"exercices","level":0,"title":"Exercices","anchor":"#exercices"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="apple-touch-icon" sizes="180x180" href="https://jetbrains.com/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://jetbrains.com/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://jetbrains.com/favicon-16x16.png"><meta name="msapplication-TileImage" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-144x144.png"><meta name="msapplication-square70x70logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-70x70.png"><meta name="msapplication-square150x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-150x150.png"><meta name="msapplication-wide310x150logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x150.png"><meta name="msapplication-square310x310logo" content="https://resources.jetbrains.com/storage/ui/favicons/mstile-310x310.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Thymeleaf | Spring"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="Spring Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/002-00-thymeleaf.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Thymeleaf | Spring"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/002-00-thymeleaf.html#webpage",
+    "url": "writerside-documentation/002-00-thymeleaf.html",
+    "name": "Thymeleaf | Spring",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "Spring Help"
+}</script><!-- End Schema.org --></head><body data-id="002-00-ThymeLeaf" data-main-title="Thymeleaf" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>Spring  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="002-00-ThymeLeaf" id="002-00-ThymeLeaf.md">Thymeleaf</h1><p id="-qujfd5_3">Thymeleaf est un moteur de template Java qui permet de produire du contenu HTML ou XML dynamique. Avec Spring Boot, son int&eacute;gration est tr&egrave;s simple, car toute la configuration est prise en charge par le framework.</p><p id="-qujfd5_4"><span class="control" id="-qujfd5_15">Avantage de Thymeleaf</span></p><ul class="list _bullet" id="-qujfd5_5"><li class="list__item" id="-qujfd5_16"><p id="-qujfd5_22">Syntaxe naturelle (un mod&egrave;le Thymeleaf peut &ecirc;tre lu par n'importe quel &eacute;diteur HTML).</p></li><li class="list__item" id="-qujfd5_17"><p id="-qujfd5_23">Lecture et apprentissage facile.</p></li><li class="list__item" id="-qujfd5_18"><p id="-qujfd5_24">Support de SpEL (Spring Expression Language).</p></li><li class="list__item" id="-qujfd5_19"><p id="-qujfd5_25">Int&eacute;gration avec les objets de mod&egrave;le Spring (Model, ModelMap ...).</p></li><li class="list__item" id="-qujfd5_20"><p id="-qujfd5_26">Possibilit&eacute; de factoriser les vues avec des fragments et des gabarits (layouts).</p></li><li class="list__item" id="-qujfd5_21"><p id="-qujfd5_27">Contrairement &agrave; JSP ou &agrave; JSTL, Thymeleaf ne permet pas d'int&eacute;grer de la logique m&eacute;tier aux vues.</p></li></ul><p id="-qujfd5_6"><span class="control" id="-qujfd5_28">Installation</span></p><p id="-qujfd5_7">Pour utiliser Thymeleaf, il suffit d'ajouter la d&eacute;pendance &agrave; <code class="code" id="-qujfd5_29">pom.xml</code>. Spring Boot se charge alors de la configuration. Par d&eacute;faut le dossier dans lequel il recherchera les mod&egrave;les est <code class="code" id="-qujfd5_30">src/main/resources/templates</code>.</p><div class="code-block" data-lang="markup">
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-Thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</div><section class="chapter"><h2 id="utilisation-de-thymeleaf" data-toc="utilisation-de-thymeleaf">Utilisation de Thymeleaf</h2><p id="-qujfd5_31">Thymeleaf ne modifie pas la structure HTML (ou XML), il se contente d'ajouter des attributs aux balises. Cette approche permet de facilement dynamiser une maquette statique et rend le code des vues totalement compatible avec n'importe quel &eacute;diteur HTML.</p><section class="chapter"><h3 id="un-exemple-de-vue-thymeleaf" data-toc="un-exemple-de-vue-thymeleaf">Un exemple de vue Thymeleaf</h3><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.Thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello Page&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 th:text=&quot;${message}&quot;&gt;Message par défaut&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><ul class="list _bullet" id="-qujfd5_35"><li class="list__item" id="-qujfd5_39"><p id="-qujfd5_41"><code class="code" id="-qujfd5_42">&lt;html xmlns:th=&quot;http://www.Thymeleaf.org&quot;&gt;</code>: Importe le namespace Thymeleaf dans le document</p></li><li class="list__item" id="-qujfd5_40"><p id="-qujfd5_43"><code class="code" id="-qujfd5_44">th:text=&quot;${message}&quot;</code>: Affiche l'attribut message transmis &agrave; la vue par le contr&ocirc;leur.</p></li></ul><p id="-qujfd5_36"><span class="control" id="-qujfd5_45">Le code du contr&ocirc;leur</span></p><p id="-qujfd5_37">Dans le contr&ocirc;leur, il faut injecter une instance de <code class="code" id="-qujfd5_46">org.springframework.ui.Model</code> et lui ajouter des attributs (<code class="code" id="-qujfd5_47">addAttribute(key, value)</code>) sous la forme d'une paire clef/valeur. Les clefs permettront au template Thymeleaf d'acc&eacute;der aux valeurs. Les valeurs ne sont pas limit&eacute;es &agrave; des variables scalaires, il est tout &agrave; fait possible de passer des objets.</p><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+// Indique que ce contrôleur sert des vues (pas REST)
+@Controller
+public class HelloController {
+
+    @GetMapping(&quot;/hello&quot;)
+    public String hello(Model model) {
+        // 💬 Ajoute une variable à la vue
+        model.addAttribute(&quot;message&quot;, &quot;Bonjour Spring !&quot;);
+        // 🔁 Retourne le nom de la vue (hello.html)
+        return &quot;hello&quot;;
+    }
+}
+</div></section><section class="chapter"><h3 id="variante-html5" data-toc="variante-html5">Variante HTML5</h3><p id="-qujfd5_48">Il existe une syntaxe alternative qui &eacute;vite d'avoir &agrave; d&eacute;clarer le namespace. Dans ce cas, il faut remplacer l'attribut <code class="code" id="-qujfd5_51">th:instruction</code> par <code class="code" id="-qujfd5_52">data-th-instruction</code>. Ainsi <code class="code" id="-qujfd5_53">th:text</code> devient <code class="code" id="-qujfd5_54">data-th-text</code>. Les puristes de la sp&eacute;cification HTML 5 pr&eacute;f&egrave;reront cette alternative puisque les namespace ont &eacute;t&eacute; abandonn&eacute;s dans cette nouvelle mouture.</p><p id="-qujfd5_49"><span class="control" id="-qujfd5_55">La vue pr&eacute;c&eacute;dente avec cette syntaxe</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Hello Page&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1 data-th-text=&quot;${message}&quot;&gt;Message par défaut&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section></section><section class="chapter"><h2 id="les-expressions" data-toc="les-expressions">Les expressions</h2><p id="-qujfd5_56">Le contenu d'un attribut Thymeleaf est souvent une expression (un contenu dynamique), mais il en existe plusieurs sortes.</p><ul class="list _bullet" id="-qujfd5_57"><li class="list__item" id="-qujfd5_65"><p id="-qujfd5_69"><code class="code" id="-qujfd5_70">${...}</code>: pour les expressions &agrave; &eacute;valuer</p></li><li class="list__item" id="-qujfd5_66"><p id="-qujfd5_71"><code class="code" id="-qujfd5_72">*{...}</code>: pour les expressions de s&eacute;lection qui permettent de s&eacute;lectionner une propri&eacute;t&eacute; d'un objet li&eacute;. Ceci est tr&egrave;s utile pour les formulaires.</p></li><li class="list__item" id="-qujfd5_67"><p id="-qujfd5_73"><code class="code" id="-qujfd5_74">#{...}</code>: pour les expressions de message. Les valeurs sont extraites d'un fichier de ressources (<code class="code" id="-qujfd5_75">.propreties</code>), cela permet de centraliser et factoriser les messages.</p></li><li class="list__item" id="-qujfd5_68"><p id="-qujfd5_76"><code class="code" id="-qujfd5_77">@{...}</code>: pour les expressions d'URL. Le contenu est r&eacute;solu pour g&eacute;n&eacute;rer un lien en fonction du contexte de l'application.</p></li></ul><p id="-qujfd5_58">Les expressions peuvent inclure des variables, des donn&eacute;es litt&eacute;rales, des op&eacute;rateurs et m&ecirc;me des appels de m&eacute;thodes si l'on a ajout&eacute; un objet dans le <code class="code" id="-qujfd5_78">model</code> du template.</p><p id="-qujfd5_59">Cette derni&egrave;re option est toutefois &agrave; utiliser avec parcimonie. Il faut en effet se garder d'injecter de la logique m&eacute;tier dans les templates.</p><section class="chapter"><h3 id="chappement-des-caract-res" data-toc="chappement-des-caract-res">&Eacute;chappement des caract&egrave;res</h3><p id="-qujfd5_79">L'&eacute;chappement des caract&egrave;res est automatique avec Thymeleaf. Les caract&egrave;res sp&eacute;ciaux sont convertis en entit&eacute; HTML ce qui prot&egrave;ge contre les attaques XSS.</p><p id="-qujfd5_80"><span class="control" id="-qujfd5_87">Exemple</span></p><div class="code-block" data-lang="java">
+
+@GetMapping(&quot;/escape-test&quot;)
+public String test(Model model) {
+    model.addAttribute(&quot;message&quot;, &quot;&lt;b&gt;Hello&lt;/b&gt; &amp; welcome!&quot;);
+    return &quot;escape-test&quot;;
+}
+</div><div class="code-block" data-lang="markup">
+&lt;p th:text=&quot;${message}&quot;&gt;&lt;/p&gt;
+</div><p id="-qujfd5_83"><span class="control" id="-qujfd5_88">R&eacute;sultat</span></p><div class="code-block" data-lang="none">
+&lt;p&gt;&amp;lt;b&amp;gt;Hello&amp;lt;/b&amp;gt; &amp;amp; welcome!&lt;/p&gt;
+</div><p id="-qujfd5_85">Il est possible de forcer l'affichage des caract&egrave;res sans &eacute;chappement en ajoutant un <code class="code" id="-qujfd5_89">u</code> (pour unescaped) devant l'attribut <code class="code" id="-qujfd5_90">text</code>.</p><div class="code-block" data-lang="markup">
+&lt;p th:utext=&quot;${message}&quot;&gt;&lt;/p&gt;
+</div></section><section class="chapter"><h3 id="les-objets-implicites" data-toc="les-objets-implicites">Les objets implicites</h3><p id="-qujfd5_91">Un template Thymeleaf a automatiquement acc&egrave;s aux objets suivants :</p><ul class="list _bullet" id="-qujfd5_92"><li class="list__item" id="-qujfd5_94"><p id="-qujfd5_97">La session (variable <code class="code" id="-qujfd5_98">session</code>).</p></li><li class="list__item" id="-qujfd5_95"><p id="-qujfd5_99">Le contexte de l'application (variable <code class="code" id="-qujfd5_100">application</code>).</p></li><li class="list__item" id="-qujfd5_96"><p id="-qujfd5_101">Les param&egrave;tres (variable <code class="code" id="-qujfd5_102">param</code>).</p></li></ul><section class="chapter"><h4 id="exemple-d-acc-s-aux-objets-implicites" data-toc="exemple-d-acc-s-aux-objets-implicites">Exemple d'acc&egrave;s aux objets implicites</h4><div class="code-block" data-lang="java">
+
+@GetMapping(value = &quot;/scopes&quot;)
+public String ScopeTest(
+        @RequestParam String name,
+        HttpSession session,
+        HttpServletRequest request
+) {
+    // scope request : durée, une seule requête
+    request.setAttribute(&quot;message&quot;, &quot;Il fait beau&quot;);
+
+    // scope session : durée, la session utilisateur
+    session.setAttribute(&quot;favoriteColor&quot;, &quot;rouge&quot;);
+
+    // scope application : durée, la vie du serveur
+    ServletContext context = request.getServletContext();
+    context.setAttribute(&quot;appName&quot;, &quot;Spring Framework&quot;);
+
+    return &quot;thymeleaf-test/implicit-objects&quot;;
+}
+</div><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Objets implicites&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Objets implicites&lt;/h1&gt;
+
+&lt;h2&gt;Accès aux paramètres (querystring)&lt;/h2&gt;
+&lt;p th:text=&quot;'Hello, ' + ${param.name} + '!'&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Accès à la session&lt;/h2&gt;
+&lt;p th:text=&quot;'vous aimez le, ' + ${session.favoriteColor} + '!'&quot;&gt;&lt;/p&gt;
+
+&lt;h2&gt;Accès au contexte de l'application&lt;/h2&gt;
+&lt;p th:text=&quot;${application.appName}&quot;&gt;&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section></section><section class="chapter"><h3 id="les-expressions-d-url" data-toc="les-expressions-d-url">Les expressions d'URL</h3><p id="-qujfd5_105">Les expressions d'URL permettent de cr&eacute;er des liens en prenant en compte le contexte d'ex&eacute;cution du serveur et en ajoutant d'&eacute;ventuels param&egrave;tres.</p><p id="-qujfd5_106"><span class="control" id="-qujfd5_112">Syntaxe de base</span></p><div class="code-block" data-lang="markup">
+&lt;a th:href=&quot;@{/page}&quot;&gt;Lien simple&lt;/a&gt;
+</div><section class="chapter"><h4 id="lien-avec-une-variable-dans-le-path" data-toc="lien-avec-une-variable-dans-le-path">Lien avec une variable dans le path</h4><div class="code-block" data-lang="markup">
+&lt;a th:href=&quot;@{/product/{id}(id=${productId})}&quot;&gt;Voir produit&lt;/a&gt;
+</div><p id="-qujfd5_114">La valeur du ou des param&egrave;tres est pass&eacute;e entre les parenth&egrave;ses.</p></section><section class="chapter"><h4 id="lien-avec-une-variable-dans-le-query-string" data-toc="lien-avec-une-variable-dans-le-query-string">Lien avec une variable dans le query string</h4><div class="code-block" data-lang="markup">
+&lt;a th:href=&quot;@{/search(query=${searchQuery})}&quot;&gt;Rechercher&lt;/a&gt;
+</div><p id="-qujfd5_116">Tr&egrave;s similaire au pr&eacute;c&eacute;dent, mais sans les accolades.</p></section><section class="chapter"><h4 id="combinaison" data-toc="combinaison">Combinaison</h4><p id="-qujfd5_117">Il est possible de combiner les deux types de variables dans un m&ecirc;me URL.</p><div class="code-block" data-lang="markup">
+&lt;a th:href=&quot;@{/user/{id}/profile(id=${userId}, active=true)}&quot;&gt;Profil&lt;/a&gt;
+</div><p id="-qujfd5_119"><span class="control" id="-qujfd5_121">R&eacute;sultat</span></p><div class="code-block" data-lang="markup">
+&lt;a href=&quot;/user/12/profile?active=true&quot;&gt;Profil&lt;/a&gt;
+</div></section><section class="chapter"><h4 id="resources-statiques" data-toc="resources-statiques">Resources statiques</h4><p id="-qujfd5_122">Ce principe de cr&eacute;ation d'URL fonctionne &eacute;galement avec les images, les liens CSS ou Javascript. Selon les cas, il faudra utiliser les attributs <code class="code" id="-qujfd5_123">th:href</code> ou <code class="code" id="-qujfd5_124">th:src</code>.</p></section></section><section class="chapter"><h3 id="les-expressions-de-s-lection" data-toc="les-expressions-de-s-lection">Les expressions de s&eacute;lection</h3><p id="-qujfd5_125">L&agrave; o&ugrave; une expression classique <code class="code" id="-qujfd5_130">${}</code> recherche une variable dans le <code class="code" id="-qujfd5_131">Model</code> d'un template <code class="code" id="-qujfd5_132">Thymeleaf</code>, l'expression de s&eacute;lection limite cette port&eacute;e &agrave; un seul objet d&eacute;clar&eacute; dans une balise parente. Cette expression permet de simplifier la syntaxe en factorisant l'objet source.</p><p id="-qujfd5_126"><span class="control" id="-qujfd5_133">Exemple</span> En imaginant un objet <code class="code" id="-qujfd5_134">User</code> poss&eacute;dant les propri&eacute;t&eacute;s <code class="code" id="-qujfd5_135">id</code> et <code class="code" id="-qujfd5_136">name</code>.</p><div class="code-block" data-lang="markup">
+
+&lt;div th:object=&quot;${user}&quot;&gt;
+    &lt;p th:text=&quot;${id}&quot;&gt;&lt;/p&gt;
+    &lt;p th:text=&quot;${name}&quot;&gt;&lt;/p&gt;
+&lt;/div&gt;
+</div><section class="chapter"><h4 id="dans-les-it-rations" data-toc="dans-les-it-rations">Dans les it&eacute;rations</h4><div class="code-block" data-lang="markup">
+
+&lt;tr th:each=&quot;user : ${users}&quot; th:object=&quot;${user}&quot;&gt;
+    &lt;td th:text=&quot;*{id}&quot;&gt;&lt;/td&gt;
+    &lt;td th:text=&quot;*{name}&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+</div><ul class="list _bullet" id="-qujfd5_138"><li class="list__item" id="-qujfd5_139"><p id="-qujfd5_141">Chaque ligne <code class="code" id="-qujfd5_142">&lt;tr&gt;</code> a son propre contexte user.</p></li><li class="list__item" id="-qujfd5_140"><p id="-qujfd5_143">Les <code class="code" id="-qujfd5_144">*{}</code> acc&egrave;dent directement aux propri&eacute;t&eacute;s du <code class="code" id="-qujfd5_145">user</code> courant.</p></li></ul></section><section class="chapter"><h4 id="dans-un-formulaire" data-toc="dans-un-formulaire">Dans un formulaire</h4><div class="code-block" data-lang="markup">
+
+&lt;form th:object=&quot;${user}&quot;&gt;
+    &lt;label&gt;Nom :&lt;/label&gt;
+    &lt;input type=&quot;hidden&quot; th:field=&quot;*{id}&quot;/&gt;
+
+    &lt;label&gt;Email :&lt;/label&gt;
+    &lt;input type=&quot;text&quot; th:field=&quot;*{name}&quot;/&gt;
+&lt;/form&gt;
+</div><p id="-qujfd5_147">Avec <code class="code" id="-qujfd5_150">th:field</code>, <code class="code" id="-qujfd5_151">Thymeleaf</code> g&eacute;n&egrave;re automatiquement :</p><ul class="list _bullet" id="-qujfd5_148"><li class="list__item" id="-qujfd5_152"><p id="-qujfd5_155">l'attribut <code class="code" id="-qujfd5_156">name</code></p></li><li class="list__item" id="-qujfd5_153"><p id="-qujfd5_157">l'attribut <code class="code" id="-qujfd5_158">id</code></p></li><li class="list__item" id="-qujfd5_154"><p id="-qujfd5_159">l'attribut <code class="code" id="-qujfd5_160">value</code></p></li></ul><p id="-qujfd5_149">Il g&egrave;re aussi la r&eacute;cup&eacute;ration automatique en cas d'erreur de validation (Spring MVC BindingResult).</p></section></section><section class="chapter"><h3 id="les-expressions-de-message" data-toc="les-expressions-de-message">Les expressions de message</h3><p id="-qujfd5_161">Les expressions de message sont calqu&eacute;es sur le mod&egrave;le de l'internationalisation de <code class="code" id="-qujfd5_172">JSTL</code>. Ce sont les m&ecirc;mes fichiers <code class="code" id="-qujfd5_173">.properties</code> qui sont utilis&eacute;s. Ces fichiers</p><p id="-qujfd5_162"><span class="control" id="-qujfd5_174">Un fichier de message</span></p><p id="-qujfd5_163"><code class="code" id="-qujfd5_175">messages.properties</code> dans <code class="code" id="-qujfd5_176">src/main/resources/</code></p><div class="code-block" data-lang="none">
+page.title=Bienvenue
+user.name=Nom
+user.email=Email
+</div><p id="-qujfd5_165">Pour g&eacute;rer diff&eacute;rentes langues, il faut ajouter le code de la langue en suffixe, <code class="code" id="-qujfd5_177">messages_en.properties</code> pour l'anglais par exemple.</p><p id="-qujfd5_166"><span class="control" id="-qujfd5_178">Utilisation des messages dans Thymeleaf</span></p><div class="code-block" data-lang="markup">
+&lt;h1 th:text=&quot;#{page.title}&quot;&gt;&lt;/h1&gt;
+
+&lt;label th:text=&quot;#{user.name}&quot;&gt;&lt;/label&gt;
+&lt;input type=&quot;text&quot; name=&quot;name&quot;/&gt;
+
+&lt;label th:text=&quot;#{user.email}&quot;&gt;&lt;/label&gt;
+&lt;input type=&quot;email&quot; name=&quot;email&quot;/&gt;
+</div><section class="chapter"><h4 id="message-param-tr" data-toc="message-param-tr">Message param&eacute;tr&eacute;</h4><div class="code-block" data-lang="none">
+greeting=Bonjour {0} !
+order.summary=Commande {0} pour {1} articles
+
+</div><div class="code-block" data-lang="markup">
+&lt;!-- passage d'un paramètre --&gt;
+&lt;p th:text=&quot;#{greeting(${userName})}&quot;&gt;&lt;/p&gt;
+
+&lt;!-- passage de deux paramètres --&gt;
+&lt;p th:text=&quot;#{order.summary(${orderId}, ${itemCount})}&quot;&gt;&lt;/p&gt;
+</div></section><section class="chapter"><h4 id="valeur-par-d-faut" data-toc="valeur-par-d-faut">Valeur par d&eacute;faut</h4><p id="-qujfd5_181">Cette valeur sera utilis&eacute;e si la clef demand&eacute;e est absente du fichier <code class="code" id="-qujfd5_183">.properties</code>.</p><div class="code-block" data-lang="markup">
+&lt;span th:text=&quot;#{inconnu.message(default='Message par défaut')}&quot;&gt;&lt;/span&gt;
+</div></section><section class="chapter"><h4 id="configuration" data-toc="configuration">Configuration</h4><p id="-qujfd5_184">La configuration des messages s'effectue dans le fichier <code class="code" id="-qujfd5_186">application.properties</code> situ&eacute; dans <code class="code" id="-qujfd5_187">src/main/resources</code>. Il est possible de d&eacute;finir le nom de base du fichier des messages et la locale par d&eacute;faut.</p><div class="code-block" data-lang="none">
+spring.messages.basename=messages
+spring.mvc.locale=fr
+</div></section><section class="chapter"><h4 id="internationalisation" data-toc="internationalisation">Internationalisation</h4><p id="-qujfd5_188">Pour changer de langue, il existe deux solutions :</p><ul class="list _bullet" id="-qujfd5_189"><li class="list__item" id="-qujfd5_193"><p id="-qujfd5_195">Passer la locale dans le query string</p></li><li class="list__item" id="-qujfd5_194"><p id="-qujfd5_196">Utiliser la locale du navigateur transmise dans l'en-t&ecirc;te HTTP</p></li></ul><p id="-qujfd5_190">Dans les deux cas, il faut cr&eacute;er une classe de configuration qui sera automatiquement scann&eacute;e par Spring.</p><section class="chapter"><h5 id="utilisation-de-la-locale-du-navigateur" data-toc="utilisation-de-la-locale-du-navigateur">Utilisation de la locale du navigateur</h5><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
+
+import java.util.Locale;
+
+@Configuration
+public class WebConfig {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
+        // Définir la locale par défaut
+        resolver.setDefaultLocale(Locale.FRENCH);
+        return resolver;
+    }
+}
+</div></section><section class="chapter"><h5 id="passage-de-la-locale-das-le-query-string" data-toc="passage-de-la-locale-das-le-query-string">Passage de la locale das le query string</h5><div class="code-block" data-lang="java">
+package fr.formation.spring.demo.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import java.util.Locale;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.FRENCH);
+        return slr;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName(&quot;lang&quot;); // paramètre d'URL: ?lang=en
+        return lci;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+}
+</div></section></section></section></section><section class="chapter"><h2 id="les-attributs-html-de-thymeleaf" data-toc="les-attributs-html-de-thymeleaf">Les attributs HTML de Thymeleaf</h2><section class="chapter"><h3 id="les-conditions" data-toc="les-conditions">Les conditions</h3><p id="-qujfd5_202">Thymeleaf propose deux structures conditionnelles, <code class="code" id="-qujfd5_205">th:if</code> et <code class="code" id="-qujfd5_206">th:unless</code>. Ces attributs sont plac&eacute;s dans une balise et admettent une expression bool&eacute;enne dont l'&eacute;valuation conditionnera l'affichage de la balise.</p><section class="chapter"><h4 id="exemples" data-toc="exemples">Exemples</h4><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Test de l'age&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;p th:if=&quot;${age} &lt; 18&quot;&gt;
+    Vous êtes mineur
+&lt;/p&gt;
+
+&lt;p th:if=&quot;${age} &gt;= 18&quot;&gt;
+    Vous êtes majeur
+&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Test du de la maison de sorcier&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div th:with=&quot;startsWithAnS = ${name.charAt(0)} == 'S'&quot;&gt;
+    &lt;p th:unless=&quot;${startsWithAnS}&quot;&gt;
+        Vous êtes d'une autre maison
+    &lt;/p&gt;
+
+    &lt;p th:if=&quot;${startsWithAnS}&quot;&gt;
+        Vous êtes Slitherin
+    &lt;/p&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="-qujfd5_209">Dans ce dernier exemple, l'attribut <code class="code" id="-qujfd5_212">th:with</code> d&eacute;finit une variable dont la port&eacute;e est celle de la balise h&ocirc;te. Cela permet de factoriser le test et de simplifier la lecture du code.</p><p id="-qujfd5_210"><span class="control" id="-qujfd5_213">Petits exercices</span></p><ul class="list _bullet" id="-qujfd5_211"><li class="list__item" id="-qujfd5_214"><p id="-qujfd5_216">&Eacute;crire les contr&ocirc;leurs qui affichent ces vues.</p></li><li class="list__item" id="-qujfd5_215"><p id="-qujfd5_217">Dans le premier exemple, factoriser l'expression bool&eacute;enne avec <code class="code" id="-qujfd5_218">th:with</code>.</p></li></ul></section><section class="chapter"><h4 id="le-switch" data-toc="le-switch">Le Switch</h4><p id="-qujfd5_219">Pour tester plusieurs valeurs d'une m&ecirc;me variable, <code class="code" id="-qujfd5_221">Thymeleaf</code> dispose d'une structure <code class="code" id="-qujfd5_222">switch</code>.</p><div class="code-block" data-lang="markup">
+
+&lt;div th:switch=&quot;${user.role}&quot;&gt;
+    &lt;p th:case=&quot;'ADMIN'&quot;&gt;Welcome admin!&lt;/p&gt;
+    &lt;p th:case=&quot;'USER'&quot;&gt;Welcome user!&lt;/p&gt;
+    &lt;p th:case=&quot;*&quot;&gt;Welcome guest!&lt;/p&gt; &lt;!-- * = par défaut --&gt;
+&lt;/div&gt;
+</div></section></section><section class="chapter"><h3 id="les-it-rations" data-toc="les-it-rations">Les it&eacute;rations</h3><p id="-qujfd5_223">Les boucles Thymeleaf sont de type foreach. La balise qui h&eacute;berge la boucle sera dupliqu&eacute;e &agrave; chaque it&eacute;ration.</p><p id="-qujfd5_224">La syntaxe est la suivante :</p><div class="code-block" data-lang="none">
+th:each=&quot;variable-d-iteration : ${collection-source}&quot;
+</div><section class="chapter"><h4 id="un-exemple" data-toc="un-exemple">Un exemple</h4><div class="code-block" data-lang="java">
+    // url : /boucle1?tags=Java,Python,Erlang
+@GetMapping(value = &quot;/boucle1&quot;, params = &quot;tags&quot;)
+public String LoopWithTags(
+        @RequestParam List&lt;String&gt; tags, Model model
+) {
+    model.addAttribute(&quot;tagList&quot;, tags);
+    return &quot;thymeleaf-test/tags&quot;;
+}
+</div><div class="code-block" data-lang="markup">
+&lt;!-- thymeleaf-test/tags.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;fr&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Liste des tags&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;ul&gt;
+    &lt;li th:each=&quot;tag : ${tagList}&quot; th:text=&quot;${tag}&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h4 id="autre-exemple" data-toc="autre-exemple">Autre exemple</h4><div class="code-block" data-lang="java">
+
+@GetMapping(value = &quot;/boucle2&quot;)
+public String LoopWithEdibles(Model model) {
+    List&lt;EdibleDTO&gt; food = new ArrayList&lt;&gt;();
+    food.add(new EdibleDTO(&quot;Pomme&quot;, &quot;fruit&quot;));
+    food.add(new EdibleDTO(&quot;Poire&quot;, &quot;fruit&quot;));
+    food.add(new EdibleDTO(&quot;Panais&quot;, &quot;légume&quot;));
+    food.add(new EdibleDTO(&quot;Potiron&quot;, &quot;légume&quot;));
+
+    model.addAttribute(&quot;foodList&quot;, food);
+
+    return &quot;thymeleaf-test/edibles&quot;;
+}
+</div><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;fr&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Liste des ingrédients&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;table&gt;
+    &lt;tr th:each=&quot;food : ${foodList}&quot;&gt;
+        &lt;td th:text=&quot;${food.name}&quot;&gt;&lt;/td&gt;
+        &lt;td th:text=&quot;${food.category}&quot;&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h4 id="acc-s-l-tat-de-l-it-ration" data-toc="acc-s-l-tat-de-l-it-ration">Acc&egrave;s &agrave; l'&eacute;tat de l'it&eacute;ration</h4><p id="-qujfd5_234">Dans une it&eacute;ration, il est possible de d&eacute;finir une deuxi&egrave;me variable charg&eacute;e de stocker l'&eacute;tat de l'it&eacute;ration.</p><div class="code-block" data-lang="markup">
+
+&lt;tr th:each=&quot;user, stat : ${users}&quot;&gt;
+    &lt;td th:text=&quot;${stat.index}&quot;&gt;&lt;/td&gt; &lt;!-- Index de départ 0 --&gt;
+    &lt;td th:text=&quot;${stat.count}&quot;&gt;&lt;/td&gt; &lt;!-- Compte (1, 2, 3...) --&gt;
+    &lt;td th:text=&quot;${stat.size}&quot;&gt;&lt;/td&gt; &lt;!-- Taille totale --&gt;
+    &lt;td th:text=&quot;${stat.even}&quot;&gt;&lt;/td&gt; &lt;!-- true si ligne paire --&gt;
+    &lt;td th:text=&quot;${stat.odd}&quot;&gt;&lt;/td&gt;  &lt;!-- true si ligne impaire --&gt;
+    &lt;td th:text=&quot;${user.name}&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+</div><ul class="list _bullet" id="-qujfd5_236"><li class="list__item" id="-qujfd5_237"><p id="-qujfd5_243"><code class="code" id="-qujfd5_244">stat.index</code> &rarr; position (0, 1, 2, &hellip;)</p></li><li class="list__item" id="-qujfd5_238"><p id="-qujfd5_245"><code class="code" id="-qujfd5_246">stat.count</code> &rarr; position (1, 2, 3, &hellip;)</p></li><li class="list__item" id="-qujfd5_239"><p id="-qujfd5_247"><code class="code" id="-qujfd5_248">stat.size</code> &rarr; taille totale de la liste</p></li><li class="list__item" id="-qujfd5_240"><p id="-qujfd5_249"><code class="code" id="-qujfd5_250">stat.even</code>/<code class="code" id="-qujfd5_251">stat.odd</code> &rarr; parit&eacute;</p></li><li class="list__item" id="-qujfd5_241"><p id="-qujfd5_252"><code class="code" id="-qujfd5_253">stat.first</code> &rarr; true pour le premier &eacute;l&eacute;ment</p></li><li class="list__item" id="-qujfd5_242"><p id="-qujfd5_254"><code class="code" id="-qujfd5_255">stat.last</code> &rarr; true pour le dernier &eacute;l&eacute;ment</p></li></ul></section><section class="chapter"><h4 id="it-ration-sur-une-map" data-toc="it-ration-sur-une-map">It&eacute;ration sur une Map</h4><p id="-qujfd5_256">Thymeleaf permet aussi de boucler sur une Map.</p><p id="-qujfd5_257"><span class="control" id="-qujfd5_260">Exemple :</span></p><div class="code-block" data-lang="markup">
+
+&lt;ul&gt;
+    &lt;li th:each=&quot;entry : ${myMap}&quot;&gt;
+        &lt;span th:text=&quot;${entry.key}&quot;&gt;Key&lt;/span&gt; :
+        &lt;span th:text=&quot;${entry.value}&quot;&gt;Value&lt;/span&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</div><p id="-qujfd5_259">En Java, myMap est un <code class="code" id="-qujfd5_261">Map&lt;String, String&gt;</code> par exemple.</p></section></section><section class="chapter"><h3 id="r-capitulatif-de-tous-les-attributs" data-toc="r-capitulatif-de-tous-les-attributs">R&eacute;capitulatif de tous les attributs</h3><div class="table-wrapper"><table class="wide" id="-qujfd5_262"><thead><tr class="ijRowHead" id="-qujfd5_263"><th id="-qujfd5_294"><p>Attribut</p></th><th id="-qujfd5_295"><p>Description</p></th><th id="-qujfd5_296"><p>Exemple / Usage Typique</p></th></tr></thead><tbody><tr id="-qujfd5_264"><td id="-qujfd5_297"><p><span class="control" id="-qujfd5_300">Affichage Texte</span></p></td><td id="-qujfd5_298"></td><td id="-qujfd5_299"></td></tr><tr id="-qujfd5_265"><td id="-qujfd5_301"><p><code class="code" id="-qujfd5_304">th:text</code></p></td><td id="-qujfd5_302"><p>Affiche du texte (&eacute;chappe les caract&egrave;res HTML pour la s&eacute;curit&eacute;).</p></td><td id="-qujfd5_303"><p><code class="code" id="-qujfd5_305">&lt;p th:text=&quot;${message}&quot;&gt;Texte par d&eacute;faut&lt;/p&gt;</code></p></td></tr><tr id="-qujfd5_266"><td id="-qujfd5_306"><p><code class="code" id="-qujfd5_309">th:utext</code></p></td><td id="-qujfd5_307"><p>Affiche du texte sans &eacute;chapper le HTML (utiliser avec prudence).</p></td><td id="-qujfd5_308"><p><code class="code" id="-qujfd5_310">&lt;div th:utext=&quot;${htmlContent}&quot;&gt;Contenu HTML&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_267"><td id="-qujfd5_311"><p><code class="code" id="-qujfd5_314">th:value</code></p></td><td id="-qujfd5_312"><p>D&eacute;finit l'attribut <code class="code" id="-qujfd5_315">value</code> (inputs, options, etc.).</p></td><td id="-qujfd5_313"><p><code class="code" id="-qujfd5_316">&lt;input type=&quot;text&quot; th:value=&quot;${user.name}&quot;&gt;</code></p></td></tr><tr id="-qujfd5_268"><td id="-qujfd5_317"><p><span class="control" id="-qujfd5_320">Conditions</span></p></td><td id="-qujfd5_318"></td><td id="-qujfd5_319"></td></tr><tr id="-qujfd5_269"><td id="-qujfd5_321"><p><code class="code" id="-qujfd5_324">th:if</code></p></td><td id="-qujfd5_322"><p>Affiche l'&eacute;l&eacute;ment si la condition est vraie.</p></td><td id="-qujfd5_323"><p><code class="code" id="-qujfd5_325">&lt;div th:if=&quot;${isAdmin}&quot;&gt;Section Admin&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_270"><td id="-qujfd5_326"><p><code class="code" id="-qujfd5_329">th:unless</code></p></td><td id="-qujfd5_327"><p>Affiche l'&eacute;l&eacute;ment si la condition est fausse (inverse de <code class="code" id="-qujfd5_330">th:if</code>).</p></td><td id="-qujfd5_328"><p><code class="code" id="-qujfd5_331">&lt;p th:unless=&quot;${cart.isEmpty()}&quot;&gt;Votre panier n'est pas vide.&lt;/p&gt;</code></p></td></tr><tr id="-qujfd5_271"><td id="-qujfd5_332"><p><code class="code" id="-qujfd5_335">th:switch</code>, <code class="code" id="-qujfd5_336">th:case</code></p></td><td id="-qujfd5_333"><p>Structure conditionnelle multiple (similaire au switch/case).</p></td><td id="-qujfd5_334"><p><code class="code" id="-qujfd5_337">&lt;div th:switch=&quot;${user.role}&quot;&gt;&lt;p th:case=&quot;'ADMIN'&quot;&gt;...&lt;/p&gt;&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_272"><td id="-qujfd5_338"><p><span class="control" id="-qujfd5_341">It&eacute;rations</span></p></td><td id="-qujfd5_339"></td><td id="-qujfd5_340"></td></tr><tr id="-qujfd5_273"><td id="-qujfd5_342"><p><code class="code" id="-qujfd5_345">th:each</code></p></td><td id="-qujfd5_343"><p>It&egrave;re sur une collection (List, Set, Map, Array...) et r&eacute;p&egrave;te l'&eacute;l&eacute;ment.</p></td><td id="-qujfd5_344"><p><code class="code" id="-qujfd5_346">&lt;ul&gt;&lt;li th:each=&quot;item : ${items}&quot; th:text=&quot;${item}&quot;&gt;&lt;/li&gt;&lt;/ul&gt;</code></p></td></tr><tr id="-qujfd5_274"><td id="-qujfd5_347"><p><span class="control" id="-qujfd5_350">Attributs HTML</span></p></td><td id="-qujfd5_348"></td><td id="-qujfd5_349"></td></tr><tr id="-qujfd5_275"><td id="-qujfd5_351"><p><code class="code" id="-qujfd5_354">th:attr</code></p></td><td id="-qujfd5_352"><p>D&eacute;finit un ou plusieurs attributs HTML dynamiquement.</p></td><td id="-qujfd5_353"><p><code class="code" id="-qujfd5_355">&lt;img th:attr=&quot;alt=${altText}, title=${titleText}&quot;&gt;</code></p></td></tr><tr id="-qujfd5_276"><td id="-qujfd5_356"><p><code class="code" id="-qujfd5_359">th:attrappend</code></p></td><td id="-qujfd5_357"><p>Ajoute une valeur &agrave; la fin d'un attribut existant (ex: <code class="code" id="-qujfd5_360">class</code>, <code class="code" id="-qujfd5_361">style</code>).</p></td><td id="-qujfd5_358"><p><code class="code" id="-qujfd5_362">&lt;div class=&quot;base&quot; th:attrappend=&quot;class=' ' + ${dynamicClass}&quot;&gt;</code></p></td></tr><tr id="-qujfd5_277"><td id="-qujfd5_363"><p><code class="code" id="-qujfd5_366">th:attrprepend</code></p></td><td id="-qujfd5_364"><p>Ajoute une valeur au d&eacute;but d'un attribut existant.</p></td><td id="-qujfd5_365"><p><code class="code" id="-qujfd5_367">&lt;input style=&quot;margin: auto;&quot; th:attrprepend=&quot;style='color: red; '&quot;&gt;</code></p></td></tr><tr id="-qujfd5_278"><td id="-qujfd5_368"><p><code class="code" id="-qujfd5_371">th:classappend</code></p></td><td id="-qujfd5_369"><p>Raccourci pratique pour ajouter une classe CSS.</p></td><td id="-qujfd5_370"><p><code class="code" id="-qujfd5_372">&lt;div class=&quot;item&quot; th:classappend=&quot;${isError} ? 'error'&quot;&gt;</code></p></td></tr><tr id="-qujfd5_279"><td id="-qujfd5_373"><p><code class="code" id="-qujfd5_376">th:checked</code>, <br><code class="code" id="-qujfd5_378">th:selected</code>, <br><code class="code" id="-qujfd5_380">th:disabled</code>, etc.</p></td><td id="-qujfd5_374"><p>G&egrave;re les attributs HTML bool&eacute;ens (d&eacute;finit si l'expression est vraie).</p></td><td id="-qujfd5_375"><p><code class="code" id="-qujfd5_381">&lt;input type=&quot;checkbox&quot; th:checked=&quot;${user.isActive}&quot;&gt;</code></p></td></tr><tr id="-qujfd5_280"><td id="-qujfd5_382"><p><span class="control" id="-qujfd5_385">URLs et Liens</span></p></td><td id="-qujfd5_383"></td><td id="-qujfd5_384"></td></tr><tr id="-qujfd5_281"><td id="-qujfd5_386"><p><code class="code" id="-qujfd5_389">th:href</code>, <code class="code" id="-qujfd5_390">th:src</code>, <code class="code" id="-qujfd5_391">th:action</code>...</p></td><td id="-qujfd5_387"><p>D&eacute;finit des attributs d'URL en utilisant la syntaxe <code class="code" id="-qujfd5_392">@{...}</code>.</p></td><td id="-qujfd5_388"><p><code class="code" id="-qujfd5_393">&lt;a th:href=&quot;@{/users/{id}(id=${user.id})}&quot;&gt;Profil&lt;/a&gt;</code></p></td></tr><tr id="-qujfd5_282"><td id="-qujfd5_394"><p><span class="control" id="-qujfd5_397">Fragments (Layouts)</span></p></td><td id="-qujfd5_395"></td><td id="-qujfd5_396"></td></tr><tr id="-qujfd5_283"><td id="-qujfd5_398"><p><code class="code" id="-qujfd5_401">th:fragment</code></p></td><td id="-qujfd5_399"><p>D&eacute;finit une portion de template r&eacute;utilisable (un fragment).</p></td><td id="-qujfd5_400"><p><code class="code" id="-qujfd5_402">&lt;footer th:fragment=&quot;footer&quot;&gt;...&lt;/footer&gt;</code> (dans <code class="code" id="-qujfd5_403">fragments.html</code>)</p></td></tr><tr id="-qujfd5_284"><td id="-qujfd5_404"><p><code class="code" id="-qujfd5_407">th:insert</code></p></td><td id="-qujfd5_405"><p>Ins&egrave;re un fragment <span class="emphasis" id="-qujfd5_408">&agrave; l'int&eacute;rieur</span> de la balise h&ocirc;te.</p></td><td id="-qujfd5_406"><p><code class="code" id="-qujfd5_409">&lt;div th:insert=&quot;~{fragments :: footer}&quot;&gt;&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_285"><td id="-qujfd5_410"><p><code class="code" id="-qujfd5_413">th:replace</code></p></td><td id="-qujfd5_411"><p>Remplace la balise h&ocirc;te <span class="emphasis" id="-qujfd5_414">par</span> le fragment.</p></td><td id="-qujfd5_412"><p><code class="code" id="-qujfd5_415">&lt;footer th:replace=&quot;~{fragments :: footer}&quot;&gt;&lt;/footer&gt;</code></p></td></tr><tr id="-qujfd5_286"><td id="-qujfd5_416"><p><code class="code" id="-qujfd5_419">th:include</code></p></td><td id="-qujfd5_417"><p><span class="control" id="-qujfd5_420">D&eacute;pr&eacute;ci&eacute;</span> (pr&eacute;f&eacute;rer <code class="code" id="-qujfd5_421">th:insert</code>). Ins&egrave;re le <span class="emphasis" id="-qujfd5_422">contenu</span> du fragment.</p></td><td id="-qujfd5_418"><p><code class="code" id="-qujfd5_423">&lt;div th:include=&quot;~{fragments :: content}&quot;&gt;&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_287"><td id="-qujfd5_424"><p><span class="control" id="-qujfd5_427">Variables / Objets</span></p></td><td id="-qujfd5_425"></td><td id="-qujfd5_426"></td></tr><tr id="-qujfd5_288"><td id="-qujfd5_428"><p><code class="code" id="-qujfd5_431">th:with</code></p></td><td id="-qujfd5_429"><p>D&eacute;finit une ou plusieurs variables locales dans la port&eacute;e de l'&eacute;l&eacute;ment.</p></td><td id="-qujfd5_430"><p><code class="code" id="-qujfd5_432">&lt;div th:with=&quot;isEven=${iterStat.even}&quot;&gt;...&lt;/div&gt;</code></p></td></tr><tr id="-qujfd5_289"><td id="-qujfd5_433"><p><code class="code" id="-qujfd5_436">th:object</code></p></td><td id="-qujfd5_434"><p>S&eacute;lectionne un objet du contexte pour utiliser <code class="code" id="-qujfd5_437">*{...}</code> dans les enfants (formulaires).</p></td><td id="-qujfd5_435"><p><code class="code" id="-qujfd5_438">&lt;form th:object=&quot;${user}&quot; th:action=&quot;@{/save}&quot;&gt;...&lt;/form&gt;</code></p></td></tr><tr id="-qujfd5_290"><td id="-qujfd5_439"><p><span class="control" id="-qujfd5_442">Autres</span></p></td><td id="-qujfd5_440"></td><td id="-qujfd5_441"></td></tr><tr id="-qujfd5_291"><td id="-qujfd5_443"><p><code class="code" id="-qujfd5_446">th:remove</code></p></td><td id="-qujfd5_444"><p>Contr&ocirc;le la suppression de la balise ou de son contenu (<code class="code" id="-qujfd5_447">all</code>, <code class="code" id="-qujfd5_448">body</code>, <code class="code" id="-qujfd5_449">tag</code>...).</p></td><td id="-qujfd5_445"><p><code class="code" id="-qujfd5_450">&lt;p th:remove=&quot;tag&quot;&gt;Contenu seul&lt;/p&gt;</code></p></td></tr><tr id="-qujfd5_292"><td id="-qujfd5_451"><p><code class="code" id="-qujfd5_454">th:block</code></p></td><td id="-qujfd5_452"><p>Balise &quot;virtuelle&quot; non rendue, utile pour appliquer de la logique (ex: <code class="code" id="-qujfd5_455">th:each</code>).</p></td><td id="-qujfd5_453"><p><code class="code" id="-qujfd5_456">&lt;th:block th:each=&quot;msg : ${messages}&quot;&gt;&lt;p th:text=&quot;${msg}&quot;&gt;&lt;/p&gt;&lt;/th:block&gt;</code></p></td></tr><tr id="-qujfd5_293"><td id="-qujfd5_457"><p><code class="code" id="-qujfd5_460">th:inline</code></p></td><td id="-qujfd5_458"><p>Active le traitement inline dans JS (<code class="code" id="-qujfd5_461">javascript</code>) ou CSS (<code class="code" id="-qujfd5_462">css</code>).</p></td><td id="-qujfd5_459"><p><code class="code" id="-qujfd5_463">&lt;script th:inline=&quot;javascript&quot;&gt;var name = /*[[${user.name}]]*/ '';&lt;/script&gt;</code></p></td></tr></tbody></table></div></section></section><section class="chapter"><h2 id="les-objets-utilitaires-de-thymeleaf" data-toc="les-objets-utilitaires-de-thymeleaf">Les objets utilitaires de Thymeleaf</h2><p id="-qujfd5_464">Thymeleaf fournit un ensemble riche <span class="control" id="-qujfd5_469">d'objets utilitaires (Expression Utility Objects)</span>. Ces objets, accessibles directement dans les expressions Thymeleaf via la syntaxe <code class="code" id="-qujfd5_470">#nomObjet</code>, offrent des m&eacute;thodes pratiques pour effectuer des op&eacute;rations courantes directement dans le template, rendant le code plus lisible et en &eacute;vitant de surcharger le contr&ocirc;leur Java avec de la logique de pr&eacute;sentation.</p><section class="chapter"><h3 id="acc-s-aux-objets-utilitaires" data-toc="acc-s-aux-objets-utilitaires">Acc&egrave;s aux Objets Utilitaires</h3><p id="-qujfd5_471">Les objets utilitaires sont disponibles par d&eacute;faut dans le dialecte standard de Thymeleaf (<code class="code" id="-qujfd5_472">Standard Dialect</code>), qui est automatiquement configur&eacute; par Spring Boot lors de l'utilisation du starter <code class="code" id="-qujfd5_473">spring-boot-starter-thymeleaf</code>. Ils sont accessibles en utilisant le pr&eacute;fixe <code class="code" id="-qujfd5_474">#</code> suivi du nom de l'objet (par exemple, <code class="code" id="-qujfd5_475">#strings</code>, <code class="code" id="-qujfd5_476">#numbers</code>, <code class="code" id="-qujfd5_477">#dates</code>).</p></section><section class="chapter"><h3 id="les-utilitaires-essentiels" data-toc="les-utilitaires-essentiels">Les Utilitaires Essentiels</h3><section class="chapter"><h4 id="utilitaires-pour-les-cha-nes-de-caract-res-strings" data-toc="utilitaires-pour-les-cha-nes-de-caract-res-strings">Utilitaires pour les Cha&icirc;nes de Caract&egrave;res <code class="code" id="-qujfd5_485">#strings</code></h4><p id="-qujfd5_483">L'objet <code class="code" id="-qujfd5_486">#strings</code> fournit des m&eacute;thodes pour la manipulation des cha&icirc;nes de caract&egrave;res. Il est particuli&egrave;rement utile pour les v&eacute;rifications, les transformations et les formatages simples.</p><ul class="list _bullet" id="-qujfd5_484"><li class="list__item" id="-qujfd5_487"><p id="-qujfd5_497"><span class="control" id="-qujfd5_498">Fonctions courantes :</span></p></li><li class="list__item" id="-qujfd5_488"><p id="-qujfd5_499"><code class="code" id="-qujfd5_500">isEmpty(String)</code>: V&eacute;rifie si une cha&icirc;ne est vide ou nulle.</p></li><li class="list__item" id="-qujfd5_489"><p id="-qujfd5_501"><code class="code" id="-qujfd5_502">contains(String, String)</code>: V&eacute;rifie si une cha&icirc;ne en contient une autre.</p></li><li class="list__item" id="-qujfd5_490"><p id="-qujfd5_503"><code class="code" id="-qujfd5_504">startsWith(String, String)</code>, <code class="code" id="-qujfd5_505">endsWith(String, String)</code>: V&eacute;rifications de pr&eacute;fixe/suffixe.</p></li><li class="list__item" id="-qujfd5_491"><p id="-qujfd5_506"><code class="code" id="-qujfd5_507">toUpperCase(String)</code>, <code class="code" id="-qujfd5_508">toLowerCase(String)</code>: Changement de casse.</p></li><li class="list__item" id="-qujfd5_492"><p id="-qujfd5_509"><code class="code" id="-qujfd5_510">substring(String, int, int)</code>, <code class="code" id="-qujfd5_511">substringAfter(String, String)</code>, <code class="code" id="-qujfd5_512">substringBefore(String, String)</code>: Extraction de sous-cha&icirc;nes.</p></li><li class="list__item" id="-qujfd5_493"><p id="-qujfd5_513"><code class="code" id="-qujfd5_514">trim(String)</code>: Suppression des espaces en d&eacute;but et fin.</p></li><li class="list__item" id="-qujfd5_494"><p id="-qujfd5_515"><code class="code" id="-qujfd5_516">length(String)</code>: Obtention de la longueur.</p></li><li class="list__item" id="-qujfd5_495"><p id="-qujfd5_517"><code class="code" id="-qujfd5_518">equals(String, String)</code>, <code class="code" id="-qujfd5_519">equalsIgnoreCase(String, String)</code>: Comparaison.</p></li><li class="list__item" id="-qujfd5_496"><p id="-qujfd5_520"><span class="control" id="-qujfd5_524">Exemple :</span> Supposons qu'un contr&ocirc;leur ajoute un attribut <code class="code" id="-qujfd5_525">description</code> au mod&egrave;le :</p><div class="code-block" data-lang="java">
+// Dans le contrôleur Spring MVC
+@Controller
+public class ProductController {
+    @GetMapping(&quot;/product/details&quot;)
+    public String showProductDetails(Model model) {
+        String description = &quot;  Un produit exceptionnel! &quot;;
+        model.addAttribute(&quot;productDescription&quot;, description);
+        model.addAttribute(&quot;productCode&quot;, &quot;PROD-123&quot;);
+        return &quot;product-details&quot;;
+    }
+}
+</div><p id="-qujfd5_522">Dans le template <code class="code" id="-qujfd5_526">product-details.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;&lt;title&gt;Détails Produit&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Description&lt;/h1&gt;
+    &lt;!-- Affiche la description en majuscules et sans espaces superflus --&gt;
+    &lt;p th:text=&quot;${#strings.toUpperCase(#strings.trim(productDescription))}&quot;&gt;
+        Description par défaut
+    &lt;/p&gt;
+
+    &lt;!-- Affiche le code seulement s'il commence par &quot;PROD-&quot; --&gt;
+    &lt;div th:if=&quot;${#strings.startsWith(productCode, 'PROD-')}&quot;&gt;
+        &lt;p&gt;Code Produit Valide: &lt;span th:text=&quot;${productCode}&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Vérifie si la description est vide --&gt;
+    &lt;p th:if=&quot;${#strings.isEmpty(productDescription)}&quot;&gt;
+        Aucune description fournie.
+    &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul></section><section class="chapter"><h4 id="utilitaires-pour-les-nombres-numbers" data-toc="utilitaires-pour-les-nombres-numbers">Utilitaires pour les Nombres <code class="code" id="-qujfd5_530">#numbers</code></h4><p id="-qujfd5_528">L'objet <code class="code" id="-qujfd5_531">#numbers</code> aide &agrave; formater les nombres selon des motifs sp&eacute;cifiques, en tenant compte de la localisation (locale). C'est essentiel pour afficher des devises, des pourcentages ou des d&eacute;cimaux format&eacute;s.</p><ul class="list _bullet" id="-qujfd5_529"><li class="list__item" id="-qujfd5_532"><p id="-qujfd5_538"><span class="control" id="-qujfd5_539">Fonctions courantes :</span></p></li><li class="list__item" id="-qujfd5_533"><p id="-qujfd5_540"><code class="code" id="-qujfd5_541">formatDecimal(Number, int, int)</code>: Formate un nombre avec un nombre minimum de chiffres entiers et un nombre fixe de d&eacute;cimales.</p></li><li class="list__item" id="-qujfd5_534"><p id="-qujfd5_542"><code class="code" id="-qujfd5_543">formatDecimal(Number, int, String, int, String)</code>: Version plus compl&egrave;te avec sp&eacute;cification des s&eacute;parateurs.</p></li><li class="list__item" id="-qujfd5_535"><p id="-qujfd5_544"><code class="code" id="-qujfd5_545">formatCurrency(Number)</code>: Formate un nombre comme une devise, en utilisant la locale courante.</p></li><li class="list__item" id="-qujfd5_536"><p id="-qujfd5_546"><code class="code" id="-qujfd5_547">formatPercent(Number, int, int)</code>: Formate un nombre comme un pourcentage.</p></li><li class="list__item" id="-qujfd5_537"><p id="-qujfd5_548"><span class="control" id="-qujfd5_553">Exemple :</span></p><div class="code-block" data-lang="java">
+// Dans le contrôleur
+@Controller
+public class OrderController {
+    @GetMapping(&quot;/order/summary&quot;)
+    public String showOrderSummary(Model model) {
+        model.addAttribute(&quot;totalPrice&quot;, 1250.75);
+        model.addAttribute(&quot;taxRate&quot;, 0.20);
+        return &quot;order-summary&quot;;
+    }
+}
+</div><p id="-qujfd5_550">Dans le template <code class="code" id="-qujfd5_554">order-summary.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot; lang=&quot;fr&quot;&gt; &lt;!-- Important pour la locale --&gt;
+&lt;head&gt;&lt;title&gt;Résumé Commande&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Résumé de la commande&lt;/h1&gt;
+    &lt;!-- Affiche le prix formaté en devise (Euro pour la locale 'fr') --&gt;
+    &lt;p&gt;Total : 
+        &lt;span th:text=&quot;${#numbers.formatCurrency(totalPrice)}&quot;&gt;
+            0.00 €
+        &lt;/span&gt;
+    &lt;/p&gt;
+
+    &lt;!-- Affiche le taux de taxe en pourcentage avec 1 décimale --&gt;
+    &lt;p&gt;Taxe : 
+        &lt;span th:text=&quot;${#numbers.formatPercent(taxRate, 1, 1)}&quot;&gt;
+            0%
+        &lt;/span&gt;
+    &lt;/p&gt;
+
+    &lt;!-- Affiche le prix avec formatage spécifique --&gt;
+    &lt;p&gt;Prix (format spécifique) : 
+        &lt;span th:text=&quot;${#numbers.formatDecimal(totalPrice, 3, 2, 'COMMA')}&quot;&gt;
+            0,00
+        &lt;/span&gt;
+    &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div><p id="-qujfd5_552"><span class="control" id="-qujfd5_555">Note:</span> Le formatage d&eacute;pend de la locale configur&eacute;e pour la requ&ecirc;te. Spring Boot tente de la d&eacute;terminer automatiquement (via l'en-t&ecirc;te <code class="code" id="-qujfd5_556">Accept-Language</code>, un <code class="code" id="-qujfd5_557">LocaleResolver</code>, etc.).</p></li></ul></section><section class="chapter"><h4 id="utilitaires-pour-les-dates-et-heures-dates-calendars-temporals" data-toc="utilitaires-pour-les-dates-et-heures-dates-calendars-temporals">Utilitaires pour les Dates et Heures <code class="code" id="-qujfd5_561">#dates</code>, <code class="code" id="-qujfd5_562">#calendars</code>, <code class="code" id="-qujfd5_563">#temporals</code></h4><p id="-qujfd5_559">Thymeleaf propose plusieurs objets pour manipuler les dates et heures :</p><ul class="list _bullet" id="-qujfd5_560"><li class="list__item" id="-qujfd5_564"><p id="-qujfd5_574"><code class="code" id="-qujfd5_575">#dates</code>: Pour les objets <code class="code" id="-qujfd5_576">java.util.Date</code>.</p></li><li class="list__item" id="-qujfd5_565"><p id="-qujfd5_577"><code class="code" id="-qujfd5_578">#calendars</code>: Pour les objets <code class="code" id="-qujfd5_579">java.util.Calendar</code>.</p></li><li class="list__item" id="-qujfd5_566"><p id="-qujfd5_580"><code class="code" id="-qujfd5_581">#temporals</code>: <span class="control" id="-qujfd5_582">(Recommand&eacute;)</span> Pour les objets de l'API Java 8+ Date/Time (<code class="code" id="-qujfd5_583">java.time.*</code> comme <code class="code" id="-qujfd5_584">LocalDate</code>, <code class="code" id="-qujfd5_585">LocalDateTime</code>, <code class="code" id="-qujfd5_586">ZonedDateTime</code>).</p></li><li class="list__item" id="-qujfd5_567"><p id="-qujfd5_587"><span class="control" id="-qujfd5_588">Fonctions courantes (<code class="code" id="-qujfd5_589">#temporals</code> est pr&eacute;f&eacute;r&eacute; pour Java 8+) :</span></p></li><li class="list__item" id="-qujfd5_568"><p id="-qujfd5_590"><code class="code" id="-qujfd5_591">format(Temporal, String)</code>: Formate une date/heure selon un motif (ex: 'dd/MM/yyyy HH:mm').</p></li><li class="list__item" id="-qujfd5_569"><p id="-qujfd5_592"><code class="code" id="-qujfd5_593">formatISO(Temporal)</code>: Formate selon la norme ISO 8601.</p></li><li class="list__item" id="-qujfd5_570"><p id="-qujfd5_594"><code class="code" id="-qujfd5_595">day(Temporal)</code>, <code class="code" id="-qujfd5_596">month(Temporal)</code>, <code class="code" id="-qujfd5_597">year(Temporal)</code>, <code class="code" id="-qujfd5_598">hour(Temporal)</code>, etc.: Extrait des composants sp&eacute;cifiques.</p></li><li class="list__item" id="-qujfd5_571"><p id="-qujfd5_599"><code class="code" id="-qujfd5_600">dayOfWeekName(Temporal)</code>, <code class="code" id="-qujfd5_601">monthName(Temporal)</code>: Obtient le nom du jour/mois (localis&eacute;).</p></li><li class="list__item" id="-qujfd5_572"><p id="-qujfd5_602"><code class="code" id="-qujfd5_603">createNow()</code>: Obtient la date/heure actuelle.</p></li><li class="list__item" id="-qujfd5_573"><p id="-qujfd5_604"><span class="control" id="-qujfd5_608">Exemple :</span></p><div class="code-block" data-lang="java">
+// Dans le contrôleur
+@Controller
+public class EventController {
+    @GetMapping(&quot;/event/info&quot;)
+    public String showEventInfo(Model model) {
+        model.addAttribute(&quot;eventDate&quot;, java.time.LocalDate.of(2024, 12, 25));
+        model.addAttribute(&quot;eventTime&quot;, java.time.LocalDateTime.now());
+        return &quot;event-info&quot;;
+    }
+}
+</div><p id="-qujfd5_606">Dans le template <code class="code" id="-qujfd5_609">event-info.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot; lang=&quot;fr&quot;&gt;
+&lt;head&gt;&lt;title&gt;Info Événement&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Informations sur l'événement&lt;/h1&gt;
+    &lt;!-- Formater une LocalDate avec #temporals --&gt;
+    &lt;p&gt;Date : 
+        &lt;span th:text=&quot;${#temporals.format(eventDate, 'dd MMMM yyyy')}&quot;&gt;
+            Date
+        &lt;/span&gt;
+    &lt;/p&gt;
+
+    &lt;!-- Formater une LocalDateTime avec #temporals --&gt;
+    &lt;p&gt;Heure de publication : 
+        &lt;span th:text=&quot;${#temporals.format(eventTime, 'HH:mm:ss')}&quot;&gt;
+            Heure
+        &lt;/span&gt;
+    &lt;/p&gt;
+
+    &lt;!-- Extraire le jour de la semaine --&gt;
+    &lt;p&gt;Jour : 
+        &lt;span th:text=&quot;${#temporals.dayOfWeekName(eventDate)}&quot;&gt;
+            Jour
+        &lt;/span
+    &gt;&lt;/p&gt;
+
+    &lt;!-- Utilisation de #dates si on avait une java.util.Date --&gt;
+    &lt;!-- &lt;p th:if=&quot;${legacyDate != null}&quot; th:text=&quot;${#dates.format(legacyDate, 'dd-MM-yyyy')}&quot;&gt;&lt;/p&gt; --&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul></section><section class="chapter"><h4 id="utilitaires-pour-les-collections-et-tableaux-lists-arrays-sets-maps" data-toc="utilitaires-pour-les-collections-et-tableaux-lists-arrays-sets-maps">Utilitaires pour les Collections et Tableaux (<code class="code" id="-qujfd5_613">#lists</code>, <code class="code" id="-qujfd5_614">#arrays</code>, <code class="code" id="-qujfd5_615">#sets</code>, <code class="code" id="-qujfd5_616">#maps</code>)</h4><p id="-qujfd5_611">Ces utilitaires permettent d'effectuer des op&eacute;rations de base sur les collections Java.</p><ul class="list _bullet" id="-qujfd5_612"><li class="list__item" id="-qujfd5_617"><p id="-qujfd5_624"><span class="control" id="-qujfd5_625">Fonctions courantes :</span></p></li><li class="list__item" id="-qujfd5_618"><p id="-qujfd5_626"><code class="code" id="-qujfd5_627">size(Collection/Array/Map)</code>: Retourne la taille.</p></li><li class="list__item" id="-qujfd5_619"><p id="-qujfd5_628"><code class="code" id="-qujfd5_629">isEmpty(Collection/Array/Map)</code>: V&eacute;rifie si la collection est vide ou nulle.</p></li><li class="list__item" id="-qujfd5_620"><p id="-qujfd5_630"><code class="code" id="-qujfd5_631">contains(Collection/Array, Object)</code>: V&eacute;rifie si un &eacute;l&eacute;ment est pr&eacute;sent.</p></li><li class="list__item" id="-qujfd5_621"><p id="-qujfd5_632"><code class="code" id="-qujfd5_633">containsAll(Collection/Array, Collection/Array)</code>: V&eacute;rifie si tous les &eacute;l&eacute;ments sont pr&eacute;sents.</p></li><li class="list__item" id="-qujfd5_622"><p id="-qujfd5_634">Pour <code class="code" id="-qujfd5_635">#maps</code>: <code class="code" id="-qujfd5_636">containsKey(Map, Object)</code>, <code class="code" id="-qujfd5_637">containsValue(Map, Object)</code>.</p></li><li class="list__item" id="-qujfd5_623"><p id="-qujfd5_638"><span class="control" id="-qujfd5_642">Exemple :</span></p><div class="code-block" data-lang="java">
+// Dans le contrôleur
+@Controller
+public class DataController {
+    @GetMapping(&quot;/data/view&quot;)
+    public String showData(Model model) {
+        java.util.List&lt;String&gt; items = java.util.Arrays.asList(&quot;Pomme&quot;, &quot;Banane&quot;, &quot;Orange&quot;);
+        java.util.Map&lt;String, Boolean&gt; features = java.util.Map.of(&quot;featureA&quot;, true, &quot;featureB&quot;, false);
+        model.addAttribute(&quot;itemList&quot;, items);
+        model.addAttribute(&quot;featureMap&quot;, features);
+        return &quot;data-view&quot;;
+    }
+}
+</div><p id="-qujfd5_640">Dans le template <code class="code" id="-qujfd5_643">data-view.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;&lt;title&gt;Visualisation Données&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Données&lt;/h1&gt;
+    &lt;!-- Vérifier si la liste n'est pas vide avant d'itérer --&gt;
+    &lt;ul th:if=&quot;${not #lists.isEmpty(itemList)}&quot;&gt;
+        &lt;li th:each=&quot;item : ${itemList}&quot; th:text=&quot;${item}&quot;&gt;Item&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;Nombre d'éléments : &lt;span th:text=&quot;${#lists.size(itemList)}&quot;&gt;0&lt;/span&gt;&lt;/p&gt;
+
+    &lt;!-- Vérifier la présence d'une clé dans une map --&gt;
+    &lt;div th:if=&quot;${#maps.containsKey(featureMap, 'featureA')}&quot;&gt;
+        &lt;p&gt;Feature A est présente.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul></section></section><section class="chapter"><h3 id="autres-utilitaires-notables" data-toc="autres-utilitaires-notables">Autres Utilitaires Notables</h3><ul class="list _bullet" id="-qujfd5_644"><li class="list__item" id="-qujfd5_645"><p id="-qujfd5_649"><code class="code" id="-qujfd5_650">#objects</code>: Utilitaires pour les objets g&eacute;n&eacute;riques (ex: <code class="code" id="-qujfd5_651">isNull</code>, <code class="code" id="-qujfd5_652">isNotNull</code>, <code class="code" id="-qujfd5_653">defaultString</code>).</p></li><li class="list__item" id="-qujfd5_646"><p id="-qujfd5_654"><code class="code" id="-qujfd5_655">#bools</code>: Utilitaires pour les op&eacute;rations bool&eacute;ennes.</p></li><li class="list__item" id="-qujfd5_647"><p id="-qujfd5_656"><code class="code" id="-qujfd5_657">#aggregates</code>: Fonctions d'agr&eacute;gation sur des collections (ex: <code class="code" id="-qujfd5_658">sum</code>, <code class="code" id="-qujfd5_659">avg</code>).</p></li><li class="list__item" id="-qujfd5_648"><p id="-qujfd5_660"><code class="code" id="-qujfd5_661">#ids</code>: Pour g&eacute;n&eacute;rer des ID uniques dans les &eacute;l&eacute;ments HTML (utile pour les it&eacute;rations et le ciblage JS/CSS).</p></li></ul></section><section class="chapter"><h3 id="bonnes-pratiques" data-toc="bonnes-pratiques">Bonnes Pratiques</h3><ol class="list _decimal" id="-qujfd5_662" type="1"><li class="list__item" id="-qujfd5_664"><p id="-qujfd5_671"><span class="control" id="-qujfd5_672">Privil&eacute;gier les Utilitaires pour la Pr&eacute;sentation :</span> Utiliser les objets utilitaires pour le formatage (dates, nombres, devises), les v&eacute;rifications simples (cha&icirc;nes vides, tailles de listes) et la gestion des URLs/i18n.</p></li><li class="list__item" id="-qujfd5_665"><p id="-qujfd5_673"><span class="control" id="-qujfd5_674">&Eacute;viter la Logique Complexe dans les Templates :</span> Si une op&eacute;ration n&eacute;cessite plusieurs &eacute;tapes, des calculs complexes ou des appels &agrave; des services, il est pr&eacute;f&eacute;rable de la r&eacute;aliser dans le contr&ocirc;leur ou une couche de service Java et de passer le r&eacute;sultat final au mod&egrave;le. Les templates doivent rester focalis&eacute;s sur l'affichage des donn&eacute;es.</p></li><li class="list__item" id="-qujfd5_666"><p id="-qujfd5_675"><span class="control" id="-qujfd5_676">Utiliser <code class="code" id="-qujfd5_681">#temporals</code> pour Java 8+ :</span> Pour la manipulation des types <code class="code" id="-qujfd5_677">java.time.*</code>, l'objet <code class="code" id="-qujfd5_678">#temporals</code> est plus adapt&eacute; et puissant que <code class="code" id="-qujfd5_679">#dates</code> ou <code class="code" id="-qujfd5_680">#calendars</code>.</p></li><li class="list__item" id="-qujfd5_667"><p id="-qujfd5_682"><span class="control" id="-qujfd5_683">Toujours utiliser <code class="code" id="-qujfd5_684">@{...}</code> pour les URLs :</span> Cela garantit la portabilit&eacute; de l'application (ind&eacute;pendance du context path) et facilite la gestion des param&egrave;tres.</p></li><li class="list__item" id="-qujfd5_668"><p id="-qujfd5_685"><span class="control" id="-qujfd5_686">Centraliser les Textes avec <code class="code" id="-qujfd5_688">#messages</code>:</span> Utiliser <code class="code" id="-qujfd5_687">#messages</code> pour tout texte visible par l'utilisateur final facilite grandement la maintenance et l'internationalisation.</p></li><li class="list__item" id="-qujfd5_669"><p id="-qujfd5_689"><span class="control" id="-qujfd5_691">Exploiter la Null-Safety :</span> Combiner les utilitaires (comme <code class="code" id="-qujfd5_692">#objects.isNull</code> ou <code class="code" id="-qujfd5_693">#strings.isEmpty</code>) avec l'op&eacute;rateur de navigation s&eacute;curis&eacute;e (<code class="code" id="-qujfd5_694">?.</code>) et l'op&eacute;rateur Elvis (<code class="code" id="-qujfd5_695">?:</code>) de Thymeleaf pour g&eacute;rer &eacute;l&eacute;gamment les valeurs nulles.</p><div class="code-block" data-lang="markup">
+&lt;!-- Affiche le nom de l'utilisateur ou 'Invité' si user ou user.name est null --&gt;
+&lt;p th:text=&quot;${user?.name ?: 'Invité'}&quot;&gt;Utilisateur&lt;/p&gt;
+
+&lt;!-- Alternative avec #objects --&gt;
+&lt;p th:text=&quot;${#objects.nullSafe(user?.profile?.email, 'Email non fourni')}&quot;&gt;Email&lt;/p&gt;
+</div></li><li class="list__item" id="-qujfd5_670"><p id="-qujfd5_696"><span class="control" id="-qujfd5_697">Consulter la Documentation :</span> La liste compl&egrave;te des utilitaires et de leurs m&eacute;thodes est disponible dans la documentation officielle de Thymeleaf. Le d&eacute;veloppeur devrait s'y r&eacute;f&eacute;rer pour d&eacute;couvrir des fonctionnalit&eacute;s plus avanc&eacute;es.</p></li></ol></section></section><section class="chapter"><h2 id="la-factorisation-des-templates" data-toc="la-factorisation-des-templates">La factorisation des templates</h2><p id="-qujfd5_698">L'objectif principal des layouts est d'&eacute;viter la r&eacute;p&eacute;tition de code HTML commun &agrave; plusieurs pages (comme l'en-t&ecirc;te, le pied de page, la barre de navigation, les inclusions CSS/JS, etc.) et de centraliser la structure g&eacute;n&eacute;rale de vos pages web.</p><p id="-qujfd5_699">Il existe principalement deux approches avec Thymeleaf :</p><ol class="list _decimal" id="-qujfd5_700" type="1"><li class="list__item" id="-qujfd5_706"><p id="-qujfd5_708"><span class="control" id="-qujfd5_709">Utilisation du Dialecte de Layout Thymeleaf (Thymeleaf Layout Dialect) :</span> C'est l'approche <span class="control" id="-qujfd5_710">recommand&eacute;e et la plus puissante</span>. Elle est sp&eacute;cifiquement con&ccedil;ue pour la gestion des layouts et utilise un m&eacute;canisme d'h&eacute;ritage/d&eacute;coration.</p></li><li class="list__item" id="-qujfd5_707"><p id="-qujfd5_711"><span class="control" id="-qujfd5_712">Utilisation de <code class="code" id="-qujfd5_713">th:insert</code>, <code class="code" id="-qujfd5_714">th:replace</code>, <code class="code" id="-qujfd5_715">th:include</code>:</span> Une approche plus simple, bas&eacute;e sur l'inclusion de fragments. Moins flexible pour des layouts complexes, mais utile pour des composants r&eacute;utilisables.</p></li></ol><section class="chapter"><h3 id="1-utilisation-du-dialecte-de-layout-thymeleaf-recommand" data-toc="1-utilisation-du-dialecte-de-layout-thymeleaf-recommand">1. Utilisation du Dialecte de Layout Thymeleaf (Recommand&eacute;)</h3><p id="-qujfd5_716">Ce dialecte, d&eacute;velopp&eacute; par <code class="code" id="-qujfd5_724">Ultraq</code>, n'est pas inclus par d&eacute;faut dans Thymeleaf Core mais s'int&egrave;gre parfaitement. Spring Boot le configure automatiquement, il suffit d'ajouter la d&eacute;pendance.</p><section class="chapter"><h4 id="ajout-de-la-d-pendance" data-toc="ajout-de-la-d-pendance"><span class="control" id="-qujfd5_727">Ajout de la d&eacute;pendance</span></h4><ul class="list _bullet" id="-qujfd5_726"><li class="list__item" id="-qujfd5_728"><p id="-qujfd5_729"><span class="control" id="-qujfd5_731">Maven (<code class="code" id="-qujfd5_732">pom.xml</code>) :</span></p><div class="code-block" data-lang="markup">
+&lt;dependency&gt;
+    &lt;groupId&gt;nz.net.ultraq.thymeleaf&lt;/groupId&gt;
+    &lt;artifactId&gt;thymeleaf-layout-dialect&lt;/artifactId&gt;
+    &lt;!-- La version est gérée par le parent Spring Boot --&gt;
+&lt;/dependency&gt;
+</div></li></ul></section><section class="chapter"><h4 id="cr-ation-du-template-de-layout-gabarit" data-toc="cr-ation-du-template-de-layout-gabarit"><span class="control" id="-qujfd5_736">Cr&eacute;ation du Template de Layout (Gabarit)</span></h4><p id="-qujfd5_734">Il faut Cr&eacute;er un fichier HTML qui servira de structure de base pour les pages. Par exemple, <code class="code" id="-qujfd5_737">templates/layouts/default.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;
+      xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;!-- Titre par défaut, peut être surchargé --&gt;
+    &lt;title layout:title-pattern=&quot;$LAYOUT_TITLE - $CONTENT_TITLE&quot;&gt;
+        Mon Application
+    &lt;/title&gt;
+
+    &lt;!-- CSS Communs --&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css&quot;
+          rel=&quot;stylesheet&quot; integrity=&quot;sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7&quot;
+          crossorigin=&quot;anonymous&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/css/style.css}&quot;/&gt;
+
+    &lt;!-- Bloc pour CSS spécifiques à la page (optionnel) --&gt;
+    &lt;th:block layout:fragment=&quot;css&quot;&gt;&lt;/th:block&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- En-tête Commun --&gt;
+&lt;header&gt;
+    &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+        &lt;!-- Contenu de la barre de navigation --&gt;
+        &lt;a class=&quot;navbar-brand&quot; th:href=&quot;@{/}&quot;&gt;Mon App&lt;/a&gt;
+        &lt;ul class=&quot;navbar-nav mr-auto&quot;&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; th:href=&quot;@{/}&quot;&gt;Accueil&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link&quot; th:href=&quot;@{/about}&quot;&gt;À Propos&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;!-- Section Principale - Contenu spécifique de la page --&gt;
+&lt;main class=&quot;container mt-4&quot;&gt;
+    &lt;!-- C'est ici que le contenu de la page spécifique sera injecté --&gt;
+    &lt;div layout:fragment=&quot;content&quot;&gt;
+        &lt;p&gt;Contenu par défaut si la page enfant ne définit pas ce fragment.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;!-- Pied de page Commun --&gt;
+&lt;footer class=&quot;text-center mt-5&quot;&gt;
+    &lt;p&gt;© 2025 Mon Application. Tous droits réservés.&lt;/p&gt;
+&lt;/footer&gt;
+
+&lt;!-- Scripts JS Communs --&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js&quot;
+        integrity=&quot;sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq&quot;
+        crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+&lt;!-- Bloc pour Scripts spécifiques à la page (optionnel) --&gt;
+&lt;th:block layout:fragment=&quot;scripts&quot;&gt;&lt;/th:block&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h4 id="explication-des-attributs-cl-s_2" data-toc="explication-des-attributs-cl-s_2"><span class="control" id="-qujfd5_740">Explication des attributs cl&eacute;s :</span></h4><ul class="list _bullet" id="-qujfd5_739"><li class="list__item" id="-qujfd5_741"><p id="-qujfd5_745"><code class="code" id="-qujfd5_746">xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;</code>: D&eacute;clare le namespace pour utiliser les attributs du dialecte de layout (<code class="code" id="-qujfd5_747">layout:</code>).</p></li><li class="list__item" id="-qujfd5_742"><p id="-qujfd5_748"><code class="code" id="-qujfd5_749">layout:title-pattern=&quot;$LAYOUT_TITLE - $CONTENT_TITLE&quot;</code>: (Optionnel) Permet de d&eacute;finir un mod&egrave;le pour le titre de la page. <code class="code" id="-qujfd5_750">$LAYOUT_TITLE</code> est le titre d&eacute;fini dans ce layout, <code class="code" id="-qujfd5_751">$CONTENT_TITLE</code> est celui d&eacute;fini dans la page de contenu.</p></li><li class="list__item" id="-qujfd5_743"><p id="-qujfd5_752"><code class="code" id="-qujfd5_753">layout:fragment=&quot;content&quot;</code>: <span class="control" id="-qujfd5_754">C'est le point crucial.</span> Il d&eacute;finit une zone rempla&ccedil;able. Le contenu de la page sp&eacute;cifique (celle qui utilise ce layout) qui est marqu&eacute; avec le m&ecirc;me nom de fragment (<code class="code" id="-qujfd5_755">content</code> dans ce cas) viendra remplacer le contenu de cette <code class="code" id="-qujfd5_756">div</code>.</p></li><li class="list__item" id="-qujfd5_744"><p id="-qujfd5_757"><code class="code" id="-qujfd5_758">th:block layout:fragment=&quot;css&quot;</code> et <code class="code" id="-qujfd5_759">th:block layout:fragment=&quot;scripts&quot;</code>: Ce sont d'autres fragments <span class="emphasis" id="-qujfd5_760">optionnels</span>. Les pages de contenu peuvent <span class="emphasis" id="-qujfd5_761">choisir</span> de fournir du contenu pour ces fragments (par exemple, pour ajouter des CSS ou JS sp&eacute;cifiques &agrave; une page). <code class="code" id="-qujfd5_762">th:block</code> est une balise Thymeleaf qui dispara&icirc;t apr&egrave;s traitement, pratique pour ne pas ajouter de HTML superflu.</p></li></ul></section><section class="chapter"><h4 id="cr-ation-des-pages-de-contenu-vues-sp-cifiques" data-toc="cr-ation-des-pages-de-contenu-vues-sp-cifiques"><span class="control" id="-qujfd5_766">Cr&eacute;ation des Pages de Contenu (Vues Sp&eacute;cifiques)</span></h4><p id="-qujfd5_764">Il faut Cr&eacute;er maintenant les pages qui utiliseront ce layout. Par exemple, <code class="code" id="-qujfd5_767">templates/home.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;
+      xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+      layout:decorate=&quot;~{layouts/default}&quot;&gt;  &lt;!-- 1. Indique quel layout utiliser --&gt;
+&lt;head&gt;
+    &lt;!-- 2. Définit le titre spécifique pour cette page --&gt;
+    &lt;title&gt;Page d'Accueil&lt;/title&gt;
+
+    &lt;!-- 3. (Optionnel) Ajoute des CSS spécifiques --&gt;
+    &lt;th:block layout:fragment=&quot;css&quot;&gt;
+        &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/css/home-specific.css}&quot;/&gt;
+    &lt;/th:block&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;!-- 4. Définit le contenu principal de la page --&gt;
+&lt;div layout:fragment=&quot;content&quot;&gt;
+    &lt;h1&gt;Bienvenue sur la page d'accueil !&lt;/h1&gt;
+    &lt;p&gt;Ceci est le contenu spécifique à la page d'accueil.&lt;/p&gt;
+    &lt;p&gt;Le modèle Spring peut passer des données ici : &lt;span th:text=&quot;${message}&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- 5. (Optionnel) Ajoute des scripts spécifiques --&gt;
+&lt;th:block layout:fragment=&quot;scripts&quot;&gt;
+    &lt;script th:src=&quot;@{/js/home-specific.js}&quot;&gt;&lt;/script&gt;
+&lt;/th:block&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</div></section><section class="chapter"><h4 id="explication-des-attributs-cl-s_1" data-toc="explication-des-attributs-cl-s_1"><span class="control" id="-qujfd5_770">Explication des attributs cl&eacute;s :</span></h4><ul class="list _bullet" id="-qujfd5_769"><li class="list__item" id="-qujfd5_771"><p id="-qujfd5_775"><code class="code" id="-qujfd5_776">layout:decorate=&quot;~{layouts/default}&quot;</code>: <span class="control" id="-qujfd5_777">C'est l'instruction principale.</span> Elle indique que cette page &quot;d&eacute;core&quot; ( utilise) le layout situ&eacute; &agrave; <code class="code" id="-qujfd5_778">templates/layouts/default.html</code>. Le <code class="code" id="-qujfd5_779">~{...}</code> est la syntaxe standard de Thymeleaf pour r&eacute;f&eacute;rencer d'autres templates.</p></li><li class="list__item" id="-qujfd5_772"><p id="-qujfd5_780"><code class="code" id="-qujfd5_781">&lt;title&gt;Page d'Accueil&lt;/title&gt;</code>: Thymeleaf Layout Dialect est assez intelligent pour extraire ce titre et l'utiliser ( par exemple avec <code class="code" id="-qujfd5_782">layout:title-pattern</code>).</p></li><li class="list__item" id="-qujfd5_773"><p id="-qujfd5_783"><code class="code" id="-qujfd5_784">layout:fragment=&quot;content&quot;</code>: Le contenu de cette <code class="code" id="-qujfd5_785">div</code> remplacera la <code class="code" id="-qujfd5_786">div</code> ayant <code class="code" id="-qujfd5_787">layout:fragment=&quot;content&quot;</code> dans le fichier <code class="code" id="-qujfd5_788">layouts/default.html</code>.</p></li><li class="list__item" id="-qujfd5_774"><p id="-qujfd5_789"><code class="code" id="-qujfd5_790">th:block layout:fragment=&quot;css&quot;</code> et <code class="code" id="-qujfd5_791">th:block layout:fragment=&quot;scripts&quot;</code>: Ces blocs d&eacute;finissent le contenu pour les fragments optionnels <code class="code" id="-qujfd5_792">css</code> et <code class="code" id="-qujfd5_793">scripts</code> d&eacute;finis dans le layout. S'ils n'&eacute;taient pas pr&eacute;sents ici, les blocs correspondants dans le layout resteraient vides.</p></li></ul></section><section class="chapter"><h4 id="contr-leur-spring" data-toc="contr-leur-spring"><span class="control" id="-qujfd5_797">Contr&ocirc;leur Spring</span></h4><p id="-qujfd5_795">Le contr&ocirc;leur Spring reste simple. Il suffit de retourner le nom de la vue de contenu (sans le chemin <code class="code" id="-qujfd5_798">templates/</code> ni l'extension <code class="code" id="-qujfd5_799">.html</code>, car c'est g&eacute;r&eacute; par la configuration de Spring Boot et Thymeleaf).</p><div class="code-block" data-lang="java">
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+    @GetMapping(&quot;/&quot;)
+    public String home(Model model) {
+        model.addAttribute(&quot;message&quot;, &quot;Donnée venant du contrôleur !&quot;);
+        // Retourne le nom du template de contenu : templates/home.html
+        // Thymeleaf et le Layout Dialect assembleront automatiquement
+        // home.html avec layouts/default.html
+        return &quot;home&quot;;
+    }
+
+    @GetMapping(&quot;/about&quot;)
+    public String about() {
+        // Retourne le nom du template : templates/about.html
+        // qui devra aussi utiliser layout:decorate=&quot;~{layouts/default}&quot;
+        return &quot;about&quot;;
+    }
+}
+</div></section><section class="chapter"><h4 id="fonctionnement" data-toc="fonctionnement"><span class="control" id="-qujfd5_803">Fonctionnement</span></h4><p id="-qujfd5_801">Lorsque le contr&ocirc;leur retourne <code class="code" id="-qujfd5_804">&quot;home&quot;</code>, Spring Boot et Thymeleaf localisent <code class="code" id="-qujfd5_805">templates/home.html</code>. Le Layout Dialect voit l'attribut <code class="code" id="-qujfd5_806">layout:decorate=&quot;~{layouts/default}&quot;</code>, charge alors <code class="code" id="-qujfd5_807">layouts/default.html</code>, puis remplace les <code class="code" id="-qujfd5_808">layout:fragment</code> du layout par ceux trouv&eacute;s dans <code class="code" id="-qujfd5_809">home.html</code>. Le HTML final g&eacute;n&eacute;r&eacute; et envoy&eacute; au navigateur est une combinaison des deux fichiers.</p></section></section><section class="chapter"><h3 id="utilisation-de-th-insert-th-replace-th-include" data-toc="utilisation-de-th-insert-th-replace-th-include">Utilisation de <code class="code" id="-qujfd5_816">th:insert</code>, <code class="code" id="-qujfd5_817">th:replace</code>, <code class="code" id="-qujfd5_818">th:include</code></h3><p id="-qujfd5_811">Cette approche n'utilise pas de dialecte externe. Elle repose sur la capacit&eacute; de Thymeleaf &agrave; inclure des morceaux (fragments) d'autres fichiers.</p><section class="chapter"><h4 id="cr-ation-de-fragments-r-utilisables" data-toc="cr-ation-de-fragments-r-utilisables"><span class="control" id="-qujfd5_822">Cr&eacute;ation de Fragments R&eacute;utilisables</span></h4><p id="-qujfd5_820">Il faut Cr&eacute;er des fichiers HTML contenant uniquement les parties r&eacute;utilisables, en utilisant <code class="code" id="-qujfd5_823">th:fragment</code> pour les nommer.</p><ul class="list _bullet" id="-qujfd5_821"><li class="list__item" id="-qujfd5_824"><p id="-qujfd5_826"><code class="code" id="-qujfd5_828">templates/fragments/header.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;body&gt;
+    &lt;!-- Le fragment est nommé &quot;mainHeader&quot; --&gt;
+    &lt;header th:fragment=&quot;mainHeader&quot;&gt;
+        &lt;nav class=&quot;navbar navbar-expand-lg navbar-light bg-light&quot;&gt;
+            &lt;a class=&quot;navbar-brand&quot; th:href=&quot;@{/}&quot;&gt;Mon App&lt;/a&gt;
+             &lt;!-- ... reste de la nav ... --&gt;
+        &lt;/nav&gt;
+        &lt;hr/&gt;
+    &lt;/header&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li><li class="list__item" id="-qujfd5_825"><p id="-qujfd5_829"><code class="code" id="-qujfd5_831">templates/fragments/footer.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;body&gt;
+    &lt;!-- Le fragment est nommé &quot;mainFooter&quot; --&gt;
+    &lt;footer th:fragment=&quot;mainFooter&quot; class=&quot;text-center mt-5&quot;&gt;
+         &lt;hr/&gt;
+        &lt;p&gt;&amp;copy; 2023 Mon Application. Tous droits réservés.&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul></section><section class="chapter"><h4 id="cr-ation-de-la-page-principale" data-toc="cr-ation-de-la-page-principale"><span class="control" id="-qujfd5_835">Cr&eacute;ation de la Page Principale</span></h4><p id="-qujfd5_833">Chaque page doit explicitement inclure les fragments n&eacute;cessaires.</p><ul class="list _bullet" id="-qujfd5_834"><li class="list__item" id="-qujfd5_836"><p id="-qujfd5_837"><code class="code" id="-qujfd5_839">templates/product_list.html</code>:</p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Liste des Produits&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css&quot; 
+          rel=&quot;stylesheet&quot; 
+          integrity=&quot;sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7&quot; 
+          crossorigin=&quot;anonymous&quot;&gt;
+
+    &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/css/style.css}&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Inclure et remplacer le tag actuel par le contenu du fragment header --&gt;
+    &lt;div th:replace=&quot;~{fragments/header :: mainHeader}&quot;&gt;&lt;/div&gt;
+
+    &lt;main class=&quot;container mt-4&quot;&gt;
+        &lt;h1&gt;Nos Produits&lt;/h1&gt;
+        &lt;!-- Contenu spécifique à la liste des produits --&gt;
+        &lt;ul&gt;
+            &lt;li th:each=&quot;product : ${products}&quot; th:text=&quot;${product.name}&quot;&gt;Produit&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/main&gt;
+
+    &lt;!-- Inclure et remplacer le tag actuel par le contenu du fragment footer --&gt;
+    &lt;div th:replace=&quot;~{fragments/footer :: mainFooter}&quot;&gt;&lt;/div&gt;
+
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul></section><section class="chapter"><h4 id="explication-des-attributs-cl-s" data-toc="explication-des-attributs-cl-s"><span class="control" id="-qujfd5_842">Explication des attributs cl&eacute;s :</span></h4><ul class="list _bullet" id="-qujfd5_841"><li class="list__item" id="-qujfd5_843"><p id="-qujfd5_847"><code class="code" id="-qujfd5_848">th:fragment=&quot;fragmentName&quot;</code>: D&eacute;finit un morceau de code r&eacute;utilisable dans un fichier de fragments.</p></li><li class="list__item" id="-qujfd5_844"><p id="-qujfd5_849"><code class="code" id="-qujfd5_850">th:replace=&quot;~{chemin/vers/fichier :: nomDuFragment}&quot;</code>: Remplace la balise h&ocirc;te (ici la <code class="code" id="-qujfd5_851">&lt;div&gt;</code>) par le fragment sp&eacute;cifi&eacute;. C'est g&eacute;n&eacute;ralement pr&eacute;f&eacute;r&eacute; pour l'inclusion de composants.</p></li><li class="list__item" id="-qujfd5_845"><p id="-qujfd5_852"><code class="code" id="-qujfd5_853">th:insert=&quot;~{chemin/vers/fichier :: nomDuFragment}&quot;</code>: Ins&egrave;re le fragment <span class="emphasis" id="-qujfd5_854">&agrave; l'int&eacute;rieur</span> de la balise h&ocirc;te. La balise h&ocirc;te est conserv&eacute;e.</p></li><li class="list__item" id="-qujfd5_846"><p id="-qujfd5_855"><code class="code" id="-qujfd5_856">th:include=&quot;~{chemin/vers/fichier :: nomDuFragment}&quot;</code>: (Plus ancien, similaire &agrave; <code class="code" id="-qujfd5_857">th:insert</code> mais ins&egrave;re uniquement le <span class="emphasis" id="-qujfd5_858">contenu</span> du fragment, pas la balise du fragment elle-m&ecirc;me). <code class="code" id="-qujfd5_859">th:insert</code> ou <code class="code" id="-qujfd5_860">th:replace</code> sont souvent plus clairs.</p></li></ul></section><section class="chapter"><h4 id="inconv-nients-pour-les-layouts-complets" data-toc="inconv-nients-pour-les-layouts-complets"><span class="control" id="-qujfd5_865">Inconv&eacute;nients pour les Layouts Complets</span></h4><ul class="list _bullet" id="-qujfd5_862"><li class="list__item" id="-qujfd5_866"><p id="-qujfd5_869"><span class="control" id="-qujfd5_870">R&eacute;p&eacute;tition :</span> La structure de base (<code class="code" id="-qujfd5_871">&lt;html&gt;</code>, <code class="code" id="-qujfd5_872">&lt;head&gt;</code>, <code class="code" id="-qujfd5_873">&lt;body&gt;</code>, inclusions CSS/JS communes) doit &ecirc;tre r&eacute;p&eacute;t&eacute;e ou incluse dans <span class="emphasis" id="-qujfd5_874">chaque</span> page principale.</p></li><li class="list__item" id="-qujfd5_867"><p id="-qujfd5_875"><span class="control" id="-qujfd5_876">Moins &eacute;l&eacute;gant :</span> La logique d'assemblage est r&eacute;partie dans chaque page de contenu plut&ocirc;t que centralis&eacute;e dans un layout parent.</p></li><li class="list__item" id="-qujfd5_868"><p id="-qujfd5_877"><span class="control" id="-qujfd5_878">Plus verbeux :</span> Chaque page doit explicitement lister tous les fragments communs qu'elle utilise.</p></li></ul><p id="-qujfd5_863"><span class="control" id="-qujfd5_879">Quand utiliser cette approche ?</span> Elle est excellente pour des <span class="control" id="-qujfd5_880">composants r&eacute;utilisables plus petits</span> au sein d'une page (une carte produit, un formulaire de recherche, une modale) plut&ocirc;t que pour la structure globale de la page.</p></section></section><section class="chapter"><h3 id="conclusion" data-toc="conclusion">Conclusion</h3><ul class="list _bullet" id="-qujfd5_881"><li class="list__item" id="-qujfd5_883"><p id="-qujfd5_885">Pour une gestion <span class="control" id="-qujfd5_886">robuste et maintenable des layouts de page</span>, il faut utiliser le <span class="control" id="-qujfd5_887">Thymeleaf Layout Dialect</span> (<code class="code" id="-qujfd5_888">layout:decorate</code>, <code class="code" id="-qujfd5_889">layout:fragment</code>). C'est la m&eacute;thode standard et recommand&eacute;e dans l'&eacute;cosyst&egrave;me Spring/Thymeleaf.</p></li><li class="list__item" id="-qujfd5_884"><p id="-qujfd5_890">Pour inclure des <span class="control" id="-qujfd5_891">petits composants r&eacute;utilisables</span> (fragments) &agrave; diff&eacute;rents endroits de vos pages, on peut utiliser <code class="code" id="-qujfd5_892">th:replace</code> (ou <code class="code" id="-qujfd5_893">th:insert</code>) avec <code class="code" id="-qujfd5_894">th:fragment</code>.</p></li></ul><p id="-qujfd5_882">Il est bien entendu possible de combiner les deux approches.</p></section><section class="chapter"><h3 id="h-ritage-et-surcharge-des-blocs" data-toc="h-ritage-et-surcharge-des-blocs">H&eacute;ritage et surcharge des blocs</h3><p id="-qujfd5_895">Par d&eacute;faut un <code class="code" id="-qujfd5_909">layout:fragment</code> dans une page enfant <span class="control" id="-qujfd5_910">remplace</span> enti&egrave;rement le contenu du <code class="code" id="-qujfd5_911">layout:fragment</code> correspondant dans le layout parent.</p><p id="-qujfd5_896">Cependant, Il est possible de <span class="control" id="-qujfd5_912">combiner</span> le contenu en utilisant une balise sp&eacute;ciale <code class="code" id="-qujfd5_913">layout:fragment</code> (ou <code class="code" id="-qujfd5_914">th:block layout:fragment</code>) <span class="emphasis" id="-qujfd5_915">&agrave; l'int&eacute;rieur</span> de la d&eacute;finition du fragment de l'enfant. Cette balise sp&eacute;ciale agit comme un <span class="control" id="-qujfd5_916">placeholder</span> pour le contenu original du fragment parent.</p><p id="-qujfd5_897">Voici comment cela fonctionne :</p><p id="-qujfd5_898"><span class="control" id="-qujfd5_917">Sc&eacute;nario :</span></p><ul class="list _bullet" id="-qujfd5_899"><li class="list__item" id="-qujfd5_918"><p id="-qujfd5_920"><span class="control" id="-qujfd5_922">Layout Parent (<code class="code" id="-qujfd5_923">templates/layouts/default-override.html</code>) :</span></p><div class="code-block" data-lang="markup">
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;
+      xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;&gt;
+&lt;head&gt;
+    &lt;title layout:title-pattern=&quot;$CONTENT_TITLE | $LAYOUT_TITLE&quot;&gt;Mon Layout&lt;/title&gt;
+
+    &lt;!-- Bloc pour scripts additionnels --&gt;
+    &lt;th:block layout:fragment=&quot;pageScripts&quot;&gt;
+        &lt;!-- 
+            Contenu par défaut 
+            (peut être vide ou contenir des scripts 
+            communs chargés en dernier) 
+        --&gt;
+        &lt;script th:src=&quot;@{/js/common.js}&quot;&gt;&lt;/script&gt;
+    &lt;/th:block&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;...&lt;/header&gt;
+    &lt;main layout:fragment=&quot;content&quot;&gt;
+        &lt;p&gt;Contenu par défaut du layout.&lt;/p&gt;
+    &lt;/main&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li><li class="list__item" id="-qujfd5_919"><p id="-qujfd5_924"><span class="control" id="-qujfd5_925">Page Enfant (<code class="code" id="-qujfd5_926">templates/myPage.html</code>) :</span></p></li></ul><div class="code-block" data-lang="markup">
+  &lt;!DOCTYPE html&gt;
+  &lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;
+        xmlns:layout=&quot;http://www.ultraq.net.nz/thymeleaf/layout&quot;
+        layout:decorate=&quot;~{layouts/default-override}&quot;&gt;
+  &lt;head&gt;
+      &lt;title&gt;Ma Page Spécifique&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+      &lt;!-- Exemple 1: Ajouter APRÈS le contenu parent --&gt;
+      &lt;div layout:fragment=&quot;content&quot;&gt;
+          &lt;!-- Contenu spécifique à cette page --&gt;
+          &lt;h1&gt;Titre de Ma Page&lt;/h1&gt;
+          &lt;p&gt;Ceci est mon contenu spécifique.&lt;/p&gt;
+
+          &lt;!-- Insérer ici le contenu original du fragment 'content' du parent --&gt;
+          &lt;th:block layout:fragment=&quot;content&quot;&gt;&lt;/th:block&gt;
+          &lt;!-- &lt;layout:fragment/&gt; est aussi une syntaxe valide --&gt;
+
+           &lt;p&gt;Du contenu supplémentaire après celui du parent.&lt;/p&gt;
+      &lt;/div&gt;
+
+
+      &lt;!-- Exemple 2: Ajouter AVANT le contenu parent (pour les scripts) --&gt;
+      &lt;th:block layout:fragment=&quot;pageScripts&quot;&gt;
+          &lt;!-- Script spécifique à cette page --&gt;
+          &lt;script th:src=&quot;@{/js/myPage-specific.js}&quot;&gt;&lt;/script&gt;
+
+          &lt;!-- Insérer ici le contenu original du fragment 'pageScripts' du parent --&gt;
+          &lt;th:block layout:fragment=&quot;pageScripts&quot;&gt;&lt;/th:block&gt;
+          &lt;!-- &lt;layout:fragment/&gt; fonctionne aussi --&gt;
+      &lt;/th:block&gt;
+
+  &lt;/body&gt;
+  &lt;/html&gt;
+</div><p id="-qujfd5_901"><span class="control" id="-qujfd5_927">Explication :</span></p><ol class="list _decimal" id="-qujfd5_902" type="1"><li class="list__item" id="-qujfd5_928"><p id="-qujfd5_929"><span class="control" id="-qujfd5_930"><code class="code" id="-qujfd5_931">layout:fragment=&quot;content&quot;</code> dans <code class="code" id="-qujfd5_932">myPage.html</code>:</span></p></li></ol><ul class="list _bullet" id="-qujfd5_903"><li class="list__item" id="-qujfd5_933"><p id="-qujfd5_936">Il d&eacute;finit le contenu pour le fragment <code class="code" id="-qujfd5_937">content</code>.</p></li><li class="list__item" id="-qujfd5_934"><p id="-qujfd5_938">&Agrave; l'int&eacute;rieur, la ligne <code class="code" id="-qujfd5_939">&lt;th:block layout:fragment=&quot;content&quot;&gt;&lt;/th:block&gt;</code> (ou <code class="code" id="-qujfd5_940">&lt;layout:fragment/&gt;</code>) dit au Layout Dialect : &quot;&Agrave; cet endroit pr&eacute;cis, ins&egrave;re le contenu original qui se trouvait dans le <code class="code" id="-qujfd5_941">layout:fragment=&quot;content&quot;</code> du fichier <code class="code" id="-qujfd5_942">default.html</code> &quot;.</p></li><li class="list__item" id="-qujfd5_935"><p id="-qujfd5_943">R&eacute;sultat : Le rendu final combinera le contenu sp&eacute;cifique de <code class="code" id="-qujfd5_944">myPage.html</code> avec le <code class="code" id="-qujfd5_945">&lt;p&gt;Contenu par d&eacute;faut du layout.&lt;/p&gt;</code> du parent, en respectant l'ordre d&eacute;fini dans l'enfant. Dans cet exemple, le contenu du parent sera ins&eacute;r&eacute; <span class="emphasis" id="-qujfd5_946">entre</span> le contenu sp&eacute;cifique de l'enfant.</p></li></ul><ol class="list _decimal" id="-qujfd5_904" type="1" start="2"><li class="list__item" id="-qujfd5_947"><p id="-qujfd5_948"><span class="control" id="-qujfd5_949"><code class="code" id="-qujfd5_950">layout:fragment=&quot;pageScripts&quot;</code> dans <code class="code" id="-qujfd5_951">myPage.html</code>:</span></p></li></ol><ul class="list _bullet" id="-qujfd5_905"><li class="list__item" id="-qujfd5_952"><p id="-qujfd5_956">Il d&eacute;finit le contenu pour le fragment <code class="code" id="-qujfd5_957">pageScripts</code>.</p></li><li class="list__item" id="-qujfd5_953"><p id="-qujfd5_958">Il ajoute d'abord le script <code class="code" id="-qujfd5_959">myPage-specific.js</code>.</p></li><li class="list__item" id="-qujfd5_954"><p id="-qujfd5_960">Ensuite, <code class="code" id="-qujfd5_961">&lt;th:block layout:fragment=&quot;pageScripts&quot;&gt;&lt;/th:block&gt;</code> ins&egrave;re le contenu original du fragment <code class="code" id="-qujfd5_962">pageScripts</code> du parent (qui est <code class="code" id="-qujfd5_963">&lt;script th:src=&quot;@{/js/common-late-load.js}&quot;&gt;&lt;/script&gt;</code>).</p></li><li class="list__item" id="-qujfd5_955"><p id="-qujfd5_964">R&eacute;sultat : Le script sp&eacute;cifique &agrave; la page sera charg&eacute; <span class="emphasis" id="-qujfd5_965">avant</span> le script <code class="code" id="-qujfd5_966">common-late-load.js</code> d&eacute;fini dans le layout.</p></li></ul><p id="-qujfd5_906"><span class="control" id="-qujfd5_967">Cas d'utilisation courants :</span></p><ul class="list _bullet" id="-qujfd5_907"><li class="list__item" id="-qujfd5_968"><p id="-qujfd5_972"><span class="control" id="-qujfd5_973">Ajouter des classes CSS au <code class="code" id="-qujfd5_976">&lt;body&gt;</code>:</span> Le layout parent peut avoir <code class="code" id="-qujfd5_974">&lt;body layout:fragment=&quot;bodyAttributes&quot;&gt;</code>, et l'enfant peut faire <code class="code" id="-qujfd5_975">&lt;body layout:fragment=&quot;bodyAttributes&quot; class=&quot;page-specific-class&quot;&gt; &lt;layout:fragment/&gt; &lt;/body&gt;</code> pour ajouter une classe sans perdre d'autres attributs &eacute;ventuels du parent.</p></li><li class="list__item" id="-qujfd5_969"><p id="-qujfd5_977"><span class="control" id="-qujfd5_978">Scripts JS :</span> Charger des scripts communs dans le layout et ajouter des scripts sp&eacute;cifiques &agrave; la page avant ou apr&egrave;s les communs.</p></li><li class="list__item" id="-qujfd5_970"><p id="-qujfd5_979"><span class="control" id="-qujfd5_980">Meta tags :</span> Ajouter des meta tags sp&eacute;cifiques &agrave; une page tout en conservant ceux d&eacute;finis dans le layout.</p></li><li class="list__item" id="-qujfd5_971"><p id="-qujfd5_981"><span class="control" id="-qujfd5_982">Contenu par d&eacute;faut :</span> Fournir un contenu par d&eacute;faut dans le layout (par exemple, un message &quot;Aucun contenu fourni&quot;) qui peut &ecirc;tre soit remplac&eacute;, soit compl&eacute;t&eacute; par l'enfant.</p></li></ul><p id="-qujfd5_908">En r&eacute;sum&eacute;, l'utilisation de <code class="code" id="-qujfd5_983">&lt;layout:fragment/&gt;</code> ou <code class="code" id="-qujfd5_984">&lt;th:block layout:fragment/&gt;</code> (avec le m&ecirc;me nom de fragment) &agrave; l'int&eacute;rieur de la d&eacute;finition du fragment enfant donne un contr&ocirc;le total sur la mani&egrave;re dont le contenu enfant et le contenu parent sont fusionn&eacute;s, allant au-del&agrave; du simple remplacement.</p></section></section><section class="chapter"><h2 id="exercices" data-toc="exercices">Exercices</h2></section><div class="last-modified">Last modified: 11 mai 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="001-00-les-controleurs.html" class="navigation-links__prev">Les contr&ocirc;leurs</a><a href="002-002-exercices-thymeleaf.html" class="navigation-links__next">Exercices-thymeleaf</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>
