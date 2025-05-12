@@ -211,7 +211,7 @@ Traitement nocturne de fichiers de paie ou génération de factures PDF.
 
 #### AOP
 
-####spring-aop
+#### spring-aop
 **Rôle :** Ajout d’aspects (cross-cutting concerns).
 
 **Exemples :**

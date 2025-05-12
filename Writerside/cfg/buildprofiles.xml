@@ -7,6 +7,7 @@
     <build-profile instance="s">
         <variables>
             <noindex-content>true</noindex-content>
+            <resizable-sidebar>true</resizable-sidebar>
         </variables>
     </build-profile>
 

@@ -26,7 +26,7 @@
 *   **Template Thymeleaf à créer (`src/main/resources/templates/message-view.html`) :**
     *   Crée un paragraphe `<p>` qui affiche la valeur de l'attribut `message` du modèle.
 
-### Correction (`message-view.html`){collapsible="true"}
+### Correction (`message-view.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -97,7 +97,7 @@
 *   **Template Thymeleaf à créer (`src/main/resources/templates/user-details-view.html`) :**
     *   Affiche l'ID, le nom d'utilisateur et l'email de l'utilisateur dans des paragraphes séparés.
 
-### Correction (`user-details-view.html`){collapsible="true"}
+### Correction (`user-details-view.html`) {collapsible="true"}
 ```html
     <!DOCTYPE html>
     <html xmlns:th="http://www.thymeleaf.org">
@@ -146,7 +146,7 @@
 *   **Template Thymeleaf à créer (`src/main/resources/templates/items-view.html`) :**
     *   Crée une liste non ordonnée (`<ul>`) où chaque élément (`<li>`) affiche un item de `itemList`.
 
-### Correction (`items-view.html`){collapsible="true"}
+### Correction (`items-view.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -224,7 +224,7 @@
     *   Crée un tableau HTML (`<table>`) avec un en-tête (Nom, Prix, Stock).
     *   Pour chaque produit dans `productList`, ajoute une ligne (`<tr>`) avec les cellules (`<td>`) correspondantes affichant le nom, le prix et le stock.
 
-### Correction (`products-view.html`){collapsible="true"}
+### Correction (`products-view.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -295,7 +295,7 @@
     *   Affiche les informations de base de `userProfile`.
     *   Ajoute un bouton ou un lien "Panneau d'administration" qui ne s'affiche *que si* l'attribut `isAdmin` est vrai (`true`).
 
-### Correction (`profile-view.html`){collapsible="true"}
+### Correction (`profile-view.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -371,7 +371,7 @@
     *   Pour chaque produit, crée un lien (`<a>`) qui pointe vers `/product/{productId}` où `{productId}` est le nom (utilisé comme ID ici) du produit.
     *   Crée également un lien statique vers la page d'accueil (`/`).
 
-### Correction (`product-list-links.html`){collapsible="true"}
+### Correction (`product-list-links.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -472,7 +472,7 @@
     *   Crée des champs de saisie (`<input type="text">`, `<textarea>`) pour `sender` et `content` en utilisant `th:field`.
     *   Ajoute un bouton de soumission (`<button type="submit">`).
 
-### Correction (`contact-form.html`){collapsible="true"}
+### Correction (`contact-form.html`) {collapsible="true"}
 
 ```html
     <!DOCTYPE html>
@@ -556,7 +556,7 @@
     *   Inclut le fragment `footer` de `fragments/layout.html`.
 
 
-### Correction fragments{collapsible="true"}
+### Correction fragments {collapsible="true"}
 
 **`fragments/layout.html`**
 
@@ -709,7 +709,7 @@
     *   Affiche la description sans les espaces au début et à la fin, et en majuscules, en utilisant `#strings`.
     *   Affiche la date de l'événement formatée (ex: 26 octobre 2024) en utilisant `#dates` ou `#temporals` (pour `java.time`).
 
-### Correction (`event-details-view.html`){collapsible="true"}
+### Correction (`event-details-view.html`) {collapsible="true"}
 
     
 ```html
@@ -796,7 +796,7 @@
     *   Utilise `th:case` pour afficher un message différent si le rôle est `EDITOR`.
     *   Utilise `th:case="*"` (cas par défaut) pour afficher un message si le rôle est autre (`GUEST` ou inconnu).
 
-### Correction (`dashboard-view.html`){collapsible="true"}
+### Correction (`dashboard-view.html`) {collapsible="true"}
     
 ```html
     <!DOCTYPE html>

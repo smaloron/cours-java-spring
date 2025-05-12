@@ -21,7 +21,7 @@ configuration. Par défaut le dossier dans lequel il recherchera les modèles es
 
 <dependency>
     <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-Thymeleaf</artifactId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
 </dependency>
 ```
 
@@ -266,8 +266,8 @@ En imaginant un objet `User` possédant les propriétés `id` et `name`.
 ```html
 
 <div th:object="${user}">
-    <p th:text="${id}"></p>
-    <p th:text="${name}"></p>
+    <p th:text="*{id}"></p>
+    <p th:text="*{name}"></p>
 </div>
 ```
 
