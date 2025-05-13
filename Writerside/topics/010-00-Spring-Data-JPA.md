@@ -361,7 +361,7 @@ lecture seule, utiliser `@Transactional(readOnly = true)` peut améliorer les pe
 
 ---
 
-#### Correction Exercice 1
+#### Correction Exercice 1 {collapsible="true"}
 
 **Entité `Product` :**
 
