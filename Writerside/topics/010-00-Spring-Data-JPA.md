@@ -75,7 +75,7 @@ Il faut ajouter les dépendances suivantes dans le fichier `pom.xml` :
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <optional>true</optional>
+        <scope>provided</scope>
     </dependency>
 
     <!-- Dépendances Spring Boot de base (souvent déjà présentes) -->
@@ -91,6 +91,30 @@ Il faut ajouter les dépendances suivantes dans le fichier `pom.xml` :
 </dependencies>
 ```
 
+Il faut également modifier le build de l'application pour pouvoir utiliser Lombok à la compilation.
+```xml
+<build>
+<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+            <source>17</source> <!-- ou ta version de Java -->
+            <target>17</target>
+            <annotationProcessorPaths>
+                <path>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <version>1.18.30</version>
+                </path>
+            </annotationProcessorPaths>
+        </configuration>
+    </plugin>
+</plugins>
+</build>
+```
+
 ### Configuration de la Source de Données
 
 La configuration de la connexion à la base de données se fait généralement dans le fichier `application.properties` (ou
@@ -99,31 +123,81 @@ La configuration de la connexion à la base de données se fait généralement d
 **Exemple pour H2 (base en mémoire) :**
 
 ```properties
-# Configuration de la source de données H2
-spring.datasource.url=jdbc:h2:mem:testdb # URL de la base en mémoire nommée 'testdb'
-spring.datasource.driverClassName=org.h2.Driver # Classe du driver JDBC
-spring.datasource.username=sa # Utilisateur (par défaut pour H2)
-spring.datasource.password=# Mot de passe (vide par défaut pour H2)
-# Configuration JPA/Hibernate
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect # Dialecte SQL spécifique à H2
-spring.jpa.hibernate.ddl-auto=update # Stratégie de génération/mise à jour du schéma (create, create-drop, update, validate, none)
-spring.jpa.show-sql=true # Afficher les requêtes SQL générées dans les logs (utile pour le debug)
-spring.jpa.properties.hibernate.format_sql=true # Formater le SQL affiché pour une meilleure lisibilité
+# ---- Configuration de la source de données H2 ----
+
+# URL de la base en mémoire nommée 'test'
+spring.datasource.url=jdbc:h2:mem:test
+# Classe du driver JDBC
+spring.datasource.driverClassName=org.h2.Driver
+# Utilisateur (par défaut pour H2)
+spring.datasource.username=sa
+# Mot de passe (vide par défaut pour H2)
+spring.datasource.password=
+
+
+# ---- Configuration JPA/Hibernate -----
+
+# Dialecte SQL spécifique à H2
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# Stratégie de génération/mise à jour du schéma (create, create-drop, update, validate, none)
+spring.jpa.hibernate.ddl-auto=update
+
+# Afficher les requêtes SQL générées dans les logs (utile pour le debug)
+spring.jpa.show-sql=true
+
+# Formater le SQL affiché pour une meilleure lisibilité
+spring.jpa.properties.hibernate.format_sql=true
+
 # Activer la console H2 (accessible via http://localhost:8080/h2-console par défaut)
 spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console # Chemin d'accès à la console
+# Chemin d'accès à la console
+spring.h2.console.path=/h2-console
+```
+
+> Attention, les commentaires peuvent empêcher la compilation, dans ce cas, essayez une version sans commentaires
+
+```properties
+spring.application.name=spring-database
+
+spring.datasource.url=jdbc:h2:mem:test
+
+spring.datasource.driverClassName=org.h2.Driver
+
+spring.datasource.username=sa
+
+spring.datasource.password=
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.show-sql=true
+
+spring.jpa.properties.hibernate.format_sql=true
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 ```
 
 **Exemple pour PostgreSQL :**
 
 ```properties
 # Configuration de la source de données PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5432/mydatabase # URL de votre base PostgreSQL
-spring.datasource.username=myuser # Votre utilisateur PostgreSQL
-spring.datasource.password=mypassword # Votre mot de passe PostgreSQL
+
+# URL de votre base PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/mydatabase
+# Votre utilisateur PostgreSQL
+spring.datasource.username=myuser
+# Votre mot de passe PostgreSQL
+spring.datasource.password=mypassword
+
 # Configuration JPA/Hibernate
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect # Dialecte SQL spécifique à PostgreSQL
-spring.jpa.hibernate.ddl-auto=update # ou validate en production
+
+# Dialecte SQL spécifique à PostgreSQL
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+# ou validate en production
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
@@ -1408,7 +1482,7 @@ public class Course {
 }
 ```
 
-* Cette approche est plus flexible car elle permet d'ajouter des attributs à la relation elle-même.
+* Cette approche est plus flexible, car elle permet d'ajouter des attributs à la relation elle-même.
 * Elle transforme la relation Many-to-Many logique en deux relations One-to-Many physiques.
 
 **Cas d'utilisation `@ManyToMany` :**

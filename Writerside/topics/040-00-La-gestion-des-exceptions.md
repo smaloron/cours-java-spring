@@ -268,9 +268,6 @@ public class GlobalExceptionHandler {
 }
 ```
 
-*Note sur l'indentation et la limite de 80 caractères :* Le code ci-dessus respecte cette limite. Les logs peuvent
-nécessiter des sauts de ligne pour les messages longs.
-
 4. **Créer la vue d'erreur spécifique (`src/main/resources/templates/error/product-not-found.html`) :**
 
 ```html

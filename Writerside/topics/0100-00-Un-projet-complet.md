@@ -132,7 +132,7 @@ Rating "1" -- "1" Concert
 @enduml
 ```
 
-### Modèle Conceptuel de Données (MCD)
+### Modèle Logique de Données (MLD)
 
 ```plantuml
 @startuml MCD
